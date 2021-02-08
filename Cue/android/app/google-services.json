@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "118137066351",
+    "project_id": "cue-cb58c",
+    "storage_bucket": "cue-cb58c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118137066351:android:38bdb4ac83fdb3bb304e9a",
+        "android_client_info": {
+          "package_name": "com.cue.Cue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118137066351-2is1q5k8m7fca6rcipefoffsfghvink1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cue.Cue",
+            "certificate_hash": "0bb3f13418f716428401594a50ec7fdba4c2b49d"
+          }
+        },
+        {
+          "client_id": "118137066351-6d3bjjti2mh013ivfac7nf7idg4l2ddp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vy5B-tw8gyf7UoMcd_JZxWukKZ1crsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118137066351-6d3bjjti2mh013ivfac7nf7idg4l2ddp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
