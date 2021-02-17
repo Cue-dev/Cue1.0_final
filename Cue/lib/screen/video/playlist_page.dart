@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:Cue/services/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:Cue/services/video.dart';
-// import 'package:cue/video_control/video_bloc.dart';
-// import 'package:cue/video_control/video_api.dart';
 
 class PlayListPage extends StatefulWidget {
   PlayListPage({Key key}) : super(key: key);
@@ -20,9 +18,6 @@ class PlayListPage extends StatefulWidget {
 
 class _PlayListPageState extends State<PlayListPage> {
   Stream<List<Video>> listVideos;
-
-  // VideosBloc _videosBloc;
-
   List<String> videoURLs = List();
 
   void clearHistory() {
@@ -30,29 +25,6 @@ class _PlayListPageState extends State<PlayListPage> {
   }
 
   bool _loading = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   clearHistory();
-
-  //   setState(() {
-  //     _loading = true;
-  //   });
-  //   _videosBloc = VideosBloc(VideosAPI());
-  //   listVideos = _videosBloc.listVideos;
-
-  //   if (listVideos != null) {
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,254 +34,201 @@ class _PlayListPageState extends State<PlayListPage> {
 
     return _loading
         ? Loading()
-        : DefaultTabController(
-            length: 2,
-            child: Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  elevation: 0.0,
-                  title: Text(
-                    "Cue!",
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  actions: [
-                    IconButton(
-                        iconSize: 40.0,
-                        icon: ImageIcon(
-                          AssetImage('icons/검색.png'),
-                          color: Colors.black,
-                        ),
-                        onPressed: () {}),
-                    IconButton(
-                        iconSize: 40.0,
-                        icon: ImageIcon(
-                          AssetImage('icons/메세지.png'),
-                          color: Colors.black,
-                        ),
-                        onPressed: () {}),
-                  ],
-                  bottom: TabBar(
-                    labelColor: Colors.black,
-                    indicatorColor: Colors.grey,
-                    tabs: [
-                      Tab(text: '추천 연기'),
-                      Tab(text: '인기 도전'),
-                    ],
-                  ),
-                ),
-                body: TabBarView(children: <Widget>[
-                  // middleSection,
-                  FutureBuilder(
-                      future: videoModel.loadVideos(),
-                      builder: (context, AsyncSnapshot<List<Video>> snapshot) {
-                        return snapshot.hasData
-                            ? ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(),
-                                padding: EdgeInsets.fromLTRB(
-                                    mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
-                                scrollDirection: Axis.vertical,
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (context, int index) {
-                                  print(snapshot.data.length);
-                                  return InkWell(
-                                    child: Container(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            Container(
-                                              height: mh * 0.3,
-                                              width: mw,
-                                              child: snapshot.data[index]
-                                                          .thumbnailURL !=
-                                                      null
-                                                  ? Image.network(
-                                                      snapshot.data[index]
-                                                          .thumbnailURL,
-                                                      fit: BoxFit.fitWidth,
-                                                    )
-                                                  : Container(
-                                                      color: Colors.black),
+        : Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+              centerTitle: true,
+              elevation: 0.0,
+              title: Text(
+                "Cue!",
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(30))),
+              actions: [
+                IconButton(
+                    icon: ImageIcon(
+                      AssetImage('icons/검색.png'),
+                    ),
+                    onPressed: () {}),
+                IconButton(
+                    icon: ImageIcon(
+                      AssetImage('icons/알림_유.png'),
+                    ),
+                    onPressed: () {}),
+              ],
+            ),
+            body: FutureBuilder(
+                future: videoModel.loadVideos(),
+                builder: (context, AsyncSnapshot<List<Video>> snapshot) {
+                  return snapshot.hasData
+                      ? ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(),
+                          padding: EdgeInsets.fromLTRB(
+                              mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, int index) {
+                            print(snapshot.data.length);
+                            return InkWell(
+                              child: Container(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Container(
+                                        height: mh * 0.3,
+                                        width: mw,
+                                        child: snapshot
+                                                    .data[index].thumbnailURL !=
+                                                null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: Image.network(
+                                                  snapshot
+                                                      .data[index].thumbnailURL,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : Container(color: Colors.black),
+                                      ),
+                                      Positioned(
+                                        child: topLeftText(
+                                            snapshot.data[index].source),
+                                        top: mh * 0.03,
+                                        left: mw * 0.03,
+                                      ),
+                                      //TODO: views, challenges..
+                                      Positioned(
+                                        child: bottomLeftText(
+                                            snapshot.data[index].tag,
+                                            snapshot.data[index].title,
+                                            5042,
+                                            142),
+                                        top: mh * 0.22,
+                                        left: mw * 0.03,
+                                      ),
+                                      Positioned(
+                                        child: IconButton(
+                                            iconSize: 15,
+                                            icon: ImageIcon(
+                                              AssetImage('icons/메뉴.png'),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(15.0),
-                                              child: Container(
-                                                width: mw * 0.25,
-                                                height: mh * 0.025,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.orange,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                      snapshot
-                                                          .data[index].source,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle2),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: mw * 0.02,
-                                              bottom: mh * 0.02),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        snapshot
-                                                            .data[index].title,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .subtitle1),
-                                                    SizedBox(height: 3),
-                                                    Text(
-                                                      snapshot.data[index].tag,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              IconButton(
-                                                  iconSize: 40.0,
-                                                  icon: ImageIcon(
-                                                    AssetImage('icons/스크랩.png'),
-                                                  ),
-                                                  onPressed: () {
-                                                    scrapFirstDialog(context);
-                                                  }),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  PlayVideoPage(
-                                                    videoToPlay:
-                                                        snapshot.data[index],
-                                                  )));
-                                    },
-                                  );
-                                },
-                              )
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              );
-                      }),
-//
-                  FutureBuilder(
-                      future: videoModel.loadVideos(),
-                      builder: (context, AsyncSnapshot<List<Video>> snapshot) {
-                        return snapshot.hasData
-                            ? ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(),
-                                padding: EdgeInsets.fromLTRB(
-                                    mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
-                                scrollDirection: Axis.vertical,
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (context, int index) {
-                                  print(snapshot.data.length);
-                                  return InkWell(
-                                    child: Container(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            Container(
-                                              height: mh * 0.3,
-                                              width: mw,
-                                              child: Image.network(
-                                                  'https://i.ytimg.com/vi/UwkWHunhbtI/maxresdefault.jpg'),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: mw * 0.02,
-                                              bottom: mh * 0.02),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        '[국가부도의 날] 유아인 독백연기 도전',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .subtitle1),
-                                                    SizedBox(height: 3),
-                                                    Text(
-                                                      '#유아인 #독백연기 #서울예대 #배우지망생',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption,
-                                                    ),
-                                                    SizedBox(height: mh * 0.01),
-                                                    Row(
-                                                      children: [
-                                                        Text('김배우'),
-                                                        SizedBox(
-                                                            width: mw * 0.04),
-                                                        Text('조회수 2.3천'),
-                                                        SizedBox(
-                                                            width: mw * 0.04),
-                                                        Text('3일 전'),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Column(
-                                                children: [
-                                                  IconButton(
-                                                      iconSize: 30.0,
-                                                      icon: ImageIcon(
-                                                          AssetImage(
-                                                              'icons/좋아요.png')),
-                                                      onPressed: () {}),
-                                                  Text('1231',
-                                                      style: TextStyle(
-                                                          fontSize: 10))
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    onTap: () {},
-                                  );
-                                },
-                              )
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              );
-                      }),
-                ])),
+                                            onPressed: () {
+                                              scrapFirstDialog(context);
+                                            }),
+                                        top: mh * 0.01,
+                                        right: mw * 0.001,
+                                      ),
+                                      //TODO: 영상길이..
+                                      Positioned(
+                                        child: bottomRightText('3:11'),
+                                        bottom: mh * 0.03,
+                                        right: mw * 0.03,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: mh * 0.02,
+                                  )
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(
+                                  //       left: mw * 0.02, bottom: mh * 0.02),
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Expanded(
+                                  //         child: Column(
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.start,
+                                  //           children: [
+                                  //             Text(snapshot.data[index].title,
+                                  //                 style: Theme.of(context)
+                                  //                     .textTheme
+                                  //                     .subtitle1),
+                                  //             SizedBox(height: 3),
+                                  //             Text(
+                                  //               snapshot.data[index].tag,
+                                  //               style: Theme.of(context)
+                                  //                   .textTheme
+                                  //                   .caption,
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                ],
+                              )),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            PlayVideoPage(
+                                              videoToPlay: snapshot.data[index],
+                                            )));
+                              },
+                            );
+                          },
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        );
+                }),
           );
+  }
+
+  Widget topLeftText(String source) {
+    return Text(source,
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2
+            .copyWith(fontWeight: FontWeight.bold));
+  }
+
+  Widget bottomLeftText(String tag, String title, int views, int challenges) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          tag,
+          style: Theme.of(context).textTheme.caption,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        Row(
+          children: [
+            Text(
+              '조회 ' + views.toString(),
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              '도전 ' + challenges.toString(),
+              style: Theme.of(context).textTheme.subtitle2,
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget bottomRightText(String length) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: Text(
+        length,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+    );
   }
 
   void scrapFirstDialog(BuildContext context) async {
@@ -392,100 +311,3 @@ class _PlayListPageState extends State<PlayListPage> {
         });
   }
 }
-//  Widget get middleSection => Expanded(child: videoViewer());
-//
-//  Widget videoViewer() {
-//    // return ListView(
-//    //     children:
-//    //         Provider.of<VideoModel>(context, listen: false).videos.map((video) {
-//    //   print(video.title);
-//    //   return ListTile(leading: Text(video.title));
-//    // }).toList());
-//
-//    // return Column(
-//    //   children: [
-//    //     builder: ,)
-//    //   ],
-//    // );
-//
-//    // return Container(
-//    //     child: Center(
-//    //         child: StreamBuilder(
-//    //             initialData: List<Video>(),
-//    //             stream: listVideos,
-//    //             builder: (BuildContext context, AsyncSnapshot snapshot) {
-//    //               if (!snapshot.hasData) {
-//    //                 return CircularProgressIndicator();
-//    //               } else {
-//    //                 List<Video> videos = snapshot.data;
-//    //                 if (videos.length > 0) {
-//    //                   print(
-//    //                       '||||||||||||||||||||||||||length : ${videos.length}');
-//    //                   return PageView.builder(
-//    //                     controller: PageController(
-//    //                       initialPage: 0,
-//    //                       viewportFraction: 1,
-//    //                     ),
-//    //                     onPageChanged: (index) {
-//    //                       index = index % (videos.length);
-//    //                       _videosBloc.videoManager.changeVideo(index);
-//    //                     },
-//    //                     scrollDirection: Axis.vertical,
-//    //                     itemBuilder: (context, index) {
-//    //                       index = index % (videos.length);
-//    //                       return videoCard(
-//    //                           _videosBloc.videoManager.listVideos[index]);
-//    //                     },
-//    //                   );
-//    //                 } else {
-//    //                   return CircularProgressIndicator();
-//    //                 }
-//    //               }
-//    //             })));
-//  }
-//
-//  Widget videoCard(Video video) {
-//    var controller = video.controller;
-//    return Stack(
-//      alignment: Alignment.bottomCenter,
-//      children: <Widget>[
-//        controller != null && controller.value.initialized
-//            ? GestureDetector(
-//                onTap: () {
-//                  controller.value.isPlaying
-//                      ? controller.pause()
-//                      : controller.play();
-//                },
-//                child: SizedBox.expand(
-//                    child: FittedBox(
-//                  fit: BoxFit.cover,
-//                  child: SizedBox(
-//                    width: controller.value.size?.width ?? 0,
-//                    height: controller.value.size?.height ?? 0,
-//                    child: VideoPlayer(controller),
-//                  ),
-//                )))
-//            : Column(
-//                mainAxisAlignment: MainAxisAlignment.end,
-//                children: <Widget>[
-//                  LinearProgressIndicator(),
-//                  SizedBox(
-//                    height: 56,
-//                  )
-//                ],
-//              ),
-//        // Column(
-//        //   mainAxisAlignment: MainAxisAlignment.end,
-//        //   children: <Widget>[
-//        //     Row(
-//        //       mainAxisSize: MainAxisSize.max,
-//        //       crossAxisAlignment: CrossAxisAlignment.end,
-//        //       children: <Widget>[],
-//        //     ),
-//        //     SizedBox(height: 65)
-//        //   ],
-//        // )
-//      ],
-//    );
-//  }
-//}

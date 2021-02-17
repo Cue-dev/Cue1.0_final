@@ -6,19 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 final ThemeData _cueTheme = _buildCueTheme();
 
 ThemeData _buildCueTheme() {
-  final ThemeData base = ThemeData.light();
+  final ThemeData base = ThemeData.dark();
   return base.copyWith(
-    accentColor: cueOrange,
-    primaryColor: cueSurfaceWhite,
+    accentColor: cuePointColor,
+    primaryColor: cuePrimaryColor,
+    secondaryHeaderColor: cueSecondaryColor,
     buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: cueOrange,
+      buttonColor: cueSecondaryColor,
     ),
     buttonBarTheme: base.buttonBarTheme.copyWith(
       buttonTextTheme: ButtonTextTheme.accent,
     ),
-    scaffoldBackgroundColor: cueBackgroundWhite,
+    scaffoldBackgroundColor: cueLightBackgroundColor,
     cardColor: cueBackgroundWhite,
-    textSelectionColor: cueOrange,
+    textSelectionColor: cuePointColor,
     errorColor: cueErrorRed,
     textTheme: _buildCueTextTheme(base.textTheme),
     primaryTextTheme: _buildCueTextTheme(base.primaryTextTheme),
@@ -33,19 +34,18 @@ TextTheme _buildCueTextTheme(TextTheme base) {
       fontWeight: FontWeight.w500,
       letterSpacing: 2.0,
       fontSize: 60.0,
-      color: Color(0xFFFF9700),
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      fontFamily: 'HelveticaMedium',
     ),
     headline2: base.headline2.copyWith(
       // 앱바 어플 로고
       fontWeight: FontWeight.w500,
       fontSize: 30,
-      color: Color(0xFFFF9700),
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      color: cueSecondaryColor,
+      fontFamily: 'HelveticaMedium',
     ),
     subtitle1: base.subtitle1.copyWith(
       // 영상의 제목
-      fontSize: 16,
+      fontSize: 13,
       fontWeight: FontWeight.w500,
       //fontFamily: GoogleFonts.notoSans().fontFamily,
       fontFamily: 'NotoSansCJK',
@@ -53,22 +53,22 @@ TextTheme _buildCueTextTheme(TextTheme base) {
     subtitle2: base.subtitle2.copyWith(
       // 영화나 드라마의 제목
       fontWeight: FontWeight.w500,
-      fontSize: 12.0,
-      color: Colors.white,
+      fontSize: 11.0,
+      color: cueSecondaryColor,
       //fontFamily: GoogleFonts.notoSans().fontFamily,
       fontFamily: 'NotoSansCJK',
     ),
     bodyText1: base.bodyText1.copyWith(
       // 보디 텍스트
-      fontSize: 13.0,
+      fontSize: 11.0,
       //fontFamily: GoogleFonts.notoSans().fontFamily,
       fontFamily: 'NotoSansCJK',
     ),
     caption: base.caption.copyWith(
       // 해시태그
       fontWeight: FontWeight.w400,
-      fontSize: 13.0,
-      color: Color(0xFFFF9700),
+      fontSize: 11.0,
+      color: cuePointColor,
       //fontFamily: GoogleFonts.notoSans().fontFamily,
       fontFamily: 'NotoSansCJK',
     ),

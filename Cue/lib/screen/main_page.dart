@@ -28,39 +28,49 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: <Widget>[
-            PlayListPage(),
-            Container(
-              color: Colors.red,
-            ),
-            Container(
-              color: Colors.orange,
-            ),
-            // CloudStorageDemo(),
-            Container(
-              color: Colors.yellow,
-            ),
-            MyPage(),
-          ],
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Stack(children: [
+        SizedBox.expand(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: <Widget>[
+              PlayListPage(),
+              Container(
+                color: Colors.red,
+              ),
+              Container(
+                color: Colors.orange,
+              ),
+              // CloudStorageDemo(),
+              Container(
+                color: Colors.yellow,
+              ),
+              MyPage(),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+        Positioned(left: 0, right: 0, bottom: 0, child: bottomNavigationBar)
+      ]),
+    );
+  }
+
+  Widget get bottomNavigationBar {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
+      child: BottomNavigationBar(
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
         // showSelectedLabels: false,
         // showUnselectedLabels: false,
-        unselectedItemColor: Colors.black.withOpacity(.60),
-        selectedItemColor: Colors.black,
+        unselectedItemColor: Theme.of(context).secondaryHeaderColor,
+        selectedItemColor: Theme.of(context).accentColor,
         type: BottomNavigationBarType.fixed,
-        // backgroundColor: Color.fromRGBO(249, 249, 249, 1),
-        elevation: 5.0,
-        backgroundColor: Colors.white.withOpacity(.90),
+        backgroundColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             label: '홈',
@@ -69,11 +79,14 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           BottomNavigationBarItem(
-              label: '검색', icon: ImageIcon(AssetImage('icons/검색.png'))),
+              label: '인기',
+              icon: ImageIcon(
+                AssetImage('icons/인기.png'),
+              )),
           BottomNavigationBarItem(
-              label: '구독', icon: ImageIcon(AssetImage('icons/구독.png'))),
+              label: '큐', icon: ImageIcon(AssetImage('icons/큐.png'))),
           BottomNavigationBarItem(
-              label: '알림', icon: ImageIcon(AssetImage('icons/알림.png'))),
+              label: '피드', icon: ImageIcon(AssetImage('icons/피드.png'))),
           BottomNavigationBarItem(
               label: '마이', icon: ImageIcon(AssetImage('icons/마이.png'))),
         ],

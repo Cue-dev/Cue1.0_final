@@ -2,6 +2,8 @@ import 'dart:async';
 
 // import 'package:Cue/screen/Cam/camera_alone.dart';
 // import 'package:Cue/screen/Cam/camera_multiplay.dart';
+import 'package:Cue/screen/Cam/camera_alone.dart';
+import 'package:Cue/screen/Cam/camera_multiplay.dart';
 import 'package:Cue/services/video.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -147,192 +149,61 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 24,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.orange)),
-                          onPressed: () {},
-                          color: Colors.orange,
-                          textColor: Colors.white,
-                          child: Text(widget.videoToPlay.source,
-                              style: Theme.of(context).textTheme.subtitle2),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        widget.videoToPlay.tag,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          widget.videoToPlay.tag,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.videoToPlay.title,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
                           children: [
                             Text(
-                              widget.videoToPlay.title,
-                              style: Theme.of(context).textTheme.subtitle1,
+                              '조회 ' + widget.videoToPlay.views.toString(),
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                             SizedBox(
-                              height: 3,
+                              width: 10,
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  '조회 수 ' + widget.videoToPlay.views.toString(),
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  '도전 수 ' + widget.videoToPlay.likes.toString(),
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                )
-                              ],
+                            Text(
+                              '도전 ' + widget.videoToPlay.likes.toString(),
+                              style: Theme.of(context).textTheme.bodyText1,
                             )
                           ],
-                        ),
-                      ),
-                      IconButton(
-                          icon: ImageIcon(AssetImage('icons/스크랩.png')),
-                          iconSize: 35,
-                          onPressed: () {}),
-                      IconButton(
-                          icon: ImageIcon(AssetImage('icons/큐.png')),
-                          iconSize: 35,
-                          onPressed: () {
-                            setState(() {
-                              controller.pause();
-                            });
-                            showDialog(
-                              context: context,
-                              builder: (_) => Dialog(
-                                  backgroundColor: Colors.transparent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Transform.scale(
-                                            scale: 2,
-                                            child: IconButton(
-                                                icon: ImageIcon(
-                                                  AssetImage('icons/같이.png'),
-                                                  size: 100,
-                                                  color: Colors.white,
-                                                ),
-                                                onPressed: () {
-                                                  //TODO: aaaa
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (BuildContext
-                                                  //                 context) =>
-                                                  //             CameraMultiplayPage(
-                                                  //               originalVideo:
-                                                  //                   widget
-                                                  //                       .videoToPlay,
-                                                  //             )));
-                                                }),
-                                          ),
-                                          Text(
-                                            '같이하기',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                      VerticalDivider(
-                                        indent: 330,
-                                        endIndent: 320,
-                                        thickness: 1,
-                                        color: Colors.white,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                              icon: ImageIcon(
-                                                AssetImage('icons/혼자.png'),
-                                                size: 100,
-                                                color: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                //TODO: bbbb
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //         builder: (BuildContext
-                                                //                 context) =>
-                                                //             CameraAlonePage(
-                                                //               originalVideo: widget
-                                                //                   .videoToPlay,
-                                                //             )));
-                                              }),
-                                          Text(
-                                            '혼자하기',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                      VerticalDivider(
-                                        indent: 330,
-                                        endIndent: 320,
-                                        thickness: 1,
-                                        color: Colors.white,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                              icon: ImageIcon(
-                                                AssetImage('icons/더빙.png'),
-                                                size: 100,
-                                                color: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                //TODO: cccc
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //         builder: (BuildContext
-                                                //                 context) =>
-                                                //             EjqldPage()));
-                                              }),
-                                          Text(
-                                            '더빙하기',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                            );
-                          }),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
+                ),
+                Divider(),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        IconButton(
+                            icon: ImageIcon(
+                              AssetImage('icons/대본저장.png'),
+                            ),
+                            onPressed: () {}),
+                        Text('대본만 저장'),
+                      ],
+                    )
+                  ],
                 ),
                 Divider(),
 //                Container(
@@ -355,12 +226,139 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
           }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: InkWell(
+          child: Container(
+            height: mh * 0.13,
+            width: mw * 0.15,
+            child: Column(
+              children: [
+                ImageIcon(
+                  AssetImage('icons/큐.png'),
+                  size: 50,
+                ),
+                SizedBox(
+                  height: mh * 0.02,
+                ),
+                Text(
+                  'Cue!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontSize: 13),
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              controller.pause();
+            });
+            showDialog(
+              context: context,
+              builder: (_) => Dialog(
+                  backgroundColor: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Transform.scale(
+                            scale: 2,
+                            child: IconButton(
+                                icon: ImageIcon(
+                                  AssetImage('icons/같이.png'),
+                                  size: 100,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              CameraMultiplayPage(
+                                                originalVideo:
+                                                    widget.videoToPlay,
+                                              )));
+                                }),
+                          ),
+                          Text(
+                            '같이하기',
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          )
+                        ],
+                      ),
+                      VerticalDivider(
+                        indent: 330,
+                        endIndent: 320,
+                        thickness: 1,
+                        color: Colors.white,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: ImageIcon(
+                                AssetImage('icons/혼자.png'),
+                                size: 100,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CameraAlonePage(
+                                              originalVideo: widget.videoToPlay,
+                                            )));
+                              }),
+                          Text(
+                            '혼자하기',
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          )
+                        ],
+                      ),
+                      VerticalDivider(
+                        indent: 330,
+                        endIndent: 320,
+                        thickness: 1,
+                        color: Colors.white,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: ImageIcon(
+                                AssetImage('icons/더빙.png'),
+                                size: 100,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                //TODO: Dubbing Page..
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (BuildContext
+                                //                 context) =>
+                                //             EjqldPage()));
+                              }),
+                          Text(
+                            '더빙하기',
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ],
+                  )),
+            );
+          }),
     );
   }
 
   Widget showScript(BuildContext context, var script) {
     return Container(
-      height: 340,
+      height: 280,
       width: 400,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,

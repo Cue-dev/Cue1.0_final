@@ -218,6 +218,8 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.7):
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
+  - camera (0.0.1):
+    - Flutter
   - cloud_firestore (0.16.0):
     - Firebase/Firestore (= 7.3.0)
     - firebase_core
@@ -276,6 +278,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_ui_mode_manager (0.0.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - fullscreen (0.0.1):
     - Flutter
   - GoogleDataTransport (8.1.0):
@@ -328,21 +333,30 @@ PODS:
   - nanopb/encode (2.30906.0)
   - path_provider (0.0.1):
     - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
   - PromisesObjC (1.2.12)
+  - screen (0.0.1):
+    - Flutter
+  - Toast (4.0.0)
   - video_player (0.0.1):
     - Flutter
   - wakelock (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - camera (from `.symlinks/plugins/camera/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_ui_mode_manager (from `.symlinks/plugins/flutter_ui_mode_manager/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - fullscreen (from `.symlinks/plugins/fullscreen/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - screen (from `.symlinks/plugins/screen/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
@@ -364,8 +378,11 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - Toast
 
 EXTERNAL SOURCES:
+  camera:
+    :path: ".symlinks/plugins/camera/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
@@ -378,10 +395,16 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_ui_mode_manager:
     :path: ".symlinks/plugins/flutter_ui_mode_manager/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   fullscreen:
     :path: ".symlinks/plugins/fullscreen/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  screen:
+    :path: ".symlinks/plugins/screen/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
   wakelock:
@@ -390,6 +413,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
+  camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   cloud_firestore: 433cf1aece50c727965355ae00e8dbeeceae66b1
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
   firebase_auth: b55e5136528dced982022ee073ed4b48f15c055c
@@ -402,6 +426,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_ui_mode_manager: 30f3559398eafa8a3c2d71a8b5763c59bd81a4e8
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   fullscreen: d93e707e6b36120f20e64e2f814ee0726164e70b
   GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
@@ -411,7 +436,10 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
 

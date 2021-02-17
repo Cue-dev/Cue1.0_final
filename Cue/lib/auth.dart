@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
     final double mw = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Theme.of(context).primaryColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

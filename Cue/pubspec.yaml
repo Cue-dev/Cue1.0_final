@@ -30,6 +30,13 @@ dependencies:
   video_player: ^0.10.11+1
   video_player_controls: ^2.1.9
   flutter_spinkit: ^4.1.2+1
+  # it was good,,
+  camera: ^0.5.8+2
+  stop_watch_timer: ^0.7.0
+  fluttertoast: ^7.1.6
+  screen: ^0.0.5
+  permission_handler: ^5.1.0+2
+  # flutter_sound: ^7.6.2+5
   flutter:
     sdk: flutter
 
@@ -57,20 +64,21 @@ flutter:
   assets:
     - images/cueLogo1.png
     - images/cueLogo.png
-    - icons/스크랩.png
-    - icons/큐.png
-    - icons/구독.png
-    - icons/마이.png
     - icons/홈.png
-    - icons/알림.png
     - icons/검색.png
-    - icons/메세지.png
-    - icons/좋아요.png
-    - icons/영상 아이콘.png
-    - icons/대본 아이콘.png
-    - icons/같이.png
-    - icons/혼자.png
-    - icons/더빙.png
+    - icons/인기.png
+    - icons/마이.png
+    - icons/메뉴.png
+    - icons/큐.png
+    - icons/피드.png
+    - icons/알림.png
+    - icons/알림_유.png
+    - icons/하트.png
+    - icons/하트_선택.png
+    - icons/대본저장.png
+    - icons/영상대본저장.png
+    - icons/섀도잉.png
+    - icons/공유.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -89,6 +97,9 @@ flutter:
         - asset: assets/fonts/NotoSansCJKkr/NotoSansCJKkr-Light.otf
         - asset: assets/fonts/NotoSansCJKkr/NotoSansCJKkr-Medium.otf
         - asset: assets/fonts/NotoSansCJKkr/NotoSansCJKkr-Regular.otf
+    - family: HelveticaMedium
+      fonts:
+        - asset: assets/fonts/HelveticaMedium/helvmn.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
