@@ -28,7 +28,6 @@ class _MyPageState extends State<MyPage> {
                   IconButton(
                       icon: Icon(
                         Icons.logout,
-                        color: Colors.black,
                       ),
                       onPressed: () {
                         context.read<AuthProvider>().signOut();

@@ -46,7 +46,7 @@ TextTheme _buildCueTextTheme(TextTheme base) {
     subtitle1: base.subtitle1.copyWith(
       // 영상의 제목
       fontSize: 13,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       //fontFamily: GoogleFonts.notoSans().fontFamily,
       fontFamily: 'NotoSansCJK',
     ),
