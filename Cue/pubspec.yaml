@@ -35,8 +35,9 @@ dependencies:
   stop_watch_timer: ^0.7.0
   fluttertoast: ^7.1.6
   screen: ^0.0.5
-  permission_handler: ^5.1.0+2
-  # flutter_sound: ^7.6.2+5
+  permission_handler: ^5.0.1 #dubbing recoder request
+  audioplayers: ^0.17.4
+  flutter_sound: ^7.5.3+1 #dubbing.dart
   flutter:
     sdk: flutter
 

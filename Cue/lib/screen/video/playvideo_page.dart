@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_controls/video_player_controls.dart';
 
+import '../Cam/record_dubbing.dart';
+
 class PlayVideoPage extends StatefulWidget {
   final ReferenceVideo videoToPlay;
   PlayVideoPage({Key key, @required this.videoToPlay}) : super(key: key);
@@ -335,13 +337,16 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                //TODO: Dubbing Page..
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (BuildContext
-                                //                 context) =>
-                                //             EjqldPage()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext
+                                        context) =>
+                                            DubbingPage(
+                                              originalVideo: widget
+                                                  .videoToPlay,
+                                            )
+                                    ));
                               }),
                           Text(
                             '더빙하기',
