@@ -97,7 +97,7 @@ class _DubbingPageState extends State<DubbingPage> {
     assert(_mRecorderIsInited );
     await _mRecorder.startRecorder(
       toFile: _mPath,
-      codec: Codec.mp4,
+      codec: Codec.aacMP4,
     );
     setState(() {
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
