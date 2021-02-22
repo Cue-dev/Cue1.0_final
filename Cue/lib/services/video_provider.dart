@@ -21,7 +21,7 @@ class ReferenceVideoModel extends ChangeNotifier {
             source: doc.data()['source'],
             type: doc.data()['type'],
             tag: List.from(doc.data()['tag']),
-            // script: doc.data()['script'],
+            script: doc.data()['script'],
             length: int.tryParse(doc.data()['length'].toString()),
             views: int.tryParse(doc.data()['views'].toString()),
             challenges: int.tryParse(doc.data()['challenges'].toString()),
