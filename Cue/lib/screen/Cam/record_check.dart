@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:Cue/services/video.dart';
+import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -13,7 +13,7 @@ import 'package:video_player_controls/data/controller.dart';
 import 'package:video_player_controls/video_player_controls.dart';
 
 class RecordCheckPage extends StatefulWidget {
-  final Video originalVideo;
+  final ReferenceVideo originalVideo;
   final String recordVideo;
   RecordCheckPage(
       {Key key, @required this.originalVideo, @required this.recordVideo})

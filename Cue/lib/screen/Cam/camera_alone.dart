@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:Cue/screen/Cam/record_check.dart';
 import 'package:Cue/screen/main_page.dart';
-import 'package:Cue/services/video.dart';
+import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -13,7 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class CameraAlonePage extends StatefulWidget {
-  final Video originalVideo;
+  final ReferenceVideo originalVideo;
   CameraAlonePage({Key key, @required this.originalVideo}) : super(key: key);
 
   @override

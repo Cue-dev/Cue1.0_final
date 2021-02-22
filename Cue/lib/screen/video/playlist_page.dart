@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Cue/services/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:Cue/services/video.dart';
+import 'package:Cue/services/reference_video.dart';
 
 class PlayListPage extends StatefulWidget {
   PlayListPage({Key key}) : super(key: key);
@@ -17,7 +17,7 @@ class PlayListPage extends StatefulWidget {
 }
 
 class _PlayListPageState extends State<PlayListPage> {
-  Stream<List<Video>> listVideos;
+  Stream<List<ReferenceVideo>> listVideos;
   List<String> videoURLs = List();
 
   void clearHistory() {
@@ -30,14 +30,14 @@ class _PlayListPageState extends State<PlayListPage> {
   Widget build(BuildContext context) {
     final double mh = MediaQuery.of(context).size.height;
     final double mw = MediaQuery.of(context).size.width;
-    final videoModel = Provider.of<VideoModel>(context, listen: false);
+    final referenceVideoModel =
+        Provider.of<ReferenceVideoModel>(context, listen: false);
 
     return _loading
         ? Loading()
         : Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              centerTitle: true,
               elevation: 0.0,
               title: Text(
                 "Cue!",
@@ -60,8 +60,9 @@ class _PlayListPageState extends State<PlayListPage> {
               ],
             ),
             body: FutureBuilder(
-                future: videoModel.loadVideos(),
-                builder: (context, AsyncSnapshot<List<Video>> snapshot) {
+                future: referenceVideoModel.loadReferenceVideos(),
+                builder:
+                    (context, AsyncSnapshot<List<ReferenceVideo>> snapshot) {
                   return snapshot.hasData
                       ? ListView.separated(
                           separatorBuilder: (context, index) => SizedBox(),
@@ -79,7 +80,7 @@ class _PlayListPageState extends State<PlayListPage> {
                                   Stack(
                                     children: [
                                       Container(
-                                        height: mh * 0.3,
+                                        height: mh * 0.31,
                                         width: mw,
                                         child: snapshot
                                                     .data[index].thumbnailURL !=
@@ -97,19 +98,19 @@ class _PlayListPageState extends State<PlayListPage> {
                                       ),
                                       Positioned(
                                         child: topLeftText(
-                                            snapshot.data[index].source),
-                                        top: mh * 0.03,
-                                        left: mw * 0.03,
+                                            snapshot.data[index].source,
+                                            snapshot.data[index].type),
+                                        top: mh * 0.02,
+                                        left: mw * 0.05,
                                       ),
-                                      //TODO: views, challenges..
                                       Positioned(
                                         child: bottomLeftText(
                                             snapshot.data[index].tag,
                                             snapshot.data[index].title,
-                                            5042,
-                                            142),
-                                        top: mh * 0.22,
-                                        left: mw * 0.03,
+                                            snapshot.data[index].views,
+                                            snapshot.data[index].challenges),
+                                        bottom: mh * 0.02,
+                                        left: mw * 0.05,
                                       ),
                                       Positioned(
                                         child: IconButton(
@@ -121,13 +122,13 @@ class _PlayListPageState extends State<PlayListPage> {
                                               scrapFirstDialog(context);
                                             }),
                                         top: mh * 0.01,
-                                        right: mw * 0.001,
+                                        right: mw * 0.005,
                                       ),
-                                      //TODO: 영상길이..
                                       Positioned(
-                                        child: bottomRightText('3:11'),
-                                        bottom: mh * 0.03,
-                                        right: mw * 0.03,
+                                        child: bottomRightText(
+                                            snapshot.data[index].length),
+                                        bottom: mh * 0.02,
+                                        right: mw * 0.05,
                                       ),
                                     ],
                                   ),
@@ -182,25 +183,44 @@ class _PlayListPageState extends State<PlayListPage> {
           );
   }
 
-  Widget topLeftText(String source) {
-    return Text(source,
-        style: Theme.of(context)
-            .textTheme
-            .subtitle2
-            .copyWith(fontWeight: FontWeight.bold));
-  }
-
-  Widget bottomLeftText(String tag, String title, int views, int challenges) {
+  Widget topLeftText(String source, String type) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(source,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                .copyWith(fontWeight: FontWeight.bold)),
         Text(
-          tag,
-          style: Theme.of(context).textTheme.caption,
+          type,
+          style: Theme.of(context).textTheme.bodyText1,
+        )
+      ],
+    );
+  }
+
+  Widget bottomLeftText(
+      List<String> tag, String title, int views, int challenges) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            for (int i = 0; i < tag.length; i++)
+              Text(
+                tag[i],
+                style: Theme.of(context).textTheme.caption,
+              ),
+          ],
         ),
         Text(
           title,
           style: Theme.of(context).textTheme.subtitle1,
+        ),
+        Text(
+          '',
+          style: TextStyle(fontSize: 5),
         ),
         Row(
           children: [
@@ -221,11 +241,13 @@ class _PlayListPageState extends State<PlayListPage> {
     );
   }
 
-  Widget bottomRightText(String length) {
+  Widget bottomRightText(int length) {
+    String minute = (length ~/ 60).toString();
+    String second = (length % 60).toString();
     return Container(
       color: Theme.of(context).primaryColor,
       child: Text(
-        length,
+        '$minute:$second',
         style: Theme.of(context).textTheme.bodyText1,
       ),
     );

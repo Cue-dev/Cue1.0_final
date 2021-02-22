@@ -1,44 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Cue/services/video.dart';
+import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 
-class VideoModel extends ChangeNotifier {
-  final List<Video> _videos = [];
+class ReferenceVideoModel extends ChangeNotifier {
+  final List<ReferenceVideo> _referenceVideos = [];
 
-  List<Video> get videoList => _videos;
+  List<ReferenceVideo> get referenceVideoList => _referenceVideos;
 
-  Future<List<Video>> loadVideos() async {
+  Future<List<ReferenceVideo>> loadReferenceVideos() async {
     // ignore: await_only_futures
-    await _videos.clear();
+    await _referenceVideos.clear();
 
     await FirebaseFirestore.instance
-        .collection('videos')
+        .collection('ReferenceVideos')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        Video video = Video(
+        ReferenceVideo referenceVideo = ReferenceVideo(
             title: doc.data()['title'],
             source: doc.data()['source'],
-            tag: doc.data()['tag'],
-            likes: int.tryParse(doc.data()['likes'].toString()),
+            type: doc.data()['type'],
+            tag: List.from(doc.data()['tag']),
+            // script: doc.data()['script'],
+            length: int.tryParse(doc.data()['length'].toString()),
             views: int.tryParse(doc.data()['views'].toString()),
-            uploader: doc.data()['uploader'],
-            videoURL: doc.data()['videoURL'],
+            challenges: int.tryParse(doc.data()['challenges'].toString()),
             thumbnailURL: doc.data()['thumbnailURL'],
-            script: doc.data()['script']);
-        add(video);
+            videoURL: doc.data()['videoURL']);
+        add(referenceVideo);
       });
     });
-    return _videos;
+    return _referenceVideos;
   }
 
-  void add(Video video) {
-    _videos.add(video);
+  void add(ReferenceVideo referenceVideo) {
+    _referenceVideos.add(referenceVideo);
     notifyListeners();
   }
 
   void removeAll() {
-    _videos.clear();
+    _referenceVideos.clear();
     notifyListeners();
   }
 }

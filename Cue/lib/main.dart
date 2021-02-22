@@ -10,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => VideoModel()),
+    ChangeNotifierProvider(create: (context) => ReferenceVideoModel()),
     Provider<AuthProvider>(
       create: (_) => AuthProvider(FirebaseAuth.instance),
     ),

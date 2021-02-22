@@ -4,7 +4,7 @@ import 'dart:async';
 // import 'package:Cue/screen/Cam/camera_multiplay.dart';
 import 'package:Cue/screen/Cam/camera_alone.dart';
 import 'package:Cue/screen/Cam/camera_multiplay.dart';
-import 'package:Cue/services/video.dart';
+import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:screen/screen.dart';
@@ -12,7 +12,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_controls/video_player_controls.dart';
 
 class PlayVideoPage extends StatefulWidget {
-  final Video videoToPlay;
+  final ReferenceVideo videoToPlay;
   PlayVideoPage({Key key, @required this.videoToPlay}) : super(key: key);
 
   @override
@@ -157,10 +157,10 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          widget.videoToPlay.tag,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                        // Text(
+                        //   widget.videoToPlay.tag,
+                        //   style: Theme.of(context).textTheme.caption,
+                        // ),
                         SizedBox(
                           height: 5,
                         ),
@@ -181,7 +181,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                               width: 10,
                             ),
                             Text(
-                              '도전 ' + widget.videoToPlay.likes.toString(),
+                              '도전 ' + widget.videoToPlay.challenges.toString(),
                               style: Theme.of(context).textTheme.bodyText1,
                             )
                           ],
