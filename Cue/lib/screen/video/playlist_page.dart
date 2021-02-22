@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:Cue/screen/mypage/scrap_dialog.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
-import 'package:Cue/services/video_provider.dart';
+import 'package:Cue/services/reference_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Cue/services/loading.dart';

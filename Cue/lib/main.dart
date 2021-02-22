@@ -1,6 +1,6 @@
 import 'package:Cue/app.dart';
 import 'package:Cue/services/auth_provider.dart';
-import 'package:Cue/services/video_provider.dart';
+import 'package:Cue/services/reference_video_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

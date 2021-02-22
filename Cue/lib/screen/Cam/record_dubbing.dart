@@ -82,7 +82,7 @@ class _DubbingPageState extends State<DubbingPage> {
     }
 
     var tempDir = await getTemporaryDirectory();
-    _mPath = '${tempDir.path}/flutter_sound_example.aac';
+    _mPath = '${tempDir.path}/flutter_sound_example.mp3';
     var outputFile = File(_mPath);
     if (outputFile.existsSync()) {
       await outputFile.delete();
@@ -97,7 +97,7 @@ class _DubbingPageState extends State<DubbingPage> {
     assert(_mRecorderIsInited );
     await _mRecorder.startRecorder(
       toFile: _mPath,
-      codec: Codec.aacADTS,
+      codec: Codec.mp4,
     );
     setState(() {
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
