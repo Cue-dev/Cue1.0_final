@@ -356,7 +356,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
     );
   }
 
-  Widget showScript(BuildContext context, var script) {
+  Widget showScript(BuildContext context, Map script) {
     return Container(
       height: 280,
       width: 400,
