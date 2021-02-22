@@ -159,16 +159,26 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        // Text(
-                        //   widget.videoToPlay.tag,
-                        //   style: Theme.of(context).textTheme.caption,
-                        // ),
+                        Row(
+                          children: [
+                            for (int i = 0;
+                                i < widget.videoToPlay.tag.length;
+                                i++)
+                              Text(
+                                widget.videoToPlay.tag[i] + ' ',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                          ],
+                        ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
                           widget.videoToPlay.title,
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(fontSize: 15),
                         ),
                         SizedBox(
                           height: 5,
@@ -194,6 +204,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                 ),
                 Divider(),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
                       children: [
@@ -204,7 +215,37 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                             onPressed: () {}),
                         Text('대본만 저장'),
                       ],
-                    )
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            icon: ImageIcon(
+                              AssetImage('icons/영상대본저장.png'),
+                            ),
+                            onPressed: () {}),
+                        Text('영상+대본 저장'),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            icon: ImageIcon(
+                              AssetImage('icons/섀도잉.png'),
+                            ),
+                            onPressed: () {}),
+                        Text('섀도잉'),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            icon: ImageIcon(
+                              AssetImage('icons/공유.png'),
+                            ),
+                            onPressed: () {}),
+                        Text('공유'),
+                      ],
+                    ),
                   ],
                 ),
                 Divider(),
@@ -220,7 +261,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
 //                    ],
 //                  ),
 //                ),
-                showScript(context, widget.videoToPlay.script)
+                showScript(context, widget.videoToPlay.script, mh, mw)
               ],
             );
           } else {
@@ -361,10 +402,10 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
     );
   }
 
-  Widget showScript(BuildContext context, Map script) {
+  Widget showScript(BuildContext context, Map script, double mh, double mw) {
     return Container(
-      height: 280,
-      width: 400,
+      height: mh * 0.4,
+      width: mw,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,
         itemBuilder: (context, int index) {
