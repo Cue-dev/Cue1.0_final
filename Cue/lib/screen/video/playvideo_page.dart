@@ -4,6 +4,7 @@ import 'dart:async';
 // import 'package:Cue/screen/Cam/camera_multiplay.dart';
 import 'package:Cue/screen/Cam/camera_alone.dart';
 import 'package:Cue/screen/Cam/camera_multiplay.dart';
+import 'package:Cue/screen/video/cue_dialog.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -152,54 +153,52 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            for (int i = 0;
-                                i < widget.videoToPlay.tag.length;
-                                i++)
-                              Text(
-                                widget.videoToPlay.tag[i] + ' ',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          widget.videoToPlay.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(fontSize: 15),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          for (int i = 0;
+                              i < widget.videoToPlay.tag.length;
+                              i++)
                             Text(
-                              '조회 ' + widget.videoToPlay.views.toString(),
-                              style: Theme.of(context).textTheme.bodyText1,
+                              widget.videoToPlay.tag[i] + ' ',
+                              style: Theme.of(context).textTheme.caption,
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              '도전 ' + widget.videoToPlay.challenges.toString(),
-                              style: Theme.of(context).textTheme.bodyText1,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.videoToPlay.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontSize: 15),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '조회 ' + widget.videoToPlay.views.toString(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '도전 ' + widget.videoToPlay.challenges.toString(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
                 Divider(),
@@ -297,107 +296,21 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             setState(() {
               controller.pause();
             });
+
+            // Navigator.of(context).push(MaterialPageRoute<Null>(
+            //     builder: (BuildContext context) {
+            //       return CueDialog(
+            //         videoToPlay: widget.videoToPlay,
+            //       );
+            //     },
+            //     fullscreenDialog: true));
             showDialog(
-              context: context,
-              builder: (_) => Dialog(
-                  backgroundColor: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Transform.scale(
-                            scale: 2,
-                            child: IconButton(
-                                icon: ImageIcon(
-                                  AssetImage('icons/같이.png'),
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              CameraMultiplayPage(
-                                                originalVideo:
-                                                    widget.videoToPlay,
-                                              )));
-                                }),
-                          ),
-                          Text(
-                            '같이하기',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          )
-                        ],
-                      ),
-                      VerticalDivider(
-                        indent: 330,
-                        endIndent: 320,
-                        thickness: 1,
-                        color: Colors.white,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: ImageIcon(
-                                AssetImage('icons/혼자.png'),
-                                size: 100,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CameraAlonePage(
-                                              originalVideo: widget.videoToPlay,
-                                            )));
-                              }),
-                          Text(
-                            '혼자하기',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          )
-                        ],
-                      ),
-                      VerticalDivider(
-                        indent: 330,
-                        endIndent: 320,
-                        thickness: 1,
-                        color: Colors.white,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: ImageIcon(
-                                AssetImage('icons/더빙.png'),
-                                size: 100,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext
-                                        context) =>
-                                            DubbingPage(
-                                              originalVideo: widget
-                                                  .videoToPlay,
-                                            )
-                                    ));
-                              }),
-                          Text(
-                            '더빙하기',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ],
-                  )),
-            );
+                context: context,
+                builder: (_) {
+                  return CueDialog(
+                    videoToPlay: widget.videoToPlay,
+                  );
+                });
           }),
     );
   }
