@@ -51,7 +51,9 @@ class _DubbingPageState extends State<DubbingPage> {
     VideoPlayerController.network(widget.originalVideo.videoURL)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
+        setState(() {
+          videocontroller.setVolume(0.0);
+        });
       });
     openTheRecorder().then((value) {
       setState(() {
@@ -97,7 +99,7 @@ class _DubbingPageState extends State<DubbingPage> {
     assert(_mRecorderIsInited );
     await _mRecorder.startRecorder(
       toFile: _mPath,
-      codec: Codec.aacMP4,
+      codec: Codec.aacMP4, //aacADTS
     );
     setState(() {
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
