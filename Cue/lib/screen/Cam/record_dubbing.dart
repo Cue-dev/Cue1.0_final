@@ -147,10 +147,12 @@ class _DubbingPageState extends State<DubbingPage> {
         children: [
           Container(
             child: videocontroller.value.initialized
-                ? AspectRatio(
-              aspectRatio: videocontroller.value.aspectRatio,
-              child: VideoPlayer(videocontroller),
-            )
+                ? ColorFiltered(
+                child: AspectRatio(
+                  aspectRatio: videocontroller.value.aspectRatio,
+                  child: VideoPlayer(videocontroller),
+                ),
+                colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation,),)
                 : Container(),
           ),
           showScript(context, widget.originalVideo.script),
