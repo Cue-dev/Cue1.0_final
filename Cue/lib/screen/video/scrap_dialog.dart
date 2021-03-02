@@ -12,8 +12,9 @@ class _CustomDialogState extends State<CustomDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text('스크랩 목록'),
+          borderRadius: BorderRadius.all(Radius.circular(30))),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: Text('영상+대본 저장 목록'),
       content: Container(
         height: MediaQuery.of(context).size.height * 0.4,
         child: Column(
@@ -21,6 +22,8 @@ class _CustomDialogState extends State<CustomDialog> {
             for (int i = 0; i < 4; i++)
               Row(children: [
                 Checkbox(
+                  checkColor: Theme.of(context).primaryColor,
+                  activeColor: Theme.of(context).secondaryHeaderColor,
                   onChanged: (bool value) {
                     setState(() {
                       checked[i] = value;
@@ -33,14 +36,22 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
               ]),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Text('+새로운 목록 추가하기',
-                style: TextStyle(fontSize: 10, color: Colors.blue)),
+            InkWell(
+              child: Text(
+                '+ 저장 목록 추가',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
+              onTap: () {},
+            ),
           ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('취소'),
+          child: Text(
+            '취소',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },

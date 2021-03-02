@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Cue/screen/mypage/scrap_dialog.dart';
+import 'package:Cue/screen/video/scrap_dialog.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
 import 'package:Cue/services/reference_video_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,7 +119,7 @@ class _PlayListPageState extends State<PlayListPage> {
                                               AssetImage('icons/메뉴.png'),
                                             ),
                                             onPressed: () {
-                                              scrapFirstDialog(context);
+                                              scrapFirstDialog(context, mw, mh);
                                             }),
                                         top: mh * 0.01,
                                         right: mw * 0.005,
@@ -253,72 +253,65 @@ class _PlayListPageState extends State<PlayListPage> {
     );
   }
 
-  void scrapFirstDialog(BuildContext context) async {
+  void scrapFirstDialog(BuildContext context, double mw, double mh) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          content: Container(
-            width: MediaQuery.of(context).size.width * 0.65,
-            height: MediaQuery.of(context).size.height * 0.15,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: InkWell(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                              child: Container(
-                                  child: Row(
-                                children: [
-                                  Image.asset('icons/영상 아이콘.png'),
-                                  Text(' + '),
-                                  Image.asset('icons/대본 아이콘.png')
-                                ],
-                              )),
-                            ),
-                            Text('영상+대본', style: TextStyle(fontSize: 15)),
-                            Text('스크랩', style: TextStyle(fontSize: 15))
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        scrapSecondDialog(context);
-                      }),
-                ),
-                VerticalDivider(
-                  thickness: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 10, 10.0),
-                  child: InkWell(
-                    child: Container(
-                        child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: Image.asset('icons/대본 아이콘.png'),
-                        ),
-                        Text('대본만', style: TextStyle(fontSize: 15)),
-                        Text('스크랩', style: TextStyle(fontSize: 15))
-                      ],
-                    )),
+        return Dialog(
+            insetPadding: EdgeInsets.only(top: mh * 0.63),
+            child: Padding(
+              padding: EdgeInsets.all(mh * 0.015),
+              child: Column(
+                children: [
+                  InkWell(
+                    child: _buildDialogButtons(
+                        mw, mh, 'icons/대본저장.png', '대본만 저장하기'),
                     onTap: () {
                       scrapSecondDialog(context);
                     },
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
+                  InkWell(
+                    child: _buildDialogButtons(
+                        mw, mh, 'icons/영상대본저장.png', '영상+대본 저장하기'),
+                    onTap: () {},
+                  ),
+                  InkWell(
+                    child: _buildDialogButtons(mw, mh, 'icons/공유.png', '공유하기'),
+                    onTap: () {},
+                  ),
+                  Divider(),
+                  InkWell(
+                    child: _buildDialogButtons(mw, mh, 'icons/취소.png', '취소'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ));
       },
+    );
+  }
+
+  Widget _buildDialogButtons(double mw, double mh, String icon, String text) {
+    return Container(
+      width: mw,
+      height: mh * 0.07,
+      child: Row(
+        children: [
+          SizedBox(
+            width: mw * 0.03,
+          ),
+          ImageIcon(
+            AssetImage(icon),
+          ),
+          SizedBox(
+            width: mw * 0.035,
+          ),
+          Expanded(child: Text(text))
+        ],
+      ),
     );
   }
 
