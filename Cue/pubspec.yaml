@@ -80,6 +80,7 @@ flutter:
     - icons/영상대본저장.png
     - icons/섀도잉.png
     - icons/공유.png
+    - icons/취소.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
