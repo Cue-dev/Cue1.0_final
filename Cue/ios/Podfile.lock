@@ -212,6 +212,8 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - audioplayers (0.0.1):
+    - Flutter
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -220,7 +222,7 @@ PODS:
   - BoringSSL-GRPC/Interface (0.0.7)
   - camera (0.0.1):
     - Flutter
-  - cloud_firestore (0.16.0):
+  - cloud_firestore (0.16.0-1):
     - Firebase/Firestore (= 7.3.0)
     - firebase_core
     - Flutter
@@ -235,7 +237,7 @@ PODS:
   - Firebase/Storage (7.3.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 7.3.0)
-  - firebase_auth (0.20.0-1):
+  - firebase_auth (0.20.1):
     - Firebase/Auth (= 7.3.0)
     - firebase_core
     - Flutter
@@ -276,6 +278,10 @@ PODS:
     - FirebaseCore (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
   - Flutter (1.0.0)
+  - "flutter_sound (7.7.0+1)":
+    - Flutter
+    - mobile-ffmpeg-full (= 4.4.LTS)
+    - "tau_sound_core (= 7.7.0+1)"
   - flutter_ui_mode_manager (0.0.1):
     - Flutter
   - fluttertoast (0.0.2):
@@ -326,6 +332,7 @@ PODS:
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.5.0)
   - leveldb-library (1.22)
+  - mobile-ffmpeg-full (4.4.LTS)
   - nanopb (2.30906.0):
     - nanopb/decode (= 2.30906.0)
     - nanopb/encode (= 2.30906.0)
@@ -338,6 +345,7 @@ PODS:
   - PromisesObjC (1.2.12)
   - screen (0.0.1):
     - Flutter
+  - "tau_sound_core (7.7.0+1)"
   - Toast (4.0.0)
   - video_player (0.0.1):
     - Flutter
@@ -345,12 +353,14 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - flutter_ui_mode_manager (from `.symlinks/plugins/flutter_ui_mode_manager/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - fullscreen (from `.symlinks/plugins/fullscreen/ios`)
@@ -376,11 +386,15 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
+    - mobile-ffmpeg-full
     - nanopb
     - PromisesObjC
+    - tau_sound_core
     - Toast
 
 EXTERNAL SOURCES:
+  audioplayers:
+    :path: ".symlinks/plugins/audioplayers/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   cloud_firestore:
@@ -393,6 +407,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
   flutter_ui_mode_manager:
     :path: ".symlinks/plugins/flutter_ui_mode_manager/ios"
   fluttertoast:
@@ -412,11 +428,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
-  cloud_firestore: 433cf1aece50c727965355ae00e8dbeeceae66b1
+  cloud_firestore: 357b92d4778d7715d76a393db5f89e7dcc9b7401
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
-  firebase_auth: b55e5136528dced982022ee073ed4b48f15c055c
+  firebase_auth: 7220e26fc14a501a63093edc10443de6bca0d7e8
   firebase_core: 91b27774a52f41f8b58484a75edf71197ac01c59
   firebase_storage: 554b8ce9192bfe0bd35f63da42d0d1f6ae819ccc
   FirebaseAuth: c224a0cf1afa0949bd5c7bfcf154b4f5ce8ddef2
@@ -425,6 +442,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 1906bf163afdb7c432d2e3b5c40ceb9dd2df5820
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_sound: 59e9c51c4c99929802126173ebd2a455e6da4156
   flutter_ui_mode_manager: 30f3559398eafa8a3c2d71a8b5763c59bd81a4e8
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   fullscreen: d93e707e6b36120f20e64e2f814ee0726164e70b
@@ -434,11 +452,13 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  mobile-ffmpeg-full: f17c82219b4ff9e4018b5e21f88b78c28a3475db
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  tau_sound_core: 1e9d022afef6dd319e20dfc9de46d0d2c5ea2b80
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
