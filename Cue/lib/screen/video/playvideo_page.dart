@@ -6,6 +6,7 @@ import 'package:Cue/screen/Cam/camera_alone.dart';
 import 'package:Cue/screen/Cam/camera_multiplay.dart';
 import 'package:Cue/screen/video/cue_dialog.dart';
 import 'package:Cue/services/reference_video.dart';
+import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:screen/screen.dart';
@@ -27,6 +28,8 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
   Future<void> _initializeVideoPlayerFuture;
 
   Controller controller;
+
+  bool _isExpanded = false;
 
   // var _disposed = false;
   // var _isFullScreen = false;
@@ -152,12 +155,12 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  padding: EdgeInsets.symmetric(horizontal: mw * 0.03),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 10,
+                        height: mh * 0.01,
                       ),
                       Row(
                         children: [
@@ -171,7 +174,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                         ],
                       ),
                       SizedBox(
-                        height: 5,
+                        height: mh * 0.003,
                       ),
                       Text(
                         widget.videoToPlay.title,
@@ -181,7 +184,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                             .copyWith(fontSize: 15),
                       ),
                       SizedBox(
-                        height: 5,
+                        height: mh * 0.01,
                       ),
                       Row(
                         children: [
@@ -190,7 +193,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           SizedBox(
-                            width: 10,
+                            width: mw * 0.015,
                           ),
                           Text(
                             '도전 ' + widget.videoToPlay.challenges.toString(),
@@ -207,12 +210,15 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                   children: [
                     Column(
                       children: [
-                        IconButton(
-                            icon: ImageIcon(
-                              AssetImage('icons/대본저장.png'),
-                            ),
-                            onPressed: () {}),
-                        Text('대본만 저장'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: mh * 0.001),
+                          child: IconButton(
+                              icon: ImageIcon(
+                                AssetImage('icons/대본저장.png'),
+                              ),
+                              onPressed: () {}),
+                        ),
+                        _isExpanded ? Container() : Text('대본만 저장'),
                       ],
                     ),
                     Column(
@@ -222,7 +228,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                               AssetImage('icons/영상대본저장.png'),
                             ),
                             onPressed: () {}),
-                        Text('영상+대본 저장'),
+                        _isExpanded ? Container() : Text('영상+대본 저장'),
                       ],
                     ),
                     Column(
@@ -232,7 +238,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                               AssetImage('icons/섀도잉.png'),
                             ),
                             onPressed: () {}),
-                        Text('섀도잉'),
+                        _isExpanded ? Container() : Text('섀도잉'),
                       ],
                     ),
                     Column(
@@ -242,25 +248,29 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                               AssetImage('icons/공유.png'),
                             ),
                             onPressed: () {}),
-                        Text('공유'),
+                        _isExpanded ? Container() : Text('공유'),
                       ],
                     ),
                   ],
                 ),
                 Divider(),
-//                Container(
-//                  child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.start,
-//                    children: [
-//                      Text('대본 펼치기'),
-//                      SizedBox(width: 200),
-//                      IconButton(
-//                          icon: Icon(Icons.keyboard_arrow_down),
-//                          onPressed: () {}),
-//                    ],
-//                  ),
-//                ),
-                showScript(context, widget.videoToPlay.script, mh, mw)
+                ConfigurableExpansionTile(
+                  header: Container(
+                    width: mw,
+                    padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
+                    child: Align(
+                        alignment: Alignment.centerLeft, child: Text('대본 보기')),
+                  ),
+                  onExpansionChanged: (value) {
+                    setState(() {
+                      _isExpanded = value;
+                    });
+                  },
+                  children: [
+                    showScript(context, widget.videoToPlay.script, mh, mw)
+                  ],
+                ),
+                _isExpanded ? Container() : challengeSection(),
               ],
             );
           } else {
@@ -296,7 +306,6 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             setState(() {
               controller.pause();
             });
-
             // Navigator.of(context).push(MaterialPageRoute<Null>(
             //     builder: (BuildContext context) {
             //       return CueDialog(
@@ -317,7 +326,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
 
   Widget showScript(BuildContext context, Map script, double mh, double mw) {
     return Container(
-      height: mh * 0.4,
+      height: _isExpanded ? mh * 0.345 : mh * 0.2,
       width: mw,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,
@@ -341,6 +350,18 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
           );
         },
       ),
+    );
+  }
+
+  Widget challengeSection() {
+    return Column(
+      children: [
+        Divider(),
+        //TODO : 도전영상들 띄우기
+        Center(
+          child: Text('challenge videos'),
+        )
+      ],
     );
   }
 }

@@ -31,6 +31,7 @@ dependencies:
   video_player_controls: ^2.1.9
   flutter_spinkit: ^4.1.2+1
   # it was good,,
+  configurable_expansion_tile: ^1.0.0
   camera: ^0.5.8+2
   stop_watch_timer: ^0.7.0
   fluttertoast: ^7.1.6
