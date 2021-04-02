@@ -554,12 +554,12 @@ class _CameraAlonePageState extends State<CameraAlonePage> {
               child: Text('저장'),
               onPressed: () async {
                 await addUser();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => RecordCheckPage(
-                            originalVideo: widget.originalVideo,
-                            recordVideo: videoRecordurl)));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) => RecordCheckPage(
+                //             originalVideo: widget.originalVideo,
+                //             recordVideo: videoRecordurl)));
               },
             ),
           ],

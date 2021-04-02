@@ -1,4 +1,5 @@
 // import 'package:Cue/screen/Cam/cue_ready.dart';
+import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/video/playlist_page.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _MainPageState extends State<MainPage> {
               Container(
                 color: Colors.red,
               ),
+              // MyHomePage(),
               Container(
                 color: Colors.orange,
               ),

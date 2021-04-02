@@ -1,19 +1,12 @@
-import 'dart:async';
-
-// import 'package:Cue/screen/Cam/camera_alone.dart';
-// import 'package:Cue/screen/Cam/camera_multiplay.dart';
-import 'package:Cue/screen/Cam/camera_alone.dart';
-import 'package:Cue/screen/Cam/camera_multiplay.dart';
+// import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:Cue/screen/video/cue_dialog.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:screen/screen.dart';
-import 'package:video_player/video_player.dart';
-import 'package:video_player_controls/video_player_controls.dart';
-
-import '../Cam/record_dubbing.dart';
+// import 'package:video_player/video_player.dart';
+// import 'package:video_player_controls/video_player_controls.dart';
+import 'package:neeko/neeko.dart';
 
 class PlayVideoPage extends StatefulWidget {
   final ReferenceVideo videoToPlay;
@@ -24,260 +17,214 @@ class PlayVideoPage extends StatefulWidget {
 }
 
 class _PlayVideoPageState extends State<PlayVideoPage> {
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
+  // VideoPlayerController _controller;
+  // Future<void> _initializeVideoPlayerFuture;
+  VideoControllerWrapper videoControllerWrapper;
 
-  Controller controller;
+  // Controller controller;
 
   bool _isExpanded = false;
 
-  // var _disposed = false;
-  // var _isFullScreen = false;
-  // Timer _timerVisibleControl;
-
   @override
   void initState() {
-    _controller = VideoPlayerController.network(widget.videoToPlay.videoURL);
-    _initializeVideoPlayerFuture = _controller.initialize();
-    _controller.setLooping(true);
-    // Screen.keepOn(true);
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    videoControllerWrapper = VideoControllerWrapper(DataSource.network(
+        widget.videoToPlay.videoURL,
+        displayName: widget.videoToPlay.title));
+    // _controller = VideoPlayerController.network(widget.videoToPlay.videoURL);
+    // _initializeVideoPlayerFuture = _controller.initialize();
+    // _controller.setLooping(true);
     super.initState();
 
-    controller = new Controller(
-      items: [
-        PlayerItem(
-            title: widget.videoToPlay.title, url: widget.videoToPlay.videoURL),
-      ],
-      autoPlay: true,
-      errorBuilder: (context, message) {
-        return new Container(
-          color: Colors.red,
-          child: new Text(message),
-        );
-      },
-      autoInitialize: true,
-      hasSubtitles: true,
-      showSkipButtons: false,
-      allowFullScreen: true,
-      fullScreenByDefault: false,
-      // placeholder: new Container(
-      //   color: Colors.grey,
-      // ),
-    );
+    // controller = new Controller(
+    //   items: [
+    //     PlayerItem(
+    //         title: widget.videoToPlay.title, url: widget.videoToPlay.videoURL),
+    //   ],
+    //   autoPlay: true,
+    //   errorBuilder: (context, message) {
+    //     return new Container(
+    //       color: Colors.red,
+    //       child: new Text(message),
+    //     );
+    //   },
+    //   autoInitialize: true,
+    //   hasSubtitles: true,
+    //   showSkipButtons: false,
+    //   allowFullScreen: true,
+    //   fullScreenByDefault: false,
+    // );
   }
 
   @override
   void dispose() {
-    // _disposed = true;
-    // _timerVisibleControl?.cancel();
-    // Screen.keepOn(false);
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    // _exitFullScreen();
-    _controller?.pause(); // mute instantly
-    _controller?.dispose();
-    _controller = null;
+    // _controller?.pause(); // mute instantly
+    // _controller?.dispose();
+    // _controller = null;
     super.dispose();
   }
 
-  // void _toggleFullscreen() async {
-  //   if (_isFullScreen) {
-  //     _exitFullScreen();
-  //   } else {
-  //     _enterFullScreen();
-  //   }
-  // }
-
-  // void _enterFullScreen() async {
-  //   debugPrint("enterFullScreen");
-  //   await SystemChrome.setEnabledSystemUIOverlays([]);
-  //   await SystemChrome.setPreferredOrientations(
-  //       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-  //   if (_disposed) return;
-  //   setState(() {
-  //     _isFullScreen = true;
-  //   });
-  // }
-
-  // void _exitFullScreen() async {
-  //   debugPrint("exitFullScreen");
-  //   await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-  //   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  //   if (_disposed) return;
-  //   setState(() {
-  //     _isFullScreen = false;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
+
     final double mh = MediaQuery.of(context).size.height;
     final double mw = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: FutureBuilder(
-        future: _initializeVideoPlayerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Column(
+      // body: FutureBuilder(
+      //   future: _initializeVideoPlayerFuture,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.done) {
+      //       return Column(
+      body: Column(
+        children: [
+          // AspectRatio(
+          //   aspectRatio: 16 / 9,
+          //   child: Container(
+          //     child: VideoPlayerControls(
+          //       controller: controller,
+          //     ),
+          //   ),
+          // ),
+          NeekoPlayerWidget(
+            videoControllerWrapper: videoControllerWrapper,
+            progressBarHandleColor: Theme.of(context).accentColor,
+            progressBarPlayedColor: Theme.of(context).accentColor,
+            onPortraitBackTap: () {
+              print("====================================================");
+              Navigator.pop(context);
+            },
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    print("share");
+                  })
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: mw * 0.03),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // AspectRatio(
-                //   aspectRatio: 16 / 9,
-                //   child: Container(
-                //     color: Colors.black,
-                //     child: SizedBox.expand(
-                //       child: FittedBox(
-                //         fit: BoxFit.fitHeight,
-                //         child: SizedBox(
-                //           width: _controller.value.size?.width ?? 0,
-                //           height: _controller.value.size?.height ?? 0,
-                //           child: VideoPlayer(_controller),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // _isFullScreen
-                //     ? Container(
-                //         child: Center(child: _playView(context)),
-                //         decoration: BoxDecoration(color: Colors.black),
-                //       )
-                //     : Container(
-                //         child: Center(child: _playView(context)),
-                //         decoration: BoxDecoration(color: Colors.black),
-                //       ),
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Container(
-                    child: VideoPlayerControls(
-                      controller: controller,
-                    ),
-                  ),
+                SizedBox(
+                  height: mh * 0.01,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: mw * 0.03),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: mh * 0.01,
-                      ),
-                      Row(
-                        children: [
-                          for (int i = 0;
-                              i < widget.videoToPlay.tag.length;
-                              i++)
-                            Text(
-                              widget.videoToPlay.tag[i] + ' ',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: mh * 0.003,
-                      ),
-                      Text(
-                        widget.videoToPlay.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            .copyWith(fontSize: 15),
-                      ),
-                      SizedBox(
-                        height: mh * 0.01,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '조회 ' + widget.videoToPlay.views.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          SizedBox(
-                            width: mw * 0.015,
-                          ),
-                          Text(
-                            '도전 ' + widget.videoToPlay.challenges.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Divider(),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: mh * 0.001),
-                          child: IconButton(
-                              icon: ImageIcon(
-                                AssetImage('icons/대본저장.png'),
-                              ),
-                              onPressed: () {}),
-                        ),
-                        _isExpanded ? Container() : Text('대본만 저장'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: ImageIcon(
-                              AssetImage('icons/영상대본저장.png'),
-                            ),
-                            onPressed: () {}),
-                        _isExpanded ? Container() : Text('영상+대본 저장'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: ImageIcon(
-                              AssetImage('icons/섀도잉.png'),
-                            ),
-                            onPressed: () {}),
-                        _isExpanded ? Container() : Text('섀도잉'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                            icon: ImageIcon(
-                              AssetImage('icons/공유.png'),
-                            ),
-                            onPressed: () {}),
-                        _isExpanded ? Container() : Text('공유'),
-                      ],
-                    ),
+                    for (int i = 0; i < widget.videoToPlay.tag.length; i++)
+                      Text(
+                        widget.videoToPlay.tag[i] + ' ',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
                   ],
                 ),
-                Divider(),
-                ConfigurableExpansionTile(
-                  header: Container(
-                    width: mw,
-                    padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
-                    child: Align(
-                        alignment: Alignment.centerLeft, child: Text('대본 보기')),
-                  ),
-                  onExpansionChanged: (value) {
-                    setState(() {
-                      _isExpanded = value;
-                    });
-                  },
-                  children: [
-                    showScript(context, widget.videoToPlay.script, mh, mw)
-                  ],
+                SizedBox(
+                  height: mh * 0.003,
                 ),
-                _isExpanded ? Container() : challengeSection(),
+                Text(
+                  widget.videoToPlay.title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(fontSize: 15),
+                ),
+                SizedBox(
+                  height: mh * 0.01,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '조회 ' + widget.videoToPlay.views.toString(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(
+                      width: mw * 0.015,
+                    ),
+                    Text(
+                      '도전 ' + widget.videoToPlay.challenges.toString(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                )
               ],
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+            ),
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: mh * 0.001),
+                    child: IconButton(
+                        icon: ImageIcon(
+                          AssetImage('icons/대본저장.png'),
+                        ),
+                        onPressed: () {}),
+                  ),
+                  _isExpanded ? Container() : Text('대본만 저장'),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: ImageIcon(
+                        AssetImage('icons/영상대본저장.png'),
+                      ),
+                      onPressed: () {}),
+                  _isExpanded ? Container() : Text('영상+대본 저장'),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: ImageIcon(
+                        AssetImage('icons/섀도잉.png'),
+                      ),
+                      onPressed: () {}),
+                  _isExpanded ? Container() : Text('섀도잉'),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: ImageIcon(
+                        AssetImage('icons/공유.png'),
+                      ),
+                      onPressed: () {}),
+                  _isExpanded ? Container() : Text('공유'),
+                ],
+              ),
+            ],
+          ),
+          Divider(),
+          ConfigurableExpansionTile(
+            header: Container(
+              width: mw,
+              padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
+              child:
+                  Align(alignment: Alignment.centerLeft, child: Text('대본 보기')),
+            ),
+            onExpansionChanged: (value) {
+              setState(() {
+                _isExpanded = value;
+              });
+            },
+            children: [showScript(context, widget.videoToPlay.script, mh, mw)],
+          ),
+          _isExpanded ? Container() : challengeSection(),
+        ],
       ),
+      //     } else {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //   },
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: InkWell(
           child: Container(
@@ -303,9 +250,9 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             ),
           ),
           onTap: () {
-            setState(() {
-              controller.pause();
-            });
+            // setState(() {
+            //   controller.pause();
+            // });
             // Navigator.of(context).push(MaterialPageRoute<Null>(
             //     builder: (BuildContext context) {
             //       return CueDialog(
