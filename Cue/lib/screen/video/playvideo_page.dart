@@ -206,9 +206,31 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
           ConfigurableExpansionTile(
             header: Container(
               width: mw,
+              height: mh * 0.045,
               padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
-              child:
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Align(alignment: Alignment.centerLeft, child: Text('대본 보기')),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(Icons.keyboard_arrow_down))
+                ],
+              ),
+            ),
+            headerExpanded: Column(
+              children: [
+                Container(
+                  width: mw,
+                  height: mh * 0.038,
+                  padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
+                  child: Align(
+                      alignment: Alignment.centerRight, child: Text('닫기')),
+                ),
+                SizedBox(
+                  height: mh * 0.007,
+                )
+              ],
             ),
             onExpansionChanged: (value) {
               setState(() {

@@ -13,13 +13,18 @@ class AuthProvider {
   //............RUDIMENTARY METHODS FOR AUTHENTICATION................
 
   //SIGN UP METHOD
-  Future<String> signUp({String email, String password}) async {
+  Future<String> signUp(
+      {String email,
+      String password,
+      String nickName,
+      String description}) async {
     try {
       final User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
       if (user != null) {
-        await DatabaseService(uid: user.uid).createUserData(email);
+        await DatabaseService(uid: user.uid)
+            .createUserData(nickName, description);
       }
       return "Signed up!";
     } on FirebaseAuthException catch (e) {

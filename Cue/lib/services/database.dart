@@ -9,9 +9,10 @@ class DatabaseService {
   final CollectionReference videoCollection =
       FirebaseFirestore.instance.collection('videos');
 
-  Future createUserData(String nickName) async {
+  Future createUserData(String nickName, String description) async {
     return await userCollection.doc(uid).set({
       'name': nickName,
+      'description': description,
       'follwing': 0,
       'follower': 0,
     });
