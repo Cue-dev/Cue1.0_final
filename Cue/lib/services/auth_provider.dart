@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthProvider {
   final FirebaseAuth firebaseAuth;
+  String uid;
   //FirebaseAuth instance
   AuthProvider(this.firebaseAuth);
   //Constuctor to initalize the FirebaseAuth instance
@@ -23,6 +24,7 @@ class AuthProvider {
               email: email, password: password))
           .user;
       if (user != null) {
+        uid = user.uid;
         await DatabaseService(uid: user.uid)
             .createUserData(nickName, description);
       }
@@ -46,5 +48,9 @@ class AuthProvider {
   //SIGN OUT METHOD
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+  }
+
+  String getUID() {
+    return uid;
   }
 }
