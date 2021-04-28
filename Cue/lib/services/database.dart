@@ -18,6 +18,22 @@ class DatabaseService {
     });
   }
 
+  Future createSaveBothList(String listName) async {
+    return await userCollection
+        .doc(uid)
+        .collection('savedList')
+        .doc('savedActList')
+        .collection(listName);
+  }
+
+  Future createSaveScriptList(String listName) async {
+    return await userCollection
+        .doc(uid)
+        .collection('savedList')
+        .doc('savedScriptList')
+        .collection(listName);
+  }
+
   // Future createVideoData(String title, String uploader, String url) async {
   //   return await videoCollection.doc('$title:${user.uid}').set({
   //     'title': title,
