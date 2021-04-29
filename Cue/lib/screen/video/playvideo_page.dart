@@ -1,6 +1,6 @@
 // import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:Cue/screen/video/cue_dialog.dart';
+import 'package:Cue/screen/dialog/cue_dialog.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
