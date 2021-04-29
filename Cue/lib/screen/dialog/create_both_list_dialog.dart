@@ -13,18 +13,12 @@ class _CreateBothListDialogState extends State<CreateBothListDialog> {
 
   @override
   Widget build(BuildContext context) {
-    String valueText;
     String uid = Provider.of<AuthProvider>(context).getUID();
     DatabaseService db = DatabaseService(uid: uid);
 
     return AlertDialog(
       title: Text('TextField in Dialog'),
       content: TextField(
-        onChanged: (value) {
-          setState(() {
-            valueText = value;
-          });
-        },
         controller: _textFieldController,
         decoration: InputDecoration(hintText: "Text Field in Dialog"),
       ),
@@ -32,18 +26,15 @@ class _CreateBothListDialogState extends State<CreateBothListDialog> {
         InkWell(
           child: Text('CANCEL'),
           onTap: () {
-            setState(() {
-              Navigator.pop(context);
-            });
+            Navigator.pop(context);
           },
         ),
         InkWell(
           child: Text('OK'),
-          onTap: () {
-            setState(() async {
-              await db.createSaveBothList(valueText);
-              Navigator.pop(context);
-            });
+          onTap: () async {
+            print("oooooooooooooooo" + _textFieldController.text.trim());
+            await db.createSaveBothList(_textFieldController.text.trim());
+            Navigator.pop(context);
           },
         ),
       ],
