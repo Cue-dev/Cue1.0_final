@@ -18,6 +18,8 @@ class DatabaseService {
     });
   }
 
+// TODO: 콜렉션을 추가하려면 문서가 하나 필요하다. 이걸 어떻게 할 것인가...!!!!!!
+// Dialog 내에서 저장목록 추가 누르면 보여주기만 하고 저장 버튼 눌러서 저장할 때 그때 디비 건들까?
   Future createSaveBothList(String listName) async {
     return await userCollection
         .doc(uid)
