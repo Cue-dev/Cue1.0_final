@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Cue/screen/video/scrap_dialog.dart';
+import 'package:Cue/screen/dialog/scrap_both_dialog.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
 import 'package:Cue/services/reference_video_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -268,7 +268,7 @@ class _PlayListPageState extends State<PlayListPage> {
                     child: _buildDialogButtons(
                         mw, mh, 'icons/대본저장.png', '대본만 저장하기'),
                     onTap: () {
-                      scrapSecondDialog(context);
+                      scrapBothDialog(context);
                     },
                   ),
                   InkWell(
@@ -318,11 +318,11 @@ class _PlayListPageState extends State<PlayListPage> {
   List<bool> checked = [false, false, false, false];
   List<String> scraplist = ['좋아하는 영화 명대사', '딕션 연습', '눈물 연기 연습', '분노 연기 연습'];
 
-  void scrapSecondDialog(BuildContext context) async {
+  void scrapBothDialog(BuildContext context) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return ScrapDialog();
+          return ScrapBothDialog();
         });
   }
 }
