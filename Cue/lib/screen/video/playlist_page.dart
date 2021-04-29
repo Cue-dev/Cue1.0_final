@@ -322,7 +322,7 @@ class _PlayListPageState extends State<PlayListPage> {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CustomDialog();
+          return ScrapDialog();
         });
   }
 }

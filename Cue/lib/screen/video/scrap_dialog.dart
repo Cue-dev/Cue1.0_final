@@ -3,12 +3,12 @@ import 'package:Cue/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CustomDialog extends StatefulWidget {
+class ScrapDialog extends StatefulWidget {
   @override
-  _CustomDialogState createState() => _CustomDialogState();
+  _ScrapDialogState createState() => _ScrapDialogState();
 }
 
-class _CustomDialogState extends State<CustomDialog> {
+class _ScrapDialogState extends State<ScrapDialog> {
   List<String> scraplist = ['좋아하는 영화 명대사', '딕션 연습', '눈물 연기 연습', '분노 연기 연습'];
   List<bool> checked = [false, false, false, false, false, false];
   @override
