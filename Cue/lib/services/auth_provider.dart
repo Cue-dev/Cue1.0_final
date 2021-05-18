@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthProvider {
   final FirebaseAuth firebaseAuth;
-  String uid;
   //FirebaseAuth instance
   AuthProvider(this.firebaseAuth);
   //Constuctor to initalize the FirebaseAuth instance
 
   //Using Stream to listen to Authentication State
   Stream<User> get authState => firebaseAuth.idTokenChanges();
+  String get getUID => firebaseAuth.currentUser.uid;
 
   //............RUDIMENTARY METHODS FOR AUTHENTICATION................
 
@@ -24,7 +24,7 @@ class AuthProvider {
               email: email, password: password))
           .user;
       if (user != null) {
-        uid = user.uid;
+        // uid = user.uid;
         await DatabaseService(uid: user.uid)
             .createUserData(nickName, description);
       }
@@ -50,7 +50,7 @@ class AuthProvider {
     await firebaseAuth.signOut();
   }
 
-  String getUID() {
-    return uid;
-  }
+  // String getUID() {
+  //   return uid;
+  // }
 }

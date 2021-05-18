@@ -3,37 +3,36 @@ import 'package:Cue/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateBothListDialog extends StatefulWidget {
+class CreateScriptListDialog extends StatefulWidget {
   @override
-  _CreateBothListDialogState createState() => _CreateBothListDialogState();
+  _CreateScriptListDialogState createState() => _CreateScriptListDialogState();
 }
 
-class _CreateBothListDialogState extends State<CreateBothListDialog> {
+class _CreateScriptListDialogState extends State<CreateScriptListDialog> {
   TextEditingController _textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    String uid = Provider.of<AuthProvider>(context).getUID();
+    String uid = Provider.of<AuthProvider>(context).getUID;
     DatabaseService db = DatabaseService(uid: uid);
-
+//TODO: 이거 좀 이쁘게 꾸며야함
     return AlertDialog(
-      title: Text('TextField in Dialog'),
+      title: Text('저장 목록 추가'),
       content: TextField(
         controller: _textFieldController,
-        decoration: InputDecoration(hintText: "Text Field in Dialog"),
+        decoration: InputDecoration(hintText: "목록의 이름을 정해주세요"),
       ),
       actions: <Widget>[
         InkWell(
-          child: Text('CANCEL'),
+          child: Text('취소'),
           onTap: () {
             Navigator.pop(context);
           },
         ),
         InkWell(
-          child: Text('OK'),
+          child: Text('추가'),
           onTap: () async {
-            print("oooooooooooooooo" + _textFieldController.text.trim());
-            await db.createSaveBothList(_textFieldController.text.trim());
+            await db.createSavedScriptList(_textFieldController.text.trim());
             Navigator.pop(context);
           },
         ),
