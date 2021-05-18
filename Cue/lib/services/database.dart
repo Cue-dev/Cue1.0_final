@@ -1,13 +1,19 @@
+import 'package:Cue/services/auth_provider.dart';
+import 'package:Cue/services/reference_video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({this.uid});
+  DatabaseService({@required this.uid});
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
   final CollectionReference videoCollection =
       FirebaseFirestore.instance.collection('videos');
+  // final DocumentReference videoListDocument =
+  //     FirebaseFirestore.instance.collection('users').doc(uid).collection('saved').doc('savedVideoList')
 
   Future createUserData(String nickName, String description) async {
     return await userCollection.doc(uid).set({
@@ -18,22 +24,70 @@ class DatabaseService {
     });
   }
 
-// TODO: 콜렉션을 추가하려면 문서가 하나 필요하다. 이걸 어떻게 할 것인가...!!!!!!
-// Dialog 내에서 저장목록 추가 누르면 보여주기만 하고 저장 버튼 눌러서 저장할 때 그때 디비 건들까?
-  Future createSaveBothList(String listName) async {
+  Future createSavedVideoList(String listName) async {
+    await userCollection
+        .doc(uid)
+        .collection('savedVideoList')
+        .doc(listName)
+        .set({'exist': 'TRUE'});
+
     return await userCollection
         .doc(uid)
-        .collection('savedList')
-        .doc('savedActList')
-        .collection(listName);
+        .collection('savedVideoList')
+        .doc(listName)
+        .collection(listName)
+        .doc('getListName')
+        .set({'name': listName});
   }
 
-  Future createSaveScriptList(String listName) async {
+  Future saveVideo(String listName, ReferenceVideo video) async {
+    await userCollection
+        .doc(uid)
+        .collection('savedVideoList')
+        .doc(listName)
+        .collection(listName)
+        .doc('${video.source}:${video.title}')
+        .set({
+      'title': video.title,
+      'source': video.source,
+      'type': video.type,
+      'tag': video.tag,
+      'script': video.script,
+      'length': video.length,
+      'views': video.views,
+      'challenges': video.challenges,
+      'thumbnailURL': video.thumbnailURL,
+      'videoURL': video.videoURL
+    });
+  }
+
+  Future createSavedScriptList(String listName) async {
+    await userCollection
+        .doc(uid)
+        .collection('savedScriptList')
+        .doc(listName)
+        .set({'exist': 'TRUE'});
+
     return await userCollection
         .doc(uid)
-        .collection('savedList')
-        .doc('savedScriptList')
-        .collection(listName);
+        .collection('savedScriptList')
+        .doc(listName)
+        .collection(listName)
+        .doc('getListName')
+        .set({'name': listName});
+  }
+
+  Future saveScript(
+      String listName, String source, String title, Map script) async {
+    await userCollection
+        .doc(uid)
+        .collection('savedScriptList')
+        .doc(listName)
+        .collection(listName)
+        .doc('script-$source:$title')
+        .set({
+      'script': script,
+    });
   }
 
   // Future createVideoData(String title, String uploader, String url) async {

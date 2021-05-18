@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:Cue/screen/dialog/scrap_both_dialog.dart';
+import 'package:Cue/screen/dialog/save_script_dialog.dart';
+import 'package:Cue/screen/dialog/save_video_dialog.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
 import 'package:Cue/services/reference_video_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,7 +120,8 @@ class _PlayListPageState extends State<PlayListPage> {
                                               AssetImage('icons/메뉴.png'),
                                             ),
                                             onPressed: () {
-                                              scrapFirstDialog(context, mw, mh);
+                                              saveDialog(context, mw, mh,
+                                                  snapshot.data[index]);
                                             }),
                                         top: mh * 0.01,
                                         right: mw * 0.005,
@@ -253,7 +255,7 @@ class _PlayListPageState extends State<PlayListPage> {
     );
   }
 
-  void scrapFirstDialog(BuildContext context, double mw, double mh) async {
+  void saveDialog(BuildContext context, double mw, double mh, var video) async {
     await showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -268,13 +270,15 @@ class _PlayListPageState extends State<PlayListPage> {
                     child: _buildDialogButtons(
                         mw, mh, 'icons/대본저장.png', '대본만 저장하기'),
                     onTap: () {
-                      scrapBothDialog(context);
+                      saveScriptDialog(context, video);
                     },
                   ),
                   InkWell(
                     child: _buildDialogButtons(
                         mw, mh, 'icons/영상대본저장.png', '영상+대본 저장하기'),
-                    onTap: () {},
+                    onTap: () {
+                      saveVideoDialog(context, video);
+                    },
                   ),
                   InkWell(
                     child: _buildDialogButtons(mw, mh, 'icons/공유.png', '공유하기'),
@@ -315,14 +319,23 @@ class _PlayListPageState extends State<PlayListPage> {
     );
   }
 
-  List<bool> checked = [false, false, false, false];
-  List<String> scraplist = ['좋아하는 영화 명대사', '딕션 연습', '눈물 연기 연습', '분노 연기 연습'];
-
-  void scrapBothDialog(BuildContext context) async {
+  void saveVideoDialog(BuildContext context, ReferenceVideo videoToSave) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return ScrapBothDialog();
+          return SaveVideoDialog(videoToSave: videoToSave);
+        });
+  }
+
+  void saveScriptDialog(
+      BuildContext context, ReferenceVideo videoToSaveScript) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SaveScriptDialog(
+              scriptSource: videoToSaveScript.source,
+              scriptTitle: videoToSaveScript.title,
+              scriptToSave: videoToSaveScript.script);
         });
   }
 }
