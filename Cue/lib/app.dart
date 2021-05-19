@@ -16,7 +16,7 @@ ThemeData _buildCueTheme() {
     buttonBarTheme: base.buttonBarTheme.copyWith(
       buttonTextTheme: ButtonTextTheme.accent,
     ),
-    scaffoldBackgroundColor: cueLightBackgroundColor,
+    scaffoldBackgroundColor: cueDartBackgroundColor,
     cardColor: cueBackgroundWhite,
     textSelectionColor: cuePointColor,
     errorColor: cueErrorRed,
