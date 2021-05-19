@@ -1,5 +1,6 @@
 import 'package:Cue/screen/Cam/camera_alone.dart';
 import 'package:Cue/screen/Cam/record_dubbing.dart';
+import 'package:Cue/screen/Cam/video_recording.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,7 @@ class _CueDialogState extends State<CueDialog> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => CameraAlonePage(
+                          builder: (BuildContext context) => VideoRecordingPage(
                                 originalVideo: widget.videoToPlay,
                               )));
                 else if (_selectedIndex == 1)
