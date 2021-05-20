@@ -1,5 +1,4 @@
 // import 'package:Cue/screen/Cam/cue_ready.dart';
-import 'package:Cue/screen/Cam/ioscamtest.dart';
 import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/video/playlist_page.dart';
@@ -45,11 +44,10 @@ class _MainPageState extends State<MainPage> {
               PlayListPage(),
               PopularPage(),
               // MyHomePage(),
-              CameraApp(),
-              // Container(
-              //   color: Colors.orange,
-              // ),
-              // CloudStorageDemo(),
+              Container(
+                color: Colors.orange,
+              ),
+              //CloudStorageDemo(),
               Container(
                 color: Colors.yellow,
               ),

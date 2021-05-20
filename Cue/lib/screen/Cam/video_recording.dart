@@ -39,6 +39,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
+  TextEditingController videoTitleController = TextEditingController();
   final String uploadTime =
   ('${DateTime.now().year.toString()}:${DateTime.now().month.toString()}:${DateTime.now().day.toString()} ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}:${DateTime.now().second.toString()}');
 
@@ -54,8 +55,6 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
-    // Get the listonNewCameraSelected of available cameras.
-    // Then set the first camera as selected.
     availableCameras().then((availableCameras) {
       cameras = availableCameras;
 
@@ -63,8 +62,6 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
         setState(() {
           selectedCameraIdx = 0;
         });
-
-        _onCameraSwitched(cameras[selectedCameraIdx]).then((void v) {});
       }
     }).catchError((err) {
       print('Error: $err.code\nError Message: $err.message');
@@ -90,22 +87,151 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
               ),
             ),
           ),
+          Container(
+            child: Column(
+              children: [
+                Center(
+                  child: StreamBuilder<int>(
+                    stream: _stopWatchTimer.rawTime,
+                    initialData: _stopWatchTimer.rawTime.value,
+                    builder: (context, snap) {
+                      final value = snap.data;
+                      final displayTime =
+                      StopWatchTimer.getDisplayTime(value, hours: _isHours);
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(width: MediaQuery.of(context).size.width*0.35),
+                          Text(displayTime, style: TextStyle(color: Colors.white, fontSize: 20),),
+                          Spacer(),
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.2, height:MediaQuery.of(context).size.height*0.05,
+                            color:Colors.grey,
+                            child:Center(child: Text('박새로이',style: TextStyle(color: Colors.black))), // TODO : 전단계에서 선택한 배역
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                Spacer(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      child :Text('16:9',style: TextStyle(color: Colors.white)),
+                      onPressed: (){},
+                    ),
+                    TextButton(
+                      child :Text('4:3',style: TextStyle(color: Colors.white)),
+                      onPressed: (){},
+                    ),
+                    TextButton(
+                      child :Text('1:1',style: TextStyle(color: Colors.white)),
+                      onPressed: (){},
+                    ),
+                    _captureControlRowWidget(),
+                    _scriptplay == false
+                        ? Container(
+                      width: MediaQuery.of(context).size.width*0.15,
+                      height: MediaQuery.of(context).size.height*0.04,
+                          child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: BorderSide(color: Colors.white)),
+                      onPressed: () {
+                          setState(() {
+                            _scriptplay = true;
+                          });
+                      },
+                      color: Colors.transparent,
+                      textColor: Colors.white,
+                      child: Text("대본"),
+                    ),
+                        )
+                        : Container(
+                      width: MediaQuery.of(context).size.width*0.15,
+                      height: MediaQuery.of(context).size.height*0.04,
+                          child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      color: Colors.white,
+                      textColor: Colors.grey,
+                      child: Text("대본"),
+                      onPressed: () {
+                          setState(() {
+                            _scriptplay = false;
+                          });
+                      },
+                    ),
+                        ),
+                    SizedBox(width: MediaQuery.of(context).size.width*0.02),
+                    _videoplay == false
+                              ? Container(
+                                width: MediaQuery.of(context).size.width*0.15,
+                                height: MediaQuery.of(context).size.height*0.04,
+                                child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  side: BorderSide(color: Colors.white)),
+                            onPressed: () {
+                                setState(() {
+                                  _videoplay = true;
+                                });
+                            },
+                            color: Colors.transparent,
+                            textColor: Colors.white,
+                            child: Text("영상")
+                          ),
+                              )
+                              : Container(
+                                width: MediaQuery.of(context).size.width*0.15,
+                                height: MediaQuery.of(context).size.height*0.04,
+                                child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            color: Colors.white,
+                            textColor: Colors.grey,
+                            child: Text("영상"),
+                            onPressed: () {
+                                setState(() {
+                                  _videoplay = false;
+                                });
+                            },
+                          ),
+                              ),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1)
+              ],
+            ),
+          ),
+          _videoplay == true
+              ? Padding(
+            padding: const EdgeInsets.only(top: 90.0, left: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: videocontroller.value.initialized
+                  ? AspectRatio(
+                aspectRatio: videocontroller.value.aspectRatio,
+                child: VideoPlayer(videocontroller),
+              )
+                  : Container(),
+            ),
+          )
+              : Container(),
+          _scriptplay == true
+              ? Padding(
+            padding: const EdgeInsets.only(top: 500, left: 10.0),
+            child: showScript(context, widget.originalVideo.script),
+          )
+              : Container(),
         ],
       ),
     );
-  }
-
-  IconData _getCameraLensIcon(CameraLensDirection direction) {
-    switch (direction) {
-      case CameraLensDirection.back:
-        return Icons.flip_camera_android;
-      case CameraLensDirection.front:
-        return Icons.flip_camera_android;
-      case CameraLensDirection.external:
-        return Icons.camera;
-      default:
-        return Icons.device_unknown;
-    }
   }
 
   // Display 'Loading' text when the camera is still loading.
@@ -127,45 +253,12 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
     );
   }
 
-  /// Display a row of toggle to select the camera (or a message if no camera is available).
-  Widget _cameraTogglesRowWidget() {
-    if (cameras == null) {
-      return Row();
-    }
-
-    CameraDescription selectedCamera = cameras[selectedCameraIdx];
-    CameraLensDirection lensDirection = selectedCamera.lensDirection;
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 30, 0, 0),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            onPressed: _onSwitchCamera,
-            icon: Icon(_getCameraLensIcon(lensDirection),
-                color: Colors.white, size: 30),
-//            label: Text(
-//                "${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Display the control bar with buttons to record videos.
   Widget _captureControlRowWidget() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(100, 0, 0, 100),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              IconButton(
-                  icon: const Icon(Icons.radio_button_checked, size: 70),
-                  color: Colors.orange,
+    return IconButton(
+                  icon: ImageIcon(
+                    AssetImage('icons/큐.png'),
+                    size: 50,
+                  ),
                   onPressed: () {
                     controller != null &&
                         controller.value.isInitialized &&
@@ -179,85 +272,17 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                           : videocontroller.play();
                     });
                   }
-//                  : null,
-              ),
-//            IconButton(
-//              icon: const Icon(Icons.stop),
-//              color: Colors.red,
-//              onPressed: controller != null &&
-//                  controller.value.isInitialized &&
-//                  controller.value.isRecordingVideo
-//                  ? _onStopButtonPressed
-//                  : null,
-//            )
-            ],
-          ),
-        ),
-      ),
     );
   }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
-
-  Future<void> _onCameraSwitched(CameraDescription cameraDescription) async {
-    if (controller != null) {
-      await controller.dispose();
-    }
-
-    controller = CameraController(cameraDescription, ResolutionPreset.high);
-
-    // If the controller is updated then update the UI.
-    controller.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-
-      if (controller.value.hasError) {
-        Fluttertoast.showToast(
-            msg: 'Camera error ${controller.value.errorDescription}',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
-            textColor: Colors.white);
-      }
-    });
-
-    try {
-      await controller.initialize();
-    } on CameraException catch (e) {
-      _showCameraException(e);
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _onSwitchCamera() {
-    selectedCameraIdx =
-    selectedCameraIdx < cameras.length - 1 ? selectedCameraIdx + 1 : 0;
-    CameraDescription selectedCamera = cameras[selectedCameraIdx];
-
-    _onCameraSwitched(selectedCamera);
-
-    setState(() {
-      selectedCameraIdx = selectedCameraIdx;
-    });
-  }
 
   void _onRecordButtonPressed() {
     setState(() {
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
     });
     _startVideoRecording().then((String filePath) {
-      if (filePath != null) {
-        Fluttertoast.showToast(
-            msg: 'Recording video started',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white);
-      }
+      if (filePath != null) {}
     });
   }
 
@@ -265,29 +290,14 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
     setState(() {
       _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     });
-    // showAlertDialog(context);
     _stopVideoRecording().then((_) {
       if (mounted) setState(() {});
-//      showAlertDialog(context);
       addUser();
-      Fluttertoast.showToast(
-          msg: 'Video recorded to $videoPath',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white);
     });
   }
 
   Future<String> _startVideoRecording() async {
     if (!controller.value.isInitialized) {
-      Fluttertoast.showToast(
-          msg: 'Please wait',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white);
-
       return null;
     }
 
@@ -305,10 +315,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
       await controller.startVideoRecording(filePath);
       videoPath = filePath;
     } on CameraException catch (e) {
-      _showCameraException(e);
       return null;
     }
-
     return filePath;
   }
 
@@ -320,21 +328,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
     try {
       await controller.stopVideoRecording();
     } on CameraException catch (e) {
-      _showCameraException(e);
       return null;
     }
-  }
-
-  void _showCameraException(CameraException e) {
-    String errorText = 'Error: ${e.code}\nError Message: ${e.description}';
-    print(errorText);
-
-    Fluttertoast.showToast(
-        msg: 'Error: ${e.code}\n${e.description}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-        textColor: Colors.white);
   }
 
   Future<void> addUser() async {
@@ -352,8 +347,6 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   Widget showScript(BuildContext context, var script) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
-      height: MediaQuery.of(context).size.height * 0.3,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,
         itemBuilder: (context, int index) {
@@ -361,14 +354,21 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
           String sKey = script.keys.elementAt(index * 2 + 1);
           return ListTile(
             title: Container(
-                child: Column(
+              color: Colors.black26,
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${script[aKey]}",
-                        style: TextStyle(color: Colors.white60)),
-                    Text("${script[sKey].replaceAll('\\n', '\n')}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 100),
+                    Container(
+                      color: Colors.white,
+                      child: Text("${script[aKey]}",
+                          style: TextStyle(color: Colors.black)),
+                    ),
+                    SizedBox(width : MediaQuery.of(context).size.width*0.01),
+                    Container(
+                      width:  MediaQuery.of(context).size.width*0.6,
+                      child: Text("${script[sKey]}",
+                          style: TextStyle(color: Colors.white)),
+                    ),
                   ],
                 )),
           );
