@@ -113,21 +113,22 @@ class _MyPageState extends State<MyPage> {
       length: 2,
       child: Column(
         children: [
-          Container(
-            child: TabBar(
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 4,
-                ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: mw * 0.25,
+              child: TabBar(
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .subtitle1
+                    .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                indicatorColor: Colors.transparent,
+                unselectedLabelColor: Colors.grey,
+                tabs: [
+                  Tab(text: "게시물"),
+                  Tab(text: "보관함"),
+                ],
               ),
-              //TODO: align tabs...
-              labelStyle: Theme.of(context).textTheme.subtitle1,
-              indicatorColor: Theme.of(context).secondaryHeaderColor,
-              unselectedLabelColor: Colors.grey,
-              tabs: [
-                Tab(text: "게시물"),
-                Tab(text: "보관함"),
-              ],
             ),
           ),
           Container(
