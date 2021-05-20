@@ -40,6 +40,7 @@ dependencies:
   audioplayers: ^0.17.4
   flutter_sound: ^7.5.3+1 #dubbing.dart
   # neeko: ^0.0.10
+  flutter_search_bar: ^2.1.0
   neeko:
     git:
       url: https://github.com/Cue-dev/neeko.git

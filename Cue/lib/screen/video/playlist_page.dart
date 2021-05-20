@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:Cue/screen/dialog/save_script_dialog.dart';
 import 'package:Cue/screen/dialog/save_video_dialog.dart';
+import 'package:Cue/screen/search/search_result_page.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
 import 'package:Cue/services/reference_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Cue/services/loading.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:Cue/services/reference_video.dart';
 
@@ -25,7 +27,44 @@ class _PlayListPageState extends State<PlayListPage> {
     videoURLs.clear();
   }
 
-  bool _loading = false;
+  SearchBar searchBar;
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      elevation: 0.0,
+      title: Text(
+        "Cue!",
+        style: Theme.of(context).textTheme.headline2,
+      ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(30))),
+      actions: [
+        IconButton(
+            icon: ImageIcon(
+              AssetImage('icons/검색.png'),
+            ),
+            onPressed: () {
+              searchBar.beginSearch(context);
+            }),
+        IconButton(
+            icon: ImageIcon(
+              AssetImage('icons/알림_유.png'),
+            ),
+            onPressed: () {}),
+      ],
+    );
+  }
+
+  _PlayListPageState() {
+    searchBar = SearchBar(
+        inBar: false,
+        setState: setState,
+        buildDefaultAppBar: buildAppBar,
+        hintText: "검색어를 입력하세요.",
+        onSubmitted: (value) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SearchResultPage()));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,155 +73,156 @@ class _PlayListPageState extends State<PlayListPage> {
     final referenceVideoModel =
         Provider.of<ReferenceVideoModel>(context, listen: false);
 
-    return _loading
-        ? Loading()
-        : Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: AppBar(
-              elevation: 0.0,
-              title: Text(
-                "Cue!",
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(30))),
-              actions: [
-                IconButton(
-                    icon: ImageIcon(
-                      AssetImage('icons/검색.png'),
-                    ),
-                    onPressed: () {}),
-                IconButton(
-                    icon: ImageIcon(
-                      AssetImage('icons/알림_유.png'),
-                    ),
-                    onPressed: () {}),
-              ],
-            ),
-            body: FutureBuilder(
-                future: referenceVideoModel.loadReferenceVideos(),
-                builder:
-                    (context, AsyncSnapshot<List<ReferenceVideo>> snapshot) {
-                  return snapshot.hasData
-                      ? ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(),
-                          padding: EdgeInsets.fromLTRB(
-                              mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
-                          scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, int index) {
-                            print(snapshot.data.length);
-                            return InkWell(
-                              child: Container(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        height: mh * 0.31,
-                                        width: mw,
-                                        child: snapshot
-                                                    .data[index].thumbnailURL !=
-                                                null
-                                            ? ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                child: Image.network(
-                                                  snapshot
-                                                      .data[index].thumbnailURL,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )
-                                            : Container(color: Colors.black),
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // appBar: AppBar(
+      //   elevation: 0.0,
+      //   title: Text(
+      //     "Cue!",
+      //     style: Theme.of(context).textTheme.headline2,
+      //   ),
+      //   shape: RoundedRectangleBorder(
+      //       borderRadius:
+      //           BorderRadius.only(bottomRight: Radius.circular(30))),
+      //   actions: [
+      //     IconButton(
+      //         icon: ImageIcon(
+      //           AssetImage('icons/검색.png'),
+      //         ),
+      //         onPressed: () {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (BuildContext context) => SearchPage()));
+      //         }),
+      //     IconButton(
+      //         icon: ImageIcon(
+      //           AssetImage('icons/알림_유.png'),
+      //         ),
+      //         onPressed: () {}),
+      //   ],
+      // ),
+      appBar: searchBar.build(context),
+      body: FutureBuilder(
+          future: referenceVideoModel.loadReferenceVideos(),
+          builder: (context, AsyncSnapshot<List<ReferenceVideo>> snapshot) {
+            return snapshot.hasData
+                ? ListView.separated(
+                    separatorBuilder: (context, index) => SizedBox(),
+                    padding: EdgeInsets.fromLTRB(
+                        mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, int index) {
+                      print(snapshot.data.length);
+                      return InkWell(
+                        child: Container(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
+                                  height: mh * 0.31,
+                                  width: mw,
+                                  child: snapshot.data[index].thumbnailURL !=
+                                          null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          child: Image.network(
+                                            snapshot.data[index].thumbnailURL,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : Container(color: Colors.black),
+                                ),
+                                Positioned(
+                                  child: topLeftText(
+                                      snapshot.data[index].source,
+                                      snapshot.data[index].type),
+                                  top: mh * 0.02,
+                                  left: mw * 0.05,
+                                ),
+                                Positioned(
+                                  child: bottomLeftText(
+                                      snapshot.data[index].tag,
+                                      snapshot.data[index].title,
+                                      snapshot.data[index].views,
+                                      snapshot.data[index].challenges),
+                                  bottom: mh * 0.02,
+                                  left: mw * 0.05,
+                                ),
+                                Positioned(
+                                  child: IconButton(
+                                      iconSize: 15,
+                                      icon: ImageIcon(
+                                        AssetImage('icons/메뉴.png'),
                                       ),
-                                      Positioned(
-                                        child: topLeftText(
-                                            snapshot.data[index].source,
-                                            snapshot.data[index].type),
-                                        top: mh * 0.02,
-                                        left: mw * 0.05,
-                                      ),
-                                      Positioned(
-                                        child: bottomLeftText(
-                                            snapshot.data[index].tag,
-                                            snapshot.data[index].title,
-                                            snapshot.data[index].views,
-                                            snapshot.data[index].challenges),
-                                        bottom: mh * 0.02,
-                                        left: mw * 0.05,
-                                      ),
-                                      Positioned(
-                                        child: IconButton(
-                                            iconSize: 15,
-                                            icon: ImageIcon(
-                                              AssetImage('icons/메뉴.png'),
-                                            ),
-                                            onPressed: () {
-                                              saveDialog(context, mw, mh,
-                                                  snapshot.data[index]);
-                                            }),
-                                        top: mh * 0.01,
-                                        right: mw * 0.005,
-                                      ),
-                                      Positioned(
-                                        child: bottomRightText(
-                                            snapshot.data[index].length),
-                                        bottom: mh * 0.02,
-                                        right: mw * 0.05,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: mh * 0.02,
-                                  )
-                                  // Padding(
-                                  //   padding: EdgeInsets.only(
-                                  //       left: mw * 0.02, bottom: mh * 0.02),
-                                  //   child: Row(
-                                  //     children: [
-                                  //       Expanded(
-                                  //         child: Column(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.start,
-                                  //           children: [
-                                  //             Text(snapshot.data[index].title,
-                                  //                 style: Theme.of(context)
-                                  //                     .textTheme
-                                  //                     .subtitle1),
-                                  //             SizedBox(height: 3),
-                                  //             Text(
-                                  //               snapshot.data[index].tag,
-                                  //               style: Theme.of(context)
-                                  //                   .textTheme
-                                  //                   .caption,
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                ],
-                              )),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            PlayVideoPage(
-                                              videoToPlay: snapshot.data[index],
-                                            )));
-                              },
-                            );
-                          },
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        );
-                }),
-          );
+                                      onPressed: () {
+                                        saveDialog(context, mw, mh,
+                                            snapshot.data[index]);
+                                      }),
+                                  top: mh * 0.01,
+                                  right: mw * 0.005,
+                                ),
+                                Positioned(
+                                  child: bottomRightText(
+                                      snapshot.data[index].length),
+                                  bottom: mh * 0.02,
+                                  right: mw * 0.05,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: mh * 0.02,
+                            )
+                            // Padding(
+                            //   padding: EdgeInsets.only(
+                            //       left: mw * 0.02, bottom: mh * 0.02),
+                            //   child: Row(
+                            //     children: [
+                            //       Expanded(
+                            //         child: Column(
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.start,
+                            //           children: [
+                            //             Text(snapshot.data[index].title,
+                            //                 style: Theme.of(context)
+                            //                     .textTheme
+                            //                     .subtitle1),
+                            //             SizedBox(height: 3),
+                            //             Text(
+                            //               snapshot.data[index].tag,
+                            //               style: Theme.of(context)
+                            //                   .textTheme
+                            //                   .caption,
+                            //             )
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        )),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      PlayVideoPage(
+                                        videoToPlay: snapshot.data[index],
+                                      )));
+                        },
+                      );
+                    },
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          }),
+    );
   }
 
   Widget topLeftText(String source, String type) {
