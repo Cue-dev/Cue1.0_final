@@ -1,3 +1,4 @@
+import 'package:Cue/screen/dialog/create_saved_list_dialog.dart';
 import 'package:Cue/services/database.dart';
 import 'package:Cue/services/loading.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _MyPageState extends State<MyPage> {
                       color: Theme.of(context).secondaryHeaderColor,
                       thickness: 1,
                     ),
-                    tabBarSection(mh, mw),
+                    tabBarSection(mh, mw, db),
                   ])
                 : Loading();
           }),
@@ -108,7 +109,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget tabBarSection(double mw, double mh) {
+  Widget tabBarSection(double mh, double mw, DatabaseService db) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -116,7 +117,7 @@ class _MyPageState extends State<MyPage> {
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              width: mw * 0.25,
+              width: mw * 0.4,
               child: TabBar(
                 labelStyle: Theme.of(context)
                     .textTheme
@@ -132,9 +133,9 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           Container(
-            height: mh * 0.8,
+            height: mh * 0.48,
             child: TabBarView(
-              children: <Widget>[feedTab(mw, mh), storageTab()],
+              children: <Widget>[feedTab(mh, mw), storageTab(mh, mw, db)],
             ),
           ),
         ],
@@ -142,7 +143,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget feedTab(var mw, var mh) {
+  Widget feedTab(var mh, var mw) {
     List<String> url = [
       'https://pds.joins.com/news/component/htmlphoto_mmdata/202006/12/0befd24a-58a5-48bc-9bd5-3a07fbaf3077.jpg',
       'https://mimgnews.pstatic.net/image/438/2019/08/29/201908292597_20190829184741005.jpg?type=w540',
@@ -159,24 +160,147 @@ class _MyPageState extends State<MyPage> {
           itemBuilder: (BuildContext context, int index) {
             return Container(
               width: mw * 0.49,
-              height: mh * 0.15,
-              child: Column(
-                children: [
-                  Image.network(
-                    url[index],
-                    fit: BoxFit.fitHeight,
-                  ),
-                  Text(title[index])
-                ],
+              height: mh * 0.1,
+              child: Image.network(
+                url[index],
+                fit: BoxFit.fitHeight,
               ),
             );
           }),
     );
   }
 
-  Widget storageTab() {
-    return Container(
-      color: Theme.of(context).primaryColor,
+  Widget storageTab(double mh, double mw, DatabaseService db) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: mw * 0.02),
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: mh * 0.02),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: mh * 0.04,
+                  width: mw * 0.5,
+                  child: TabBar(
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).secondaryHeaderColor),
+                    labelColor: Theme.of(context).primaryColor,
+                    labelStyle: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
+                    indicatorColor: Colors.transparent,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text("영상+대본")),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border:
+                                  Border.all(color: Colors.white, width: 1)),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          child: Align(
+                              alignment: Alignment.center, child: Text("대본")),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border:
+                                  Border.all(color: Colors.white, width: 1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: mh * 0.4,
+              child: TabBarView(
+                children: <Widget>[
+                  savedVideoTab(mh, mw, db),
+                  savedScriptTab(mh, mw)
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget savedVideoTab(double mh, double mw, DatabaseService db) {
+    return StreamBuilder(
+      stream: db.userCollection
+          .doc(db.uid)
+          .collection('savedVideoList')
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Loading();
+        } else {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: mw * 0.01),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: ListView(
+                    itemExtent: mh * 0.055,
+                    shrinkWrap: true,
+                    children: snapshot.data.docs.map<Widget>((value) {
+                      return ListTile(
+                        title: Align(
+                            alignment: FractionalOffset.topLeft,
+                            child: Text(value.id)),
+                        onTap: () {
+                          print('s');
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(
+                  height: mh * 0.03,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: mw * 0.05,
+                    ),
+                    InkWell(
+                      child: Text(
+                        '+ 저장 목록 추가',
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CreateSavedListDialog();
+                            });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget savedScriptTab(double mh, double mw) {
+    return Container();
   }
 }
