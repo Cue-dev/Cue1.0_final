@@ -19,7 +19,7 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       'name': nickName,
       'description': description,
-      'follwing': 0,
+      'following': 0,
       'follower': 0,
     });
   }
