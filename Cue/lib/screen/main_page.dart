@@ -3,6 +3,7 @@ import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/video/playlist_page.dart';
 import 'package:flutter/material.dart';
+import 'package:Cue/screen/popular_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -41,14 +42,12 @@ class _MainPageState extends State<MainPage> {
             },
             children: <Widget>[
               PlayListPage(),
-              Container(
-                color: Colors.red,
-              ),
+              PopularPage(),
               // MyHomePage(),
               Container(
                 color: Colors.orange,
               ),
-              // CloudStorageDemo(),
+              //CloudStorageDemo(),
               Container(
                 color: Colors.yellow,
               ),

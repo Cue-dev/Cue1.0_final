@@ -282,13 +282,9 @@ PODS:
     - Flutter
     - mobile-ffmpeg-full (= 4.4.LTS)
     - "tau_sound_core (= 7.7.0+1)"
-  - flutter_ui_mode_manager (0.0.1):
-    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
-  - fullscreen (0.0.1):
-    - Flutter
   - GoogleDataTransport (8.1.0):
     - nanopb (~> 2.30906.0)
   - GoogleUtilities/AppDelegateSwizzler (7.2.2):
@@ -349,8 +345,6 @@ PODS:
   - Toast (4.0.0)
   - video_player (0.0.1):
     - Flutter
-  - wakelock (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
@@ -361,14 +355,11 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
-  - flutter_ui_mode_manager (from `.symlinks/plugins/flutter_ui_mode_manager/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - fullscreen (from `.symlinks/plugins/fullscreen/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - screen (from `.symlinks/plugins/screen/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
-  - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
 SPEC REPOS:
   trunk:
@@ -409,12 +400,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
-  flutter_ui_mode_manager:
-    :path: ".symlinks/plugins/flutter_ui_mode_manager/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
-  fullscreen:
-    :path: ".symlinks/plugins/fullscreen/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -423,8 +410,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/screen/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
-  wakelock:
-    :path: ".symlinks/plugins/wakelock/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -441,11 +426,9 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: d50e11039e5984d92c8a512be2395f13df747350
   FirebaseFirestore: 1906bf163afdb7c432d2e3b5c40ceb9dd2df5820
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_sound: 59e9c51c4c99929802126173ebd2a455e6da4156
-  flutter_ui_mode_manager: 30f3559398eafa8a3c2d71a8b5763c59bd81a4e8
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
-  fullscreen: d93e707e6b36120f20e64e2f814ee0726164e70b
   GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
@@ -461,7 +444,6 @@ SPEC CHECKSUMS:
   tau_sound_core: 1e9d022afef6dd319e20dfc9de46d0d2c5ea2b80
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
-  wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
