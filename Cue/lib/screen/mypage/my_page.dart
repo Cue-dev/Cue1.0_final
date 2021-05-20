@@ -286,7 +286,7 @@ class _MyPageState extends State<MyPage> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return CreateSavedListDialog();
+                              return CreateSavedListDialog(isVideo: true);
                             });
                       },
                     ),
