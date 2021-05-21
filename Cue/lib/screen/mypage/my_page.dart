@@ -253,6 +253,9 @@ class _MyPageState extends State<MyPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: mh * 0.02,
+                ),
                 Flexible(
                   child: ListView(
                     itemExtent: mh * 0.055,
@@ -262,6 +265,7 @@ class _MyPageState extends State<MyPage> {
                         title: Align(
                             alignment: FractionalOffset.topLeft,
                             child: Text(value.id)),
+                        trailing: Icon(Icons.navigate_next),
                         onTap: () {
                           print('s');
                         },
