@@ -3,6 +3,7 @@ import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/dialog/cue_dialog.dart';
 import 'package:Cue/screen/video/playlist_page.dart';
+import 'package:Cue/screen/video/uploadvideo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Cue/screen/popular_page.dart';
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Cue/screen/video/uploadvideo_page.dart';
 import 'package:camera/camera.dart';
 import 'package:Cue/screen/Cam/record_check.dart';
 import 'package:Cue/screen/main_page.dart';
@@ -280,8 +281,9 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   void _onStopButtonPressed() {
     setState(() {
-      _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+      _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     });
+    UploadVideoPage();
     _stopVideoRecording().then((_) {
       if (mounted) setState(() {});
     });
