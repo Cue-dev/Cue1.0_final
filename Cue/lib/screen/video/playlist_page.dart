@@ -298,7 +298,7 @@ class _PlayListPageState extends State<PlayListPage> {
   void saveDialog(BuildContext context, double mw, double mh, var video) async {
     await showDialog(
       context: context,
-      barrierDismissible: true, // user must tap button!
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
             insetPadding: EdgeInsets.only(top: mh * 0.63),
