@@ -278,10 +278,10 @@ PODS:
     - FirebaseCore (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
   - Flutter (1.0.0)
-  - "flutter_sound (7.7.0+1)":
+  - flutter_sound (7.8.4):
     - Flutter
     - mobile-ffmpeg-full (= 4.4.LTS)
-    - "tau_sound_core (= 7.7.0+1)"
+    - tau_core (= 7.8.4)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -341,7 +341,7 @@ PODS:
   - PromisesObjC (1.2.12)
   - screen (0.0.1):
     - Flutter
-  - "tau_sound_core (7.7.0+1)"
+  - tau_core (7.8.4)
   - Toast (4.0.0)
   - video_player (0.0.1):
     - Flutter
@@ -380,7 +380,7 @@ SPEC REPOS:
     - mobile-ffmpeg-full
     - nanopb
     - PromisesObjC
-    - tau_sound_core
+    - tau_core
     - Toast
 
 EXTERNAL SOURCES:
@@ -427,7 +427,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 1906bf163afdb7c432d2e3b5c40ceb9dd2df5820
   FirebaseStorage: 5002b1895bfe74a5ce92ad54f966e6162d0da2e5
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_sound: 59e9c51c4c99929802126173ebd2a455e6da4156
+  flutter_sound: 0eaefa47c8c809e57ac05991c186a6c7b06251df
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
@@ -441,7 +441,7 @@ SPEC CHECKSUMS:
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  tau_sound_core: 1e9d022afef6dd319e20dfc9de46d0d2c5ea2b80
+  tau_core: 71db80d2aad606dc43a2606b000dcd9a1dadd863
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
 

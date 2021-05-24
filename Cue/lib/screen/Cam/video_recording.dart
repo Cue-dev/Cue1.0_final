@@ -106,7 +106,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                             child: Text('박새로이', style: TextStyle(color: Colors.black),),
                           ), // TODO : 배역 받아 넘기
                         )
-                      ],
+                     ],
                     ),
                   ),
                 ),
@@ -280,7 +280,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   void _onStopButtonPressed() {
     setState(() {
-      _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+      _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
     });
     _stopVideoRecording().then((_) {
       if (mounted) setState(() {});
@@ -350,7 +350,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                         child: Text("${script[sKey]}",
                             style: TextStyle(color: Colors.white,fontSize: 15)),
                       ),
-                      SizedBox(height: 100),
+                      SizedBox(height:MediaQuery.of(context).size.height*0.2),
                     ],
                   )),
             ),
