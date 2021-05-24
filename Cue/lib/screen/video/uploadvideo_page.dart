@@ -1,200 +1,116 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:Cue/screen/main_page.dart';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:Cue/services/loading.dart';
-// import 'package:Cue/services/database.dart';
-// import 'package:Cue/screen/login/login_page.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
-// CloudStorageDemoState pageState;
+class UploadVideoPage extends StatefulWidget {
+  @override
+  UploadVideoPageState createState() {
+    return UploadVideoPageState();
+  }
+}
 
-// class CloudStorageDemo extends StatefulWidget {
-//   @override
-//   CloudStorageDemoState createState() {
-//     pageState = CloudStorageDemoState();
-//     return pageState;
-//   }
-// }
+class UploadVideoPageState extends State<UploadVideoPage> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _expController = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+  File _image;
+  String title = '';
+  bool public = true;
+  bool participation = true;
+  bool _loading = false;
 
-// class CloudStorageDemoState extends State<CloudStorageDemo> {
-//   TextEditingController _titleController = TextEditingController();
-//   TextEditingController _expController = TextEditingController();
-//   final _formkey = GlobalKey<FormState>();
-//   File _image;
-//   String title = '';
-//   bool public = true;
-//   bool participation = true;
-//   bool _loading = false;
+  @override
+  Widget build(BuildContext context) {
+    final double mh = MediaQuery.of(context).size.height;
+    final double mw = MediaQuery.of(context).size.width;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final double mh = MediaQuery.of(context).size.height;
-//     final double mw = MediaQuery.of(context).size.width;
-
-//     return _loading
-//         ? Loading()
-//         : Scaffold(
-//             body: SingleChildScrollView(
-//               child: Form(
-//                 key: _formkey,
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: <Widget>[
-//                     Container(
-//                       height: MediaQuery.of(context).size.width,
-//                       width: MediaQuery.of(context).size.width,
-//                       child: Center(
-//                         child: RaisedButton(
-//                           child: Text("갤러리"),
-//                           onPressed: () {},
-//                         ),
-//                       ),
-//                     ),
-//                     Divider(
-//                       color: Colors.grey,
-//                     ),
-//                     Padding(
-//                       padding: EdgeInsets.fromLTRB(
-//                           mw * 0.012, mh * 0.007, mw * 0.012, mh * 0.007),
-//                       child: TextFormField(
-//                         validator: (value) {
-//                           if (value.isEmpty) {
-//                             return '제목을 입력하세요!';
-//                           } else
-//                             return null;
-//                         },
-//                         controller: _titleController,
-//                         decoration: InputDecoration(
-//                           hintText: '제목',
-//                         ),
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding: EdgeInsets.fromLTRB(
-//                           mw * 0.012, mh * 0.007, mw * 0.012, mh * 0.007),
-//                       child: TextFormField(
-//                         validator: (value) {
-//                           if (value.isEmpty) {
-//                             return '설명을 입력하세요!';
-//                           } else
-//                             return null;
-//                         },
-//                         controller: _expController,
-//                         decoration: InputDecoration(
-//                           hintText: '설명',
-//                         ),
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding: EdgeInsets.fromLTRB(
-//                           mw * 0.036, mh * 0.022, mw * 0.036, mh * 0.022),
-//                       child: Row(
-//                         children: <Widget>[
-//                           Text('공개'),
-//                           Switch(
-//                             value: public,
-//                             onChanged: (value) {
-//                               setState(() {
-//                                 public == false
-//                                     ? public = true
-//                                     : public = false;
-//                               });
-//                             },
-//                             activeTrackColor: Colors.lightGreenAccent,
-//                             activeColor: Colors.green,
-//                           ),
-//                           SizedBox(
-//                             width: mw * 0.024,
-//                           ),
-//                           Text('참여하기'),
-//                           Switch(
-//                             value: participation,
-//                             onChanged: (value) {
-//                               setState(() {
-//                                 participation == false
-//                                     ? participation = true
-//                                     : participation = false;
-//                               });
-//                             },
-//                             activeTrackColor: Colors.lightGreenAccent,
-//                             activeColor: Colors.green,
-//                           ),
-//                           SizedBox(
-//                             width: mw * 0.12,
-//                           ),
-//                           FlatButton(
-//                             child: Icon(
-//                               Icons.arrow_upward,
-//                               color: Colors.black,
-//                               // size: mw * 0.73,
-//                               size: 30,
-//                             ),
-//                             onPressed: () async {
-//                               if (_formkey.currentState.validate()) {
-//                                 setState(() {
-//                                   _loading = true;
-//                                 });
-//                                 _uploadVideo(ImageSource.gallery);
-//                                 if (!_loading) {
-//                                   Navigator.push(
-//                                       context,
-//                                       MaterialPageRoute(
-//                                           builder: (BuildContext context) =>
-//                                               MainPage()));
-//                                 }
-//                               }
-//                             },
-//                           ),
-//                         ],
-//                       ),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           );
-//   }
-
-//   void _uploadVideo(ImageSource source) async {
-//     // final DateTime now = DateTime.now();
-//     // final String month = now.month.toString();
-//     // final String date = now.day.toString();
-//     // final String hour = now.hour.toString();
-//     // final String minute = now.minute.toString();
-//     // final String second = now.second.toString();
-//     // final String uploadTime = ('$month월$date일 $hour:$minute:$second');
-
-//     // ignore: deprecated_member_use
-//     final file = await ImagePicker.pickVideo(source: source);
-
-//     if (file == null) return;
-//     setState(() {
-//       _image = file;
-//     });
-
-//     StorageReference ref = FirebaseStorage.instance
-//         .ref()
-//         .child("videos")
-//         .child('${_titleController.text}:${user.uid}');
-
-//     StorageUploadTask uploadTask =
-//         ref.putFile(file, StorageMetadata(contentType: 'video/mp4'));
-
-//     await uploadTask.onComplete;
-
-//     String downloadUrl = await ref.getDownloadURL();
-
-//     final String videoURL = downloadUrl.toString();
-
-//     if (user != null) {
-//       await DatabaseService(uid: user.uid).createVideoData(
-//           _titleController.text, user.uid, _expController.text, videoURL);
-//     }
-
-//     setState(() {
-//       _loading = false;
-//     });
-//   }
-// }
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: [
+                    TextButton(child: Text('취소', style:TextStyle(color: Colors.white),), onPressed:() {
+                      Navigator.pop(context);
+                    },),
+                    Spacer(),
+                    TextButton(child: Text('업로드', style:TextStyle(color: Colors.white),), onPressed:() {},),
+                  ],
+                )
+              ),
+              Container(
+                height: mh * 0.35,
+                width: mw,
+                color: Colors.grey,// video insert
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: mw * 0.02, top: mh * 0.025),
+                child: Container(
+                  height: mh * 0.05,
+                  child: TextFormField(
+                    controller: _titleController,
+                    decoration: new InputDecoration.collapsed(
+                          hintText: '제목 입력'
+                    ),
+                  ),
+                ),
+              ),
+              Divider(color:Colors.white), // TODO 색깔
+              Padding(
+                padding: EdgeInsets.only(left: mw * 0.02, top: mh * 0.025),
+                child: Container(
+                  height: mh * 0.15,
+                  child: TextFormField(
+                    controller: _expController,
+                    decoration: new InputDecoration.collapsed(
+                        hintText: '내용 입력'
+                    ),
+                  ),
+                ),
+              ),
+              Divider(color:Colors.white), // TODO 색깔
+              Container(
+                child: Column(
+                  children: [
+                    Text('업로드 설정', style: TextStyle(color: Colors.white),),
+                    Container(
+                      child: Row(
+                        children: [
+                          Text('공개범위',style: TextStyle(color: Colors.white),),
+                          Container(
+                              width: mw*0.03, height: mh*0.04,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
+                              child:Center( child:Text('공개',style: TextStyle(color: Colors.black),),)
+                          ),
+                          Container(
+                              width: mw*0.03, height: mh*0.04,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
+                              child:Center( child:Text('비공개',style: TextStyle(color: Colors.black),),)
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          Text('같이하기 활성화',style: TextStyle(color: Colors.white),),
+                          Spacer(),
+                          Text('켬',style: TextStyle(color: Colors.white),),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
