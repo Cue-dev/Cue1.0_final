@@ -261,14 +261,13 @@ class _MyPageState extends State<MyPage> {
                     itemExtent: mh * 0.055,
                     shrinkWrap: true,
                     children: snapshot.data.docs.map<Widget>((value) {
-                      return ListTile(
+                      // TODO: nested listview
+                      return ExpansionTile(
                         title: Align(
                             alignment: FractionalOffset.topLeft,
                             child: Text(value.id)),
                         trailing: Icon(Icons.navigate_next),
-                        onTap: () {
-                          print('s');
-                        },
+                        // children: showSavedVideoList(db, value.id),
                       );
                     }).toList(),
                   ),
@@ -307,4 +306,13 @@ class _MyPageState extends State<MyPage> {
   Widget savedScriptTab(double mh, double mw) {
     return Container();
   }
+
+  // List<Widget> showSavedVideoList(DatabaseService db, String listName) {
+  //   return db.userCollection
+  //       .doc(db.uid)
+  //       .collection('savedVideoList')
+  //       .doc(listName)
+  //       .collection(listName)
+  //       .get().then((value) => value.docs.map((doc) => ListTile(title: Text(doc.id),)) );
+  // }
 }
