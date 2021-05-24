@@ -203,6 +203,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             ],
           ),
           Divider(),
+          //TODO: 렌더링 오버플로. 대본 접을때 생김. Flexible..? 활용해볼까..
           ConfigurableExpansionTile(
             header: Container(
               width: mw,
@@ -239,7 +240,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             },
             children: [showScript(context, widget.videoToPlay.script, mh, mw)],
           ),
-          _isExpanded ? Container() : challengeSection(),
+          _isExpanded ? Container() : challengeSection(mh, mw),
         ],
       ),
       //     } else {
@@ -322,15 +323,58 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
     );
   }
 
-  Widget challengeSection() {
-    return Column(
-      children: [
-        Divider(),
-        //TODO : 도전영상들 띄우기
-        Center(
-          child: Text('challenge videos'),
-        )
-      ],
+  Widget challengeSection(double mh, double mw) {
+    //TODO : 도전영상들 보여주기 말고 진짜로 띄우기...
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Divider(),
+          SizedBox(
+            height: mh * 0.01,
+          ),
+          Text("도전영상"),
+          SizedBox(
+            height: mh * 0.01,
+          ),
+          Container(
+            height: mh * 0.3,
+            child: ListView(
+              children: [
+                personTile(mh, mw, "1.png", "딕션 연습(첫 영상)", "2일 전", "미연 배우"),
+                personTile(mh, mw, "2.png", "표정연기좀 봐주세요!", "1주 전", "김영우 배우"),
+                personTile(mh, mw, "3.png", "대본 없는 첫 연기", "3일 전", "예원 배우"),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget personTile(double mh, double mw, String image, String title,
+      String date, String uploader) {
+    return ListTile(
+      leading:
+          AspectRatio(aspectRatio: 16 / 9, child: Image.asset('images/$image')),
+      title: Text(title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            date,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          SizedBox(
+            height: mh * 0.01,
+          ),
+          Text(
+            uploader,
+            style: Theme.of(context).textTheme.bodyText1,
+          )
+        ],
+      ),
     );
   }
 }
