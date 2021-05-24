@@ -91,6 +91,10 @@ flutter:
     - icons/공유.png
     - icons/취소.png
     - icons/라이브러리.png
+    # 임시
+    - images/1.png
+    - images/2.png
+    - images/3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
