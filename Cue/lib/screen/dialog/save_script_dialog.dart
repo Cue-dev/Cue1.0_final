@@ -1,4 +1,4 @@
-import 'package:Cue/screen/dialog/create_script_list_dialog.dart';
+import 'package:Cue/screen/dialog/create_saved_list_dialog.dart';
 import 'package:Cue/services/auth_provider.dart';
 import 'package:Cue/services/database.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,8 @@ class _SaveScriptDialogState extends State<SaveScriptDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final double mh = MediaQuery.of(context).size.height;
+    final double mw = MediaQuery.of(context).size.width;
     String uid = Provider.of<AuthProvider>(context).getUID;
     DatabaseService db = DatabaseService(uid: uid);
 
@@ -42,20 +44,26 @@ class _SaveScriptDialogState extends State<SaveScriptDialog> {
             snapshot.data.docs.forEach((doc) =>
                 savedList.contains(doc.id) ? null : savedList.add(doc.id));
             for (int i = 0; i < savedList.length; i++) checked.add(false);
-            return savedListSection();
+            return savedListSection(mh, mw);
           }),
       actions: <Widget>[
         FlatButton(
           child: Text(
             '취소',
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                .copyWith(color: Colors.grey),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         FlatButton(
-          child: Text('확인'),
+          child: Text(
+            '저장',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
           onPressed: () async {
             for (int j = 0; j < savedList.length; j++) {
               checked[j]
@@ -70,9 +78,10 @@ class _SaveScriptDialogState extends State<SaveScriptDialog> {
     );
   }
 
-  Widget savedListSection() {
+  Widget savedListSection(double mh, double mw) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (int i = 0; i < savedList.length; i++)
             Row(children: [
@@ -90,19 +99,26 @@ class _SaveScriptDialogState extends State<SaveScriptDialog> {
                 savedList[i],
               ),
             ]),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          InkWell(
-            child: Text(
-              '+ 저장 목록 추가',
-              style: TextStyle(color: Theme.of(context).accentColor),
-            ),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CreateScriptListDialog();
-                  });
-            },
+          SizedBox(height: mh * 0.02),
+          Row(
+            children: [
+              SizedBox(
+                width: mw * 0.05,
+              ),
+              InkWell(
+                child: Text(
+                  '+ 저장 목록 추가',
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CreateSavedListDialog(isVideo: false);
+                      });
+                },
+              ),
+            ],
           ),
         ],
       ),

@@ -1,4 +1,3 @@
-import 'package:Cue/screen/Cam/camera_alone.dart';
 import 'package:Cue/screen/Cam/record_dubbing.dart';
 import 'package:Cue/screen/Cam/video_recording.dart';
 import 'package:Cue/services/reference_video.dart';
@@ -66,6 +65,7 @@ class _CueDialogState extends State<CueDialog> {
             SizedBox(
               height: mh * 0.25,
             ),
+            //TODO: 이거 버튼으로 바꿔야지
             InkWell(
               child: Text('Cue! 를 하려면 여기를 탭 해주세요!'),
               onTap: () {

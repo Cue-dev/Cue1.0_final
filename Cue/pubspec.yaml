@@ -40,6 +40,7 @@ dependencies:
   #audioplayers: ^0.17.4
   flutter_sound: ^7.5.3+1 #dubbing.dart
   # neeko: ^0.0.10
+  flutter_search_bar: ^2.1.0
   neeko:
     git:
       url: https://github.com/Cue-dev/neeko.git
@@ -89,6 +90,7 @@ flutter:
     - icons/섀도잉.png
     - icons/공유.png
     - icons/취소.png
+    - icons/라이브러리.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
