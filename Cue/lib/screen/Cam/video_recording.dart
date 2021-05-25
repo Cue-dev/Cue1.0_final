@@ -33,6 +33,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
   final _isHours = true;
   bool _videoplay = false;
   bool _scriptplay = false;
+  bool cue = false;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     // onChange: (value) => print('onChange $value'),
@@ -136,7 +137,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                         child: Transform.scale(
                           scale: 3,
                           child: IconButton(
-                              icon: ImageIcon(AssetImage('icons/큐.png')),
+                              icon: cue == true ? ImageIcon(AssetImage('icons/큐.png')) : ImageIcon(AssetImage('icons/큐_활성.png')),
                               onPressed: () {
                                 controller != null && controller.value.isInitialized && !controller.value.isRecordingVideo
                                     ? _onRecordButtonPressed() : _onStopButtonPressed();
@@ -272,6 +273,7 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   void _onRecordButtonPressed() {
     setState(() {
+      cue = true;
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
     });
     _startVideoRecording().then((String filePath) {
@@ -281,9 +283,13 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   void _onStopButtonPressed() {
     setState(() {
+      cue = false;
       _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     });
-    UploadVideoPage();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => UploadVideoPage()));
     _stopVideoRecording().then((_) {
       if (mounted) setState(() {});
     });
@@ -331,17 +337,17 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
           String sKey = script.keys.elementAt(index * 2 + 1);
           return ListTile(
             title: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Container(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
+                        padding: EdgeInsets.only(right: 8.0),
                         child: Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
                           child: Padding(
-                            padding: const EdgeInsets.all(3.0),
+                            padding: EdgeInsets.all(3.0),
                             child: Text("${script[aKey]}",
                                 style: TextStyle(color: Colors.black,fontSize: 10)),
                           ),

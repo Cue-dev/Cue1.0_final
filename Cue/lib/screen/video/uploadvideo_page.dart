@@ -76,19 +76,22 @@ class UploadVideoPageState extends State<UploadVideoPage> {
               Divider(color:Colors.white), // TODO 색깔
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('업로드 설정', style: TextStyle(color: Colors.white),),
+                    SizedBox(height: mh*0.03),
                     Container(
                       child: Row(
                         children: [
-                          Text('공개범위',style: TextStyle(color: Colors.white),),
+                          Text('공개범위',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          Spacer(),
                           Container(
-                              width: mw*0.03, height: mh*0.04,
+                              width: mw*0.09, height: mh*0.03,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
                               child:Center( child:Text('공개',style: TextStyle(color: Colors.black),),)
                           ),
                           Container(
-                              width: mw*0.03, height: mh*0.04,
+                              width: mw*0.12, height: mh*0.03,
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
                               child:Center( child:Text('비공개',style: TextStyle(color: Colors.black),),)
                           ),
@@ -98,7 +101,7 @@ class UploadVideoPageState extends State<UploadVideoPage> {
                     Container(
                       child: Row(
                         children: [
-                          Text('같이하기 활성화',style: TextStyle(color: Colors.white),),
+                          Text('같이하기 활성화',style: TextStyle(color: Colors.white,fontSize: 18),),
                           Spacer(),
                           Text('켬',style: TextStyle(color: Colors.white),),
                         ],
