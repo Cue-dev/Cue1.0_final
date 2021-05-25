@@ -12,6 +12,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference videoCollection =
       FirebaseFirestore.instance.collection('videos');
+  final CollectionReference userVideoCollection =
+      FirebaseFirestore.instance.collection('UserVideos');
   // final DocumentReference videoListDocument =
   //     FirebaseFirestore.instance.collection('users').doc(uid).collection('saved').doc('savedVideoList')
 

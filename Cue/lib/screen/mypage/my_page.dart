@@ -143,7 +143,7 @@ class _MyPageState extends State<MyPage> {
           Container(
             height: mh * 0.48,
             child: TabBarView(
-              children: <Widget>[feedTab(mh, mw), storageTab(mh, mw, db)],
+              children: <Widget>[feedTab(mh, mw, db), storageTab(mh, mw, db)],
             ),
           ),
         ],
@@ -151,30 +151,35 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget feedTab(var mh, var mw) {
-    List<String> url = [
-      'https://pds.joins.com/news/component/htmlphoto_mmdata/202006/12/0befd24a-58a5-48bc-9bd5-3a07fbaf3077.jpg',
-      'https://mimgnews.pstatic.net/image/438/2019/08/29/201908292597_20190829184741005.jpg?type=w540',
-      'https://img.etnews.com/news/article/2018/02/02/cms_temp_article_02112847612319.jpg'
-    ];
+  Widget feedTab(var mh, var mw, DatabaseService db) {
+    List<String> url = [];
 
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: GridView.builder(
-          gridDelegate:
-              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemCount: 3,
-          itemBuilder: (BuildContext context, int index) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: db.userVideoCollection
+            .where('uploader', isEqualTo: db.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Loading();
+          else {
             return Container(
-              width: mw * 0.49,
-              height: mh * 0.1,
-              child: Image.network(
-                url[index],
-                fit: BoxFit.fitHeight,
-              ),
+              color: Theme.of(context).primaryColor,
+              child: GridView.builder(
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(
+                        snapshot.data.docs[index].data()['thumbnailURL'],
+                        fit: BoxFit.fitHeight,
+                      ),
+                    );
+                  }),
             );
-          }),
-    );
+          }
+        });
   }
 
   Widget storageTab(double mh, double mw, DatabaseService db) {
@@ -231,7 +236,7 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
             Container(
-              height: mh * 0.4,
+              height: mh * 0.42,
               child: TabBarView(
                 children: <Widget>[
                   savedVideoTab(mh, mw, db),
@@ -304,7 +309,9 @@ class _MyPageState extends State<MyPage> {
                                   return Loading();
                                 } else {
                                   return Container(
-                                    height: mh * 0.03,
+                                    height: mh * 0.05,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: mw * 0.05),
                                     child: ListView.builder(
                                       itemCount: listSnap.data.docs.length,
                                       itemBuilder:
@@ -313,6 +320,7 @@ class _MyPageState extends State<MyPage> {
                                                     .trim() !=
                                                 "getListName"
                                             ? Container(
+                                                height: mh * 0.05,
                                                 child: Text(
                                                     listSnap.data.docs[idx].id))
                                             : Container();
