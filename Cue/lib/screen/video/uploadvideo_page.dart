@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Cue/screen/video/playlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -39,7 +40,12 @@ class UploadVideoPageState extends State<UploadVideoPage> {
                       Navigator.pop(context);
                     },),
                     Spacer(),
-                    TextButton(child: Text('업로드', style:TextStyle(color: Colors.white),), onPressed:() {},),
+                    TextButton(child: Text('업로드', style:TextStyle(color: Colors.white),), onPressed:() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => PlayListPage()));
+                    },),
                   ],
                 )
               ),
@@ -78,22 +84,33 @@ class UploadVideoPageState extends State<UploadVideoPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('업로드 설정', style: TextStyle(color: Colors.white),),
+                    Text('업로드 설정', style: TextStyle(color: Colors.white,fontSize: 13),),
                     SizedBox(height: mh*0.03),
                     Container(
                       child: Row(
                         children: [
-                          Text('공개범위',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          Text('공개범위',style: TextStyle(color: Colors.white,fontSize: 16),),
                           Spacer(),
-                          Container(
-                              width: mw*0.09, height: mh*0.03,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
-                              child:Center( child:Text('공개',style: TextStyle(color: Colors.black),),)
+                          ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: public == true ? Colors.white : Colors.grey, // background
+                                  onPrimary: Colors.black, // foreground
+                                ),
+                                child:Center( child:Text('공개')),
+                                onPressed: (){ setState(() {
+                                  public == true ? public = false : public = true;
+                                });},
                           ),
-                          Container(
-                              width: mw*0.12, height: mh*0.03,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
-                              child:Center( child:Text('비공개',style: TextStyle(color: Colors.black),),)
+                          ElevatedButton(
+                            //width: mw*0.09, height: mh*0.03,
+                            style: ElevatedButton.styleFrom(
+                              primary: public == false ? Colors.white : Colors.grey, // background
+                              onPrimary: Colors.black, // foreground
+                            ),
+                            child:Center( child:Text('비공개')),
+                            onPressed: (){setState(() {
+                              public == true ? public = false : public = true;
+                            });},
                           ),
                         ],
                       ),
@@ -101,9 +118,14 @@ class UploadVideoPageState extends State<UploadVideoPage> {
                     Container(
                       child: Row(
                         children: [
-                          Text('같이하기 활성화',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          Text('같이하기 활성화',style: TextStyle(color: Colors.white,fontSize: 16),),
                           Spacer(),
-                          Text('켬',style: TextStyle(color: Colors.white),),
+                          TextButton(
+                            child: Text(participation == true? '켬' : '끔', style: TextStyle(color: Colors.white),),
+                            onPressed: (){setState(() {
+                              participation == true ? participation = false : participation = true;
+                            });}
+                          ),
                         ],
                       ),
                     ),
