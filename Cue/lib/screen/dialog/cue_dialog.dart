@@ -97,9 +97,6 @@ class _CueDialogState extends State<CueDialog> {
     List<Widget> filterChips = List();
     List<Widget> choiceChips = List();
 
-    print(_actorOptions);
-    print(_selected);
-
     for (int i = 0; i < widget.videoToPlay.script.keys.length ~/ 2; i++) {
       FilterChip filterChip = FilterChip(
         selected: _selected[i],

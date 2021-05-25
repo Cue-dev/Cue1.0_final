@@ -36,33 +36,32 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
   bool cue = false;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
-    // onChange: (value) => print('onChange $value'),
-  );
+      // onChange: (value) => print('onChange $value'),
+      );
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   TextEditingController videoTitleController = TextEditingController();
   final String uploadTime =
-  ('${DateTime.now().year.toString()}:${DateTime.now().month.toString()}:${DateTime.now().day.toString()} ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}:${DateTime.now().second.toString()}');
-
+      ('${DateTime.now().year.toString()}:${DateTime.now().month.toString()}:${DateTime.now().day.toString()} ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}:${DateTime.now().second.toString()}');
 
   @override
   void initState() {
     super.initState();
     videocontroller =
-    VideoPlayerController.network(widget.originalVideo.videoURL)
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+        VideoPlayerController.network(widget.originalVideo.videoURL)
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
     // Get the listonNewCameraSelected of available cameras.
     // Then set the first camera as selected.
     availableCameras().then((availableCameras) {
       cameras = availableCameras;
       setState(() {
-          selectedCameraIdx = 1;
-        });
+        selectedCameraIdx = 1;
+      });
 
       _onCameraSwitched(cameras[selectedCameraIdx]).then((void v) {});
     }).catchError((err) {
@@ -78,112 +77,148 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
       body: Stack(
         children: <Widget>[
           Container(
-          child: Center(
-                child: Container(
-                  child: _cameraPreviewWidget(),
-                ),
+            child: Center(
+              child: Container(
+                child: _cameraPreviewWidget(),
               ),
+            ),
           ),
           Container(
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top:20.0),
+                  padding: const EdgeInsets.only(top: 20.0),
                   child: Container(
                     child: Row(
                       children: [
                         IconButton(
                           icon: Icon(Icons.navigate_before),
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.25),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.25),
                         _recordingTimer(),
                         Spacer(),
                         Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey,),
-                          child : Padding(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey,
+                          ),
+                          child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('박새로이', style: TextStyle(color: Colors.black),),
+                            child: Text(
+                              '박새로이',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ), // TODO : 배역 받아 넘기
                         )
-                     ],
+                      ],
                     ),
                   ),
                 ),
                 Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 100.0),
-                  child:Row(
+                  child: Row(
                     children: [
-                      SizedBox(width: MediaQuery.of(context).size.width*0.07),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.07),
                       InkWell(
-                      child:Text('16:9',style: TextStyle(color: Colors.white)),
-                      onTap: () {}
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.06),
+                          child: Text('16:9',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {}),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.06),
                       InkWell(
-                          child:Text('4:3',style: TextStyle(color: Colors.grey)),
-                          onTap: () {}
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.06),
+                          child:
+                              Text('4:3', style: TextStyle(color: Colors.grey)),
+                          onTap: () {}),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.06),
                       InkWell(
-                          child:Text('1:1',style: TextStyle(color: Colors.grey)),
-                          onTap: () {}
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.07),
+                          child:
+                              Text('1:1', style: TextStyle(color: Colors.grey)),
+                          onTap: () {}),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.07),
                       Container(
                         child: Transform.scale(
                           scale: 3,
                           child: IconButton(
-                              icon: cue == true ? ImageIcon(AssetImage('icons/큐.png')) : ImageIcon(AssetImage('icons/큐_활성.png')),
+                              icon: cue == true
+                                  ? ImageIcon(AssetImage('icons/큐.png'))
+                                  : ImageIcon(AssetImage('icons/큐_활성.png')),
                               onPressed: () {
-                                controller != null && controller.value.isInitialized && !controller.value.isRecordingVideo
-                                    ? _onRecordButtonPressed() : _onStopButtonPressed();
+                                controller != null &&
+                                        controller.value.isInitialized &&
+                                        !controller.value.isRecordingVideo
+                                    ? _onRecordButtonPressed()
+                                    : _onStopButtonPressed();
                                 setState(() {
-                                  videocontroller.value.isPlaying ? videocontroller.pause() : videocontroller.play();
+                                  videocontroller.value.isPlaying
+                                      ? videocontroller.pause()
+                                      : videocontroller.play();
                                 });
                               }),
                         ),
                       ),
                       Spacer(),
-                      _scriptplay == false?
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,side:BorderSide(color: Colors.white) ),
-                        child: Text('대본', style: TextStyle(color: Colors.white),),
-                        onPressed: () {
-                        setState(() {_scriptplay = true;});
-                        },
-                      ):
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        primary: Colors.white),
-                        child: Text('대본', style: TextStyle(color: Colors.grey),),
-                        onPressed: () {
-                          setState(() {_scriptplay = false;});
-                        },
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.02),
-                      _videoplay == false?
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,side:BorderSide(color: Colors.white) ),
-                        child: Text('영상', style: TextStyle(color: Colors.white),),
-                        onPressed: () {
-                          setState(() {_videoplay = true;});
-                        },
-                      ):
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white),
-                        child: Text('영상', style: TextStyle(color: Colors.grey),),
-                        onPressed: () {
-                          setState(() {_videoplay = false;});
-                        },
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.05),
+                      _scriptplay == false
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  side: BorderSide(color: Colors.white)),
+                              child: Text(
+                                '대본',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _scriptplay = true;
+                                });
+                              },
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.white),
+                              child: Text(
+                                '대본',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _scriptplay = false;
+                                });
+                              },
+                            ),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                      _videoplay == false
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  side: BorderSide(color: Colors.white)),
+                              child: Text(
+                                '영상',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _videoplay = true;
+                                });
+                              },
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.white),
+                              child: Text(
+                                '영상',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _videoplay = false;
+                                });
+                              },
+                            ),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                     ],
                   ),
                 ),
@@ -192,27 +227,30 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
           ),
           _videoplay == true
               ? Padding(
-            padding: const EdgeInsets.only(top: 90.0, left: 10),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              height: MediaQuery.of(context).size.height * 0.15,
-              child: videocontroller.value.initialized
-                  ? AspectRatio(
-                aspectRatio: videocontroller.value.aspectRatio,
-                child: VideoPlayer(videocontroller),
-              )
-                  : Container(),
-            ),
-          )
+                  padding: const EdgeInsets.only(top: 90.0, left: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    child: videocontroller.value.initialized
+                        ? AspectRatio(
+                            aspectRatio: videocontroller.value.aspectRatio,
+                            child: VideoPlayer(videocontroller),
+                          )
+                        : Container(),
+                  ),
+                )
               : Container(),
           _scriptplay == true
               ? Padding(
-            padding: const EdgeInsets.only(top: 630, left: 10.0, right: 10.0),
-            child: Container(
-                height: MediaQuery.of(context).size.height * 0.07,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black26),
-                child: showScript(context, widget.originalVideo.script)),
-          )
+                  padding:
+                      const EdgeInsets.only(top: 630, left: 10.0, right: 10.0),
+                  child: Container(
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black26),
+                      child: showScript(context, widget.originalVideo.script)),
+                )
               : Container(),
         ],
       ),
@@ -237,18 +275,23 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
       child: CameraPreview(controller),
     );
   }
+
   Widget _recordingTimer() {
     return StreamBuilder<int>(
-          stream: _stopWatchTimer.rawTime,
-          initialData: _stopWatchTimer.rawTime.value,
-          builder: (context, snap) {
-            final value = snap.data;
-            final displayTime = StopWatchTimer.getDisplayTime(value, hours: _isHours);
-            return Text(displayTime, style: TextStyle(color: Colors.white, fontSize: 20),
-            );
-            },
+      stream: _stopWatchTimer.rawTime,
+      initialData: _stopWatchTimer.rawTime.value,
+      builder: (context, snap) {
+        final value = snap.data;
+        final displayTime =
+            StopWatchTimer.getDisplayTime(value, hours: _isHours);
+        return Text(
+          displayTime,
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        );
+      },
     );
   }
+
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   Future<void> _onCameraSwitched(CameraDescription cameraDescription) async {
@@ -281,18 +324,45 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
     });
   }
 
-  void _onStopButtonPressed() {
+  void _onStopButtonPressed() async {
+    String uploadedURL = '';
     setState(() {
       cue = false;
       _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     });
+
+    await _stopVideoRecording().then((_) async {
+      if (mounted)
+        // setState(() {
+        uploadedURL = await addUser();
+      // });
+    });
+
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => UploadVideoPage()));
-    _stopVideoRecording().then((_) {
-      if (mounted) setState(() {});
+            builder: (BuildContext context) => UploadVideoPage(
+                  originalVideo: widget.originalVideo,
+                  uploadedURL: uploadedURL,
+                )));
+  }
+
+  Future<String> addUser() async {
+    String url;
+
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("userVideos")
+        .child(uploadTime);
+
+    firebase_storage.UploadTask uploadTask = ref.putFile(File(videoPath));
+    await uploadTask.whenComplete(() async {
+      url = await ref.getDownloadURL();
     });
+    // String downloadUrl = await ref.getDownloadURL();
+    // final String url = downloadUrl.toString();
+    // videoRecordurl = url;
+    return url;
   }
 
   Future<String> _startVideoRecording() async {
@@ -331,39 +401,41 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
 
   Widget showScript(BuildContext context, var script) {
     return ListView.builder(
-        itemCount: script.keys.length ~/ 2,
-        itemBuilder: (context, int index) {
-          String aKey = script.keys.elementAt(index * 2);
-          String sKey = script.keys.elementAt(index * 2 + 1);
-          return ListTile(
-            title: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white),
-                          child: Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: Text("${script[aKey]}",
-                                style: TextStyle(color: Colors.black,fontSize: 10)),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width:MediaQuery.of(context).size.width * 0.55,
-                        child: Text("${script[sKey]}",
-                            style: TextStyle(color: Colors.white,fontSize: 15)),
-                      ),
-                      SizedBox(height:MediaQuery.of(context).size.height*0.2),
-                    ],
-                  )),
-            ),
-          );
-        },
+      itemCount: script.keys.length ~/ 2,
+      itemBuilder: (context, int index) {
+        String aKey = script.keys.elementAt(index * 2);
+        String sKey = script.keys.elementAt(index * 2 + 1);
+        return ListTile(
+          title: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+                child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white),
+                    child: Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Text("${script[aKey]}",
+                          style: TextStyle(color: Colors.black, fontSize: 10)),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Text("${script[sKey]}",
+                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+              ],
+            )),
+          ),
+        );
+      },
     );
   }
 }

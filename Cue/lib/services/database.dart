@@ -92,15 +92,24 @@ class DatabaseService {
     });
   }
 
-  // Future createVideoData(String title, String uploader, String url) async {
-  //   return await videoCollection.doc('$title:${user.uid}').set({
-  //     'title': title,
-  //     'likes': 0,
-  //     'views': 0,
-  //     'uploader': uploader,
-  //     'videoURL': url,
-  //   });
-  // }
+  Future uploadUserVideo(String title, String description, bool public,
+      bool join, ReferenceVideo video, String userVideoURL) async {
+    return await userVideoCollection.doc('$title:$uid').set({
+      'title': title,
+      'description': description,
+      'source': video.source,
+      'type': video.type,
+      'uploader': uid,
+      'tag': '#연기연습', // TODO: 해쉬태그 기능
+      'length': video.length,
+      'views': 0,
+      'likes': 0,
+      'public': public,
+      'join': join,
+      'thumbnailURL': video.thumbnailURL,
+      'videoURL': userVideoURL,
+    });
+  }
 }
 
 Future getVideoSnapshots() async {
