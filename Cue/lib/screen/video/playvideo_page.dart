@@ -1,4 +1,6 @@
 // import 'dart:async';
+import 'package:Cue/screen/dialog/save_script_dialog.dart';
+import 'package:Cue/screen/dialog/save_video_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:Cue/screen/dialog/cue_dialog.dart';
 import 'package:Cue/services/reference_video.dart';
@@ -165,7 +167,9 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                         icon: ImageIcon(
                           AssetImage('icons/대본저장.png'),
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          saveScriptDialog(context, widget.videoToPlay);
+                        }),
                   ),
                   _isExpanded ? Container() : Text('대본만 저장'),
                 ],
@@ -176,7 +180,9 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                       icon: ImageIcon(
                         AssetImage('icons/영상대본저장.png'),
                       ),
-                      onPressed: () {}),
+                      onPressed: () {
+                        saveVideoDialog(context, widget.videoToPlay);
+                      }),
                   _isExpanded ? Container() : Text('영상+대본 저장'),
                 ],
               ),
@@ -203,7 +209,6 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
             ],
           ),
           Divider(),
-          //TODO: 렌더링 오버플로. 대본 접을때 생김. Flexible..? 활용해볼까..
           ConfigurableExpansionTile(
             header: Container(
               width: mw,
@@ -296,7 +301,7 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
 
   Widget showScript(BuildContext context, Map script, double mh, double mw) {
     return Container(
-      height: _isExpanded ? mh * 0.345 : mh * 0.2,
+      height: _isExpanded ? mh * 0.345 : 0,
       width: mw,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,
@@ -325,31 +330,31 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
 
   Widget challengeSection(double mh, double mw) {
     //TODO : 도전영상들 보여주기 말고 진짜로 띄우기...
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Divider(),
-          SizedBox(
-            height: mh * 0.01,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(),
+        SizedBox(
+          height: mh * 0.01,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: mw * 0.05),
+          child: Text("도전영상"),
+        ),
+        SizedBox(
+          height: mh * 0.01,
+        ),
+        Container(
+          height: mh * 0.3,
+          child: ListView(
+            children: [
+              personTile(mh, mw, "1.png", "딕션 연습(첫 영상)", "2일 전", "미연 배우"),
+              personTile(mh, mw, "2.png", "표정연기좀 봐주세요!", "1주 전", "김영우 배우"),
+              personTile(mh, mw, "3.png", "대본 없는 첫 연기", "3일 전", "예원 배우"),
+            ],
           ),
-          Text("도전영상"),
-          SizedBox(
-            height: mh * 0.01,
-          ),
-          Container(
-            height: mh * 0.3,
-            child: ListView(
-              children: [
-                personTile(mh, mw, "1.png", "딕션 연습(첫 영상)", "2일 전", "미연 배우"),
-                personTile(mh, mw, "2.png", "표정연기좀 봐주세요!", "1주 전", "김영우 배우"),
-                personTile(mh, mw, "3.png", "대본 없는 첫 연기", "3일 전", "예원 배우"),
-              ],
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -376,5 +381,25 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
         ],
       ),
     );
+  }
+
+  void saveVideoDialog(BuildContext context, ReferenceVideo videoToSave) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SaveVideoDialog(videoToSave: videoToSave);
+        });
+  }
+
+  void saveScriptDialog(
+      BuildContext context, ReferenceVideo videoToSaveScript) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SaveScriptDialog(
+              scriptSource: videoToSaveScript.source,
+              scriptTitle: videoToSaveScript.title,
+              scriptToSave: videoToSaveScript.script);
+        });
   }
 }
