@@ -1,6 +1,7 @@
 import 'package:Cue/screen/dialog/create_saved_list_dialog.dart';
 import 'package:Cue/services/database.dart';
 import 'package:Cue/services/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Cue/services/auth_provider.dart';
@@ -11,6 +12,13 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  //TODO: 이거 리스트 갯수 50개로 제한함. 이걸 고치거나 리스트 개수를 제한하는 코드를 추가하거나.
+  final List<bool> _isExpanded = List<bool>(50);
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     String uid = Provider.of<AuthProvider>(context).getUID;
@@ -149,7 +157,6 @@ class _MyPageState extends State<MyPage> {
       'https://mimgnews.pstatic.net/image/438/2019/08/29/201908292597_20190829184741005.jpg?type=w540',
       'https://img.etnews.com/news/article/2018/02/02/cms_temp_article_02112847612319.jpg'
     ];
-    List<String> title = ['급박한 상황, 약간의 액션..', '사랑, 남자친구와 함께 영..', '첫 연기 도전!'];
 
     return Container(
       color: Theme.of(context).primaryColor,
@@ -256,20 +263,76 @@ class _MyPageState extends State<MyPage> {
                 SizedBox(
                   height: mh * 0.02,
                 ),
-                Flexible(
-                  child: ListView(
-                    itemExtent: mh * 0.055,
-                    shrinkWrap: true,
-                    children: snapshot.data.docs.map<Widget>((value) {
-                      // TODO: nested listview
-                      return ExpansionTile(
-                        title: Align(
-                            alignment: FractionalOffset.topLeft,
-                            child: Text(value.id)),
-                        trailing: Icon(Icons.navigate_next),
-                        // children: showSavedVideoList(db, value.id),
+                Container(
+                  height: mh * 0.3,
+                  child: ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ExpansionPanelList(
+                        children: [
+                          // TODO: 패널사이즈..
+                          ExpansionPanel(
+                            canTapOnHeader: true,
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) {
+                              return Padding(
+                                padding: EdgeInsets.only(left: mw * 0.03),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    snapshot.data.docs[index].id,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline2
+                                        .copyWith(fontSize: 18),
+                                  ),
+                                ),
+                              );
+                            },
+                            isExpanded: _isExpanded[index] == null
+                                ? false
+                                : _isExpanded[index],
+                            body: StreamBuilder(
+                              stream: db.userCollection
+                                  .doc(db.uid)
+                                  .collection('savedVideoList')
+                                  .doc(snapshot.data.docs[index].id)
+                                  .collection(snapshot.data.docs[index].id)
+                                  .snapshots(),
+                              builder: (context, listSnap) {
+                                if (!listSnap.hasData) {
+                                  return Loading();
+                                } else {
+                                  return Container(
+                                    height: mh * 0.03,
+                                    child: ListView.builder(
+                                      itemCount: listSnap.data.docs.length,
+                                      itemBuilder:
+                                          (BuildContext context, int idx) {
+                                        return listSnap.data.docs[idx].id
+                                                    .trim() !=
+                                                "getListName"
+                                            ? Container(
+                                                child: Text(
+                                                    listSnap.data.docs[idx].id))
+                                            : Container();
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                        expansionCallback: (int item, bool status) {
+                          setState(() {
+                            _isExpanded[index] == null
+                                ? _isExpanded[index] = true
+                                : _isExpanded[index] = !_isExpanded[index];
+                          });
+                        },
                       );
-                    }).toList(),
+                    },
                   ),
                 ),
                 SizedBox(
@@ -308,11 +371,22 @@ class _MyPageState extends State<MyPage> {
   }
 
   // List<Widget> showSavedVideoList(DatabaseService db, String listName) {
-  //   return db.userCollection
+  //   List<Widget> savedVideoTile = [];
+
+  //   db.userCollection
   //       .doc(db.uid)
   //       .collection('savedVideoList')
   //       .doc(listName)
   //       .collection(listName)
-  //       .get().then((value) => value.docs.map((doc) => ListTile(title: Text(doc.id),)) );
+  //       .get()
+  //       .then((value) => value.docs.forEach((doc) => print(doc.id)
+  //           // doc.id.trim() != "getListName"
+  //           //     ? savedVideoTile.add(ListTile(
+  //           //         title: Text(doc.id),
+  //           //       ))
+  //           //     : null
+  //           ));
+
+  //   return savedVideoTile;
   // }
 }
