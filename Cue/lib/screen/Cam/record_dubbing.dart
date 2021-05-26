@@ -129,7 +129,7 @@ class _DubbingPageState extends State<DubbingPage> {
         ? record
         : () {
       stopRecorder().then((value) => setState(() {
-        _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+        _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
         videocontroller.pause();
 
       }));
@@ -264,23 +264,6 @@ class _DubbingPageState extends State<DubbingPage> {
       ),
     );
   }
-
-  String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
-
-  void _onRecordButtonPressed() {
-    setState(() {
-      _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-      //  _mRecorder.isRecording;
-    });
-  }
-
-  void _onStopButtonPressed() {
-    setState(() {
-      _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
-      //   _mRecorder.isStopped;
-    });
-  }
-
   Widget showScript(BuildContext context, var script) {
     return Container(
       color: Colors.black,
