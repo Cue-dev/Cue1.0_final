@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:Cue/screen/uservideo_dialog.dart';
-import 'package:Cue/screen/video/playvideo_page.dart';
-import 'package:Cue/services/user_video_provider.dart';
+import 'package:Cue/services/feed_test.dart';
+import 'package:Cue/services/feed_test_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Cue/services/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:Cue/services/user_video.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key}) : super(key: key);
@@ -17,9 +15,8 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  Stream<List<UserVideo>> listVideos;
+  Stream<List<FeedTest>> listVideos;
   List<String> videoURLs = List();
-  TextEditingController _textEditingController = TextEditingController();
 
   void clearHistory() {
     videoURLs.clear();
@@ -31,8 +28,8 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     final double mh = MediaQuery.of(context).size.height;
     final double mw = MediaQuery.of(context).size.width;
-    final userVideoModel =
-    Provider.of<UserVideoModel>(context, listen: false);
+    final feedTestModel =
+    Provider.of<FeedTestModel>(context, listen: false);
 
     return _loading
         ? Loading()
@@ -61,9 +58,9 @@ class _FeedPageState extends State<FeedPage> {
         ],
       ),
       body: FutureBuilder(
-          future: userVideoModel.loadUserVideos(),
+          future: feedTestModel.loadFeedTests(),
           builder:
-              (context, AsyncSnapshot<List<UserVideo>> snapshot) {
+              (context, AsyncSnapshot<List<FeedTest>> snapshot) {
             return snapshot.hasData
                 ? ListView.separated(
               separatorBuilder: (context, index) => SizedBox(),
@@ -82,13 +79,13 @@ class _FeedPageState extends State<FeedPage> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        return UserVideoDialog(
-                                          videoToPlay: snapshot.data[index],
-                                        );
-                                      });
+//                                  showDialog(
+//                                      context: context,
+//                                      builder: (_) {
+//                                        return FeedTestDialog(
+//                                          videoToPlay: snapshot.data[index],
+//                                        );
+//                                      });
                                 },
                                 child: Container(
                                   height: mh * 0.24,
@@ -111,15 +108,15 @@ class _FeedPageState extends State<FeedPage> {
                                     snapshot.data[index].profileURL,
                                     snapshot.data[index].uploader
                                 ),
-                                top: mh * 0.02,
-                                left: mw * 0.05,
+                                top: mh * 0.01,
+                                left: mw * 0.03,
                               ),
                               Positioned(
                                 child: bottomLeftText(
                                   snapshot.data[index].views,
                                 ),
                                 bottom: mh * 0.02,
-                                left: mw * 0.05,
+                                left: mw * 0.03,
                               ),
                               Positioned(
                                 child: IconButton(
@@ -131,8 +128,8 @@ class _FeedPageState extends State<FeedPage> {
                                       menuDialog(context, mw, mh,
                                           snapshot.data[index]);
                                     }),
-                                top: mh * 0.01,
-                                right: mw * 0.005,
+                                top: mh * 0.001,
+                                right: mw * 0.001,
                               ),
                               Positioned(
                                 child: bottomRightText(
