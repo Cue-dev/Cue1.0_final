@@ -1,7 +1,9 @@
 // import 'package:Cue/screen/Cam/cue_ready.dart';
+import 'package:Cue/screen/Cam/ready_dialog.dart';
 import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/dialog/cue_dialog.dart';
+import 'package:Cue/screen/feed_page.dart';
 import 'package:Cue/screen/video/playlist_page.dart';
 import 'package:Cue/screen/video/uploadvideo_page.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +50,7 @@ class _MainPageState extends State<MainPage> {
               // MyHomePage(),
               Container(),
               //CloudStorageDemo(),
-              Container(
-                color: Colors.yellow,
-              ),
+              FeedPage(),
               MyPage(),
             ],
           ),

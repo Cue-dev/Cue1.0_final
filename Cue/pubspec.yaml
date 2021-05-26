@@ -39,6 +39,7 @@ dependencies:
   permission_handler: ^5.0.1 #dubbing recoder request
   audioplayers: ^0.17.4
   flutter_sound: ^7.5.3+1 #dubbing.dart
+  animations: ^2.0.0
   # neeko: ^0.0.10
   flutter_search_bar: ^2.1.0
   neeko:
@@ -95,7 +96,7 @@ flutter:
     - images/1.png
     - images/2.png
     - images/3.png
-
+    - icons/녹음.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
