@@ -137,40 +137,84 @@ class _PlayListPageState extends State<PlayListPage> {
                                         )
                                       : Container(color: Colors.black),
                                 ),
-                                Positioned(
-                                  child: topLeftText(
-                                      snapshot.data[index].source,
-                                      snapshot.data[index].type),
-                                  top: mh * 0.02,
-                                  left: mw * 0.05,
-                                ),
-                                Positioned(
-                                  child: bottomLeftText(
-                                      snapshot.data[index].tag,
-                                      snapshot.data[index].title,
-                                      snapshot.data[index].views,
-                                      snapshot.data[index].challenges),
-                                  bottom: mh * 0.02,
-                                  left: mw * 0.05,
-                                ),
-                                Positioned(
-                                  child: IconButton(
-                                      iconSize: 15,
-                                      icon: ImageIcon(
-                                        AssetImage('icons/메뉴.png'),
+                                Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.black54,
+                                            Colors.black12,
+                                          ],
+                                        )
                                       ),
-                                      onPressed: () {
-                                        saveDialog(context, mw, mh,
-                                            snapshot.data[index]);
-                                      }),
-                                  top: mh * 0.01,
-                                  right: mw * 0.005,
-                                ),
-                                Positioned(
-                                  child: bottomRightText(
-                                      snapshot.data[index].length),
-                                  bottom: mh * 0.02,
-                                  right: mw * 0.05,
+                                    child :Padding(
+                                      padding: EdgeInsets.only(left: mw*0.03, top: mh*0.008),
+                                      child: Row(
+                                        children: [
+                                          Positioned(
+                                            child: topLeftText(
+                                                snapshot.data[index].source,
+                                                snapshot.data[index].type),
+                                            top: mh * 0.02,
+                                            left: mw * 0.05,
+                                          ),
+                                          Spacer(),
+                                          Positioned(
+                                            child: IconButton(
+                                                iconSize: 15,
+                                                icon: ImageIcon(
+                                                  AssetImage('icons/메뉴.png'),
+                                                ),
+                                                onPressed: () {
+                                                  saveDialog(context, mw, mh,
+                                                      snapshot.data[index]);
+                                                }),
+                                            top: mh * 0.01,
+                                            right: mw * 0.005,
+                                          ),
+                                        ],
+                                      ),
+                                    ),),
+                                    SizedBox(height: mh*0.178),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.black12,
+                                              Colors.black54,
+                                            ],
+                                          )
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left:mw*0.02, right:mw*0.03),
+                                        child: Row(
+                                          children: [
+                                            Positioned(
+                                              child: bottomLeftText(
+                                                  snapshot.data[index].tag,
+                                                  snapshot.data[index].title,
+                                                  snapshot.data[index].views,
+                                                  snapshot.data[index].challenges),
+                                              bottom: mh * 0.02,
+                                              left: mw * 0.05,
+                                            ),
+                                            Spacer(),
+                                            Positioned(
+                                              child: bottomRightText(
+                                                  snapshot.data[index].length),
+                                              bottom: mh * 0.02,
+                                              right: mw * 0.05,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -245,41 +289,41 @@ class _PlayListPageState extends State<PlayListPage> {
   Widget bottomLeftText(
       List<String> tag, String title, int views, int challenges) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            for (int i = 0; i < tag.length; i++)
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              for (int i = 0; i < tag.length; i++)
+                Text(
+                  tag[i] + ' ',
+                  style: Theme.of(context).textTheme.caption,
+                ),
+            ],
+          ),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          Text(
+            '',
+            style: TextStyle(fontSize: 5),
+          ),
+          Row(
+            children: [
               Text(
-                tag[i] + ' ',
-                style: Theme.of(context).textTheme.caption,
+                '조회 ' + views.toString(),
+                style: Theme.of(context).textTheme.subtitle2,
               ),
-          ],
-        ),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        Text(
-          '',
-          style: TextStyle(fontSize: 5),
-        ),
-        Row(
-          children: [
-            Text(
-              '조회 ' + views.toString(),
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              '도전 ' + challenges.toString(),
-              style: Theme.of(context).textTheme.subtitle2,
-            )
-          ],
-        ),
-      ],
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                '도전 ' + challenges.toString(),
+                style: Theme.of(context).textTheme.subtitle2,
+              )
+            ],
+          ),
+        ],
     );
   }
 

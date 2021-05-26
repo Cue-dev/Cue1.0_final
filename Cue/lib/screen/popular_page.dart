@@ -109,10 +109,10 @@ class _PopularPageState extends State<PopularPage> {
                               Positioned(
                                 child: topLeftText(
                                     snapshot.data[index].profileURL,
-                                    snapshot.data[index].uploader
+                                    snapshot.data[index].nickname
                                 ),
-                                top: mh * 0.02,
-                                left: mw * 0.05,
+                                top: mh * 0.01,
+                                left: mw * 0.03,
                               ),
                               Positioned(
                                 child: bottomLeftText(
@@ -131,8 +131,8 @@ class _PopularPageState extends State<PopularPage> {
                                       menuDialog(context, mw, mh,
                                           snapshot.data[index]);
                                     }),
-                                top: mh * 0.01,
-                                right: mw * 0.005,
+                                top: mh * 0.0001,
+                                right: mw * 0.003,
                               ),
                               Positioned(
                                 child: bottomRightText(
@@ -155,7 +155,7 @@ class _PopularPageState extends State<PopularPage> {
                                         onPressed: () {
 
                                         }),
-                                    Text('${snapshot.data[index].likes == null ? 0 : snapshot.data[index].likes}명이 좋아합니다.', style: TextStyle(fontSize: mw*0.03),),
+                                    Text( snapshot.data[index].likes == 0 ? '아직 좋아요가 없습니다' : '${snapshot.data[index].likes}명이 좋아합니다.', style: TextStyle(fontSize: mw*0.03),),
                                     Spacer(),
                                     snapshot.data[index].join == true?
                                     InkWell(
