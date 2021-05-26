@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
               PlayListPage(),
               PopularPage(),
               // MyHomePage(),
-              Container(),
+              Container(color: Colors.black,),
               //CloudStorageDemo(),
               FeedPage(),
               MyPage(),
