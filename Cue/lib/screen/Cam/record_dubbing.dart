@@ -38,9 +38,7 @@ class _DubbingPageState extends State<DubbingPage> {
   );
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-  TextEditingController videoTitleController = TextEditingController();
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final String uploadTime =
   ('${DateTime.now().year.toString()}:${DateTime.now().month.toString()}:${DateTime.now().day.toString()} ${DateTime.now().hour.toString()}:${DateTime.now().minute.toString()}:${DateTime.now().second.toString()}');
 
@@ -115,7 +113,7 @@ class _DubbingPageState extends State<DubbingPage> {
     firebase_storage.Reference ref = firebase_storage
         .FirebaseStorage.instance
         .ref()
-        .child("product")
+        .child("userDubbing")
         .child(uploadTime);
 
     firebase_storage.UploadTask uploadTask =
@@ -145,43 +143,90 @@ class _DubbingPageState extends State<DubbingPage> {
       body:
       Column(
         children: [
-          Container(
-            child: videocontroller.value.initialized
-                ? ColorFiltered(
-                child: AspectRatio(
-                  aspectRatio: videocontroller.value.aspectRatio,
-                  child: VideoPlayer(videocontroller),
-                ),
-                colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation,),)
-                : Container(),
+          Stack(
+           children: <Widget>[
+             Container(
+              child: videocontroller.value.initialized
+                  ? //ColorFiltered(
+                 // child:
+                  AspectRatio(
+                    aspectRatio: videocontroller.value.aspectRatio,
+                    child: VideoPlayer(videocontroller),
+                  )
+                 // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.saturation,),)
+                  : Container(),
+            ),
+             Padding(
+               padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+               child: Container(
+                 child: Row(
+                   children: [
+                     IconButton(
+                       icon: Icon(Icons.navigate_before),
+                       onPressed: () {
+                         Navigator.pop(context);
+                       },
+                     ),
+                     Spacer(),
+                     Container(
+                       decoration: BoxDecoration(
+                         borderRadius: BorderRadius.circular(10),
+                         color: Colors.grey,
+                       ),
+                       child: Padding(
+                         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                         child: Text(
+                           '박새로이',
+                           style: TextStyle(color: Colors.black),
+                         ),
+                       ), // TODO : 배역 받아 넘기기
+                     ),
+                     SizedBox(
+                         width: MediaQuery.of(context).size.width * 0.02),
+                   ],
+                 ),
+               ),
+             ),
+           ]
           ),
           showScript(context, widget.originalVideo.script),
-          Center(
-            child: StreamBuilder<int>(
-              stream: _stopWatchTimer.rawTime,
-              initialData: _stopWatchTimer.rawTime.value,
-              builder: (context, snap) {
-                final value = snap.data;
-                final displayTime =
-                StopWatchTimer.getDisplayTime(value, hours: _isHours);
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        displayTime,
-                        style: TextStyle(
-//                              fontSize: 10,
-//                              fontFamily: 'Helvetica',
-//                              fontWeight: FontWeight.bold
-                            color: Colors.white,
-                            fontSize: 20),
-                      ),
+          Container(
+           child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Container(
+                      child: Transform.scale(
+                      scale: 1.1,
+                      child: Image.asset('icons/녹음.png')
+                      )
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top : MediaQuery.of(context).size.height * 0.23),
+                  child: Center(
+                    child: StreamBuilder<int>(
+                      stream: _stopWatchTimer.rawTime,
+                      initialData: _stopWatchTimer.rawTime.value,
+                      builder: (context, snap) {
+                        final value = snap.data;
+                        final displayTime =
+                        StopWatchTimer.getDisplayTime(value, hours: _isHours);
+                        return Column(
+                          children: <Widget>[
+                             Text(
+                                displayTime,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20),
+                              ),
+                          ],
+                        );
+                      },
                     ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                ),
+              ]
+           )
           ),
           _captureControlRowWidget(),
         ],
@@ -193,31 +238,26 @@ class _DubbingPageState extends State<DubbingPage> {
   Widget _captureControlRowWidget() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.12),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-//              IconButton(
-//                  icon: const Icon(Icons.radio_button_checked, size: 70),
-//                  color: Colors.orange,
-//                  onPressed: () {
-//                    getRecorderFn();
-//                    setState(() {
-//                      videocontroller.value.isPlaying
-//                          ? videocontroller.pause()
-//                          : videocontroller.play();
-//                    });
-//                  }
-////                  : null,
-//              ),
-              IconButton(
+              Container(
+              child: Transform.scale(
+                scale: 3,
+                child: IconButton(
                   onPressed:getRecorderFn(),
                   color: Colors.white,
                   disabledColor: Colors.grey,
-                  icon: _mRecorder.isRecording ? const Icon(Icons.radio_button_checked) :  const Icon(Icons.radio_button_unchecked)),
+                  icon: _mRecorder.isRecording
+                      ? ImageIcon(AssetImage('icons/큐_활성.png'),color: Colors.yellow)
+                      : ImageIcon(AssetImage('icons/큐.png')),
+              )
+              )
+              )
             ],
           ),
         ),
@@ -240,75 +280,48 @@ class _DubbingPageState extends State<DubbingPage> {
       //   _mRecorder.isStopped;
     });
   }
-//  void showAlertDialog(BuildContext context) async {
-//    String result = await showDialog(
-//      context: context,
-//      barrierDismissible: false, // user must tap button!
-//      builder: (BuildContext context) {
-//        return AlertDialog(
-//          title: Text('보관함 저장'),
-//          content: Column(
-//            children: [
-//              Container(
-//                child: TextField(
-//                  controller: videoTitleController,
-//                  decoration: InputDecoration(
-//                    hintText: '제목',
-//                  ),
-//                ),
-//              ),
-//              Text('보관함 위치'),
-//            ],
-//          ),
-//          actions: <Widget>[
-//            FlatButton(
-//              child: Text('저장 안 함'),
-//              onPressed: () {
-//                Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                        builder: (BuildContext context) => MainPage()));
-//              },
-//            ),
-//            FlatButton(
-//              child: Text('저장'),
-//              onPressed: () async {
-//                await addUser();
-//                Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                        builder: (BuildContext context) => RecordCheckPage(
-//                            originalVideo: widget.originalVideo,
-//                            recordVideo: recordurl)));
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
 
   Widget showScript(BuildContext context, var script) {
     return Container(
-      color: Colors.white,
-      height: MediaQuery.of(context).size.height * 0.35,
+      color: Colors.black,
+      height: MediaQuery.of(context).size.height * 0.25,
       child: ListView.builder(
         itemCount: script.keys.length ~/ 2,
         itemBuilder: (context, int index) {
           String aKey = script.keys.elementAt(index * 2);
           String sKey = script.keys.elementAt(index * 2 + 1);
           return ListTile(
-            title: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("${script[aKey]}",
-                        style: TextStyle(color: Colors.grey)),
-                    Text("${script[sKey].replaceAll('\\n', '\n')}",
-                        style: TextStyle(color: Colors.black)),
-                    SizedBox(height: 100),
-                  ],
-                )),
+            title:Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+              child: Container(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white),
+                          child: Padding(
+                            padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.005, bottom: MediaQuery.of(context).size.height * 0.005),
+                            child: Center(
+                              child: Text("${script[aKey]}",
+                                  style: TextStyle(color: Colors.black, fontSize: 13)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: Text("${script[sKey]}",
+                            style: TextStyle(color: Colors.white, fontSize: 15)),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                    ],
+                  )),
+            ),
           );
         },
       ),
