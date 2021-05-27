@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:Cue/screen/Cam/ready_dialog.dart';
-import 'package:Cue/screen/Cam/script_dialog.dart';
+import 'package:Cue/screen/dialog/ready_dialog.dart';
+import 'package:Cue/screen/dialog/script_dialog.dart';
+import 'package:Cue/screen/dialog/wait_dialog.dart';
 import 'package:Cue/screen/video/uploadvideo_page.dart';
+import 'package:Cue/services/loading.dart';
 import 'package:camera/camera.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +90,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
                   child: Container(
                     child: Row(
                       children: [
@@ -108,7 +111,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                             color: Colors.grey,
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 0.02),
                             child: Text(
                               '박새로이',
                               style: TextStyle(color: Colors.black),
@@ -121,7 +125,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                 ),
                 Spacer(),
                 Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.1),
                   child: Row(
                     children: [
                       SizedBox(width: MediaQuery.of(context).size.width * 0.07),
@@ -146,7 +151,8 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
                           child: IconButton(
                               icon: cue == false
                                   ? ImageIcon(AssetImage('icons/큐.png'))
-                                  : ImageIcon(AssetImage('icons/큐_활성.png'),color: Colors.yellow),
+                                  : ImageIcon(AssetImage('icons/큐_활성.png'),
+                                      color: Colors.yellow),
                               onPressed: () {
                                 controller != null &&
                                         controller.value.isInitialized &&
@@ -228,7 +234,9 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
           ),
           _videoplay == true
               ? Padding(
-                  padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.1, left: MediaQuery.of(context).size.width * 0.02),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.1,
+                      left: MediaQuery.of(context).size.width * 0.02),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.43,
                     height: MediaQuery.of(context).size.height * 0.13,
@@ -243,21 +251,25 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
               : Container(),
           _scriptplay == true
               ? Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.73, left:MediaQuery.of(context).size.width * 0.02, right: MediaQuery.of(context).size.width * 0.02),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.73,
+                      left: MediaQuery.of(context).size.width * 0.02,
+                      right: MediaQuery.of(context).size.width * 0.02),
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
 //                      showDialog(
 //                        context: context,
 //                        builder: (_) {
 //                          return ScriptDialog();
 //                        }); //TODO : 대본 전체 보여주기
-                      },
+                    },
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.07,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.black26),
-                        child: showScript(context, widget.originalVideo.script)),
+                        child:
+                            showScript(context, widget.originalVideo.script)),
                   ),
                 )
               : Container(),
@@ -324,13 +336,65 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
   }
 
   void _onRecordButtonPressed() {
+    showReadyCueDialog(context);
+
     setState(() {
       cue = true;
       _stopWatchTimer.onExecute.add(StopWatchExecute.start);
     });
+
     _startVideoRecording().then((String filePath) {
       if (filePath != null) {}
     });
+  }
+
+  void showReadyCueDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return FutureBuilder(
+              future: Future.delayed(Duration(milliseconds: 3000)),
+              builder: (context, snapshot) {
+// Checks whether the future is resolved, ie the duration is over
+                if (snapshot.connectionState == ConnectionState.done)
+                  return FutureBuilder(
+                      future: Future.delayed(Duration(milliseconds: 1500)),
+                      builder: (context, cueSnap) {
+                        if (cueSnap.connectionState == ConnectionState.done) {
+                          Navigator.pop(context);
+                          return Container();
+                        } else
+                          return Dialog(
+                            insetPadding: EdgeInsets.all(0),
+                            backgroundColor: Colors.transparent,
+                            child: Center(
+                              child: Text(
+                                'Cue!',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .copyWith(fontSize: 25),
+                              ),
+                            ),
+                          );
+                      });
+                else
+                  return Dialog(
+                    insetPadding: EdgeInsets.all(0),
+                    backgroundColor: Colors.transparent,
+                    child: Center(
+                      child: Text(
+                        'Ready,',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontSize: 25),
+                      ),
+                    ),
+                  ); // Return empty container to avoid build errors
+              });
+        });
   }
 
   void _onStopButtonPressed() async {
@@ -340,19 +404,24 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
       _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
     });
 
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => Loading()));
+
     await _stopVideoRecording().then((_) async {
       if (mounted)
         // setState(() {
         uploadedURL = await addUser();
       // });
     });
+    Navigator.pop(context);
+
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => UploadVideoPage(
-              originalVideo: widget.originalVideo,
-              uploadedURL: uploadedURL,
-            ))); ///TODO : 너무 느림,,,
+                  originalVideo: widget.originalVideo,
+                  uploadedURL: uploadedURL,
+                )));
   }
 
   Future<String> addUser() async {
@@ -421,13 +490,15 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                  padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.02),
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.white),
                     child: Padding(
-                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width * 0.01),
                       child: Text("${script[aKey]}",
                           style: TextStyle(color: Colors.black, fontSize: 10)),
                     ),
@@ -458,21 +529,20 @@ class _VideoRecordingPageState extends State<VideoRecordingPage> {
         return Dialog(
             insetPadding: EdgeInsets.only(top: mh * 0.02),
             child: Padding(
-              padding: EdgeInsets.all(mh * 0.015),
-              child: Column(
-                children: [
-                  Row(
-              children: [
-                Text('전체 대본'),
-                SizedBox(width: mw*0.3),
-                IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: () {
-                Navigator.pop(context);
-                },
-            )]),
-                showScript(context, script),
-        ])));
+                padding: EdgeInsets.all(mh * 0.015),
+                child: Column(children: [
+                  Row(children: [
+                    Text('전체 대본'),
+                    SizedBox(width: mw * 0.3),
+                    IconButton(
+                      icon: Icon(Icons.cancel),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ]),
+                  showScript(context, script),
+                ])));
       },
     );
   } // 전체대본
