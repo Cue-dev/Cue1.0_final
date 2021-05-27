@@ -20,7 +20,10 @@ class UserVideoModel extends ChangeNotifier {
             description: doc.data()['description'],
             source: doc.data()['source'],
             uploader: doc.data()['uploader'],
-            tag: List.from(doc.data()['tag']),
+            nickname: doc.data()['nickname'],
+            title: doc.data()['title'],
+            type: doc.data()['type'],
+            tag: doc.data()['tag'],
             length: int.tryParse(doc.data()['length'].toString()),
             views: int.tryParse(doc.data()['views'].toString()),
             likes: int.tryParse(doc.data()['likes'].toString()),
@@ -30,7 +33,7 @@ class UserVideoModel extends ChangeNotifier {
             profileURL: doc.data()['profileURL'],
             thumbnailURL: doc.data()['thumbnailURL'],
             videoURL: doc.data()['videoURL'],
-            refvideoURL: doc.data()['refvideoURL']);
+           );
         add(userVideo);
       });
     });

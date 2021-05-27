@@ -5,7 +5,7 @@ class UserVideo {
   String description;
   String source;
   String uploader;
-  List<String> tag;
+  String tag;
   int length;
   int views;
   int likes;
@@ -15,7 +15,9 @@ class UserVideo {
   String profileURL;
   String thumbnailURL;
   String videoURL;
-  String refvideoURL;
+  String title;
+  String nickname;
+  String type;
 
   VideoPlayerController controller;
 
@@ -29,9 +31,11 @@ class UserVideo {
         this.views,
         this.comments,
         this.join,
+        this.title,
+        this.type,
         this.public,
+        this.nickname,
         this.profileURL,
         this.videoURL,
-        this.thumbnailURL,
-        this.refvideoURL});
+        this.thumbnailURL});
 }
