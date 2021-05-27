@@ -1,5 +1,5 @@
 // import 'package:Cue/screen/Cam/cue_ready.dart';
-import 'package:Cue/screen/Cam/ready_dialog.dart';
+import 'package:Cue/screen/dialog/ready_dialog.dart';
 import 'package:Cue/screen/MyHomePage.dart';
 import 'package:Cue/screen/MyPage/my_page.dart';
 import 'package:Cue/screen/dialog/cue_dialog.dart';
@@ -48,7 +48,9 @@ class _MainPageState extends State<MainPage> {
               PlayListPage(),
               PopularPage(),
               // MyHomePage(),
-              Container(color: Colors.black,),
+              Container(
+                color: Colors.black,
+              ),
               //CloudStorageDemo(),
               FeedPage(),
               MyPage(),
