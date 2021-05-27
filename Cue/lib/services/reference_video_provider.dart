@@ -13,6 +13,7 @@ class ReferenceVideoModel extends ChangeNotifier {
 
     await FirebaseFirestore.instance
         .collection('ReferenceVideos')
+        .orderBy('source',descending:true) // TODO : 캡스톤 용 수정할 것!
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
