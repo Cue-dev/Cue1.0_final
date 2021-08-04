@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CueDialog extends StatefulWidget {
   final ReferenceVideo videoToPlay;
-  CueDialog({Key key, @required this.videoToPlay}) : super(key: key);
+  CueDialog({Key? key, required this.videoToPlay}) : super(key: key);
 
   @override
   _CueDialogState createState() => _CueDialogState();
@@ -16,7 +16,7 @@ class _CueDialogState extends State<CueDialog> {
   List<bool> _selected = [];
 
   List<String> _actingOptions = ['영상', '더빙'];
-  int _selectedIndex;
+  int? _selectedIndex;
 
   @override
   void initState() {
@@ -24,9 +24,9 @@ class _CueDialogState extends State<CueDialog> {
     _actorOptions.clear();
     _selected.clear();
 
-    for (int i = 0; i < widget.videoToPlay.script.keys.length ~/ 2; i++) {
+    for (int i = 0; i < widget.videoToPlay.script!.keys.length ~/ 2; i++) {
       _actorOptions
-          .add("${widget.videoToPlay.script['a' + (i + 1).toString()]}");
+          .add("${widget.videoToPlay.script!['a' + (i + 1).toString()]}");
       _selected.add(false);
     }
   }
@@ -69,24 +69,24 @@ class _CueDialogState extends State<CueDialog> {
             InkWell(
               child: Text('Cue! 를 하려면 여기를 탭 해주세요!'),
               onTap: () {
-                // TODO: 배역정한거 넘겨야함
-                if (_selectedIndex == 0)
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => VideoRecordingPage(
-                                originalVideo: widget.videoToPlay,
-                              )));
-                else if (_selectedIndex == 1)
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => DubbingPage(
-                                originalVideo: widget.videoToPlay,
-                              )));
-                else {
-                  //TODO: 영상, 혹은 더빙을 골라주세요! 라고 showDialog..?
-                }
+                // // TODO: 배역정한거 넘겨야함
+                // if (_selectedIndex == 0)
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (BuildContext context) => VideoRecordingPage(
+                //                 originalVideo: widget.videoToPlay,
+                //               )));
+                // else if (_selectedIndex == 1)
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (BuildContext context) => DubbingPage(
+                //                 originalVideo: widget.videoToPlay,
+                //               )));
+                // else {
+                //   //TODO: 영상, 혹은 더빙을 골라주세요! 라고 showDialog..?
+                // }
               },
             )
           ],
@@ -94,15 +94,15 @@ class _CueDialogState extends State<CueDialog> {
   }
 
   Widget buildDialogCenterPart() {
-    List<Widget> filterChips = List();
-    List<Widget> choiceChips = List();
+    List<Widget> filterChips = [];
+    List<Widget> choiceChips = [];
 
-    for (int i = 0; i < widget.videoToPlay.script.keys.length ~/ 2; i++) {
+    for (int i = 0; i < widget.videoToPlay.script!.keys.length ~/ 2; i++) {
       FilterChip filterChip = FilterChip(
         selected: _selected[i],
         label: Text(
           _actorOptions[i],
-          style: Theme.of(context).textTheme.headline6.copyWith(
+          style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold),
         ),
@@ -130,7 +130,7 @@ class _CueDialogState extends State<CueDialog> {
       ChoiceChip choiceChip = ChoiceChip(
         label: Text(
           _actingOptions[j],
-          style: Theme.of(context).textTheme.headline6.copyWith(
+          style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold),
         ),

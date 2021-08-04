@@ -9,7 +9,8 @@ class FeedTestModel extends ChangeNotifier {
 
   Future<List<FeedTest>> loadFeedTests() async {
     // ignore: await_only_futures
-    await _feedTests.clear();
+    // if (_feedTests.isNotEmpty)
+    //   await _feedTests.clear();
 
     await FirebaseFirestore.instance
         .collection('feedtest')
@@ -17,19 +18,19 @@ class FeedTestModel extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         FeedTest feedTest = FeedTest(
-            description: doc.data()['description'],
-            source: doc.data()['source'],
-            uploader: doc.data()['uploader'],
-            tag: List.from(doc.data()['tag']),
-            length: int.tryParse(doc.data()['length'].toString()),
-            views: int.tryParse(doc.data()['views'].toString()),
-            likes: int.tryParse(doc.data()['likes'].toString()),
-            comments: int.tryParse(doc.data()['comments'].toString()),
-            public: bool.hasEnvironment(doc.data()['public'].toString()),
-            join: bool.hasEnvironment(doc.data()['join'].toString()),
-            profileURL: doc.data()['profileURL'],
-            thumbnailURL: doc.data()['thumbnailURL'],
-            videoURL: doc.data()['videoURL']);
+            description: doc['description'],
+            source: doc['source'],
+            uploader: doc['uploader'],
+            tag: List.from(doc['tag']),
+            length: int.tryParse(doc['length'].toString()),
+            views: int.tryParse(doc['views'].toString()),
+            likes: int.tryParse(doc['likes'].toString()),
+            comments: int.tryParse(doc['comments'].toString()),
+            public: bool.hasEnvironment(doc['public'].toString()),
+            join: bool.hasEnvironment(doc['join'].toString()),
+            profileURL: doc['profileURL'],
+            thumbnailURL: doc['thumbnailURL'],
+            videoURL: doc['videoURL']);
         add(feedTest);
       });
     });

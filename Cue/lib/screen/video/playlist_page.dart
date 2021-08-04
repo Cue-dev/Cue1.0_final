@@ -13,21 +13,21 @@ import 'package:provider/provider.dart';
 import 'package:Cue/services/reference_video.dart';
 
 class PlayListPage extends StatefulWidget {
-  PlayListPage({Key key}) : super(key: key);
+  PlayListPage({Key? key}) : super(key: key);
 
   @override
   _PlayListPageState createState() => _PlayListPageState();
 }
 
 class _PlayListPageState extends State<PlayListPage> {
-  Stream<List<ReferenceVideo>> listVideos;
-  List<String> videoURLs = List();
+  Stream<List<ReferenceVideo>>? listVideos;
+  List<String> videoURLs = [];
 
   void clearHistory() {
     videoURLs.clear();
   }
 
-  SearchBar searchBar;
+  late SearchBar searchBar;
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0.0,
@@ -71,37 +71,11 @@ class _PlayListPageState extends State<PlayListPage> {
     final double mh = MediaQuery.of(context).size.height;
     final double mw = MediaQuery.of(context).size.width;
     final referenceVideoModel =
-        Provider.of<ReferenceVideoModel>(context, listen: false);
+        // Provider.of<ReferenceVideoModel>(context, listen: false);
+        context.read<ReferenceVideoModel>();
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // appBar: AppBar(
-      //   elevation: 0.0,
-      //   title: Text(
-      //     "Cue!",
-      //     style: Theme.of(context).textTheme.headline2,
-      //   ),
-      //   shape: RoundedRectangleBorder(
-      //       borderRadius:
-      //           BorderRadius.only(bottomRight: Radius.circular(30))),
-      //   actions: [
-      //     IconButton(
-      //         icon: ImageIcon(
-      //           AssetImage('icons/검색.png'),
-      //         ),
-      //         onPressed: () {
-      //           Navigator.push(
-      //               context,
-      //               MaterialPageRoute(
-      //                   builder: (BuildContext context) => SearchPage()));
-      //         }),
-      //     IconButton(
-      //         icon: ImageIcon(
-      //           AssetImage('icons/알림_유.png'),
-      //         ),
-      //         onPressed: () {}),
-      //   ],
-      // ),
       appBar: searchBar.build(context),
       body: FutureBuilder(
           future: referenceVideoModel.loadReferenceVideos(),
@@ -112,9 +86,9 @@ class _PlayListPageState extends State<PlayListPage> {
                     padding: EdgeInsets.fromLTRB(
                         mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
                     scrollDirection: Axis.vertical,
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, int index) {
-                      print(snapshot.data.length);
+                      print(snapshot.data!.length);
                       return InkWell(
                         child: Container(
                             child: Column(
@@ -125,13 +99,13 @@ class _PlayListPageState extends State<PlayListPage> {
                                 Container(
                                   height: mh * 0.31,
                                   width: mw,
-                                  child: snapshot.data[index].thumbnailURL !=
+                                  child: snapshot.data![index].thumbnailURL !=
                                           null
                                       ? ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(30),
                                           child: Image.network(
-                                            snapshot.data[index].thumbnailURL,
+                                            snapshot.data![index].thumbnailURL!,
                                             fit: BoxFit.cover,
                                           ),
                                         )
@@ -141,72 +115,74 @@ class _PlayListPageState extends State<PlayListPage> {
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.black54,
-                                            Colors.black12,
-                                          ],
-                                        )
-                                      ),
-                                    child :Padding(
-                                      padding: EdgeInsets.only(left: mw*0.03, top: mh*0.008),
-                                      child: Row(
-                                        children: [
-                                          Positioned(
-                                            child: topLeftText(
-                                                snapshot.data[index].source,
-                                                snapshot.data[index].type),
-                                            top: mh * 0.02,
-                                            left: mw * 0.05,
-                                          ),
-                                          Spacer(),
-                                          Positioned(
-                                            child: IconButton(
-                                                iconSize: 15,
-                                                icon: ImageIcon(
-                                                  AssetImage('icons/메뉴.png'),
-                                                ),
-                                                onPressed: () {
-                                                  saveDialog(context, mw, mh,
-                                                      snapshot.data[index]);
-                                                }),
-                                            top: mh * 0.01,
-                                            right: mw * 0.005,
-                                          ),
+                                          gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.black54,
+                                          Colors.black12,
                                         ],
+                                      )),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: mw * 0.03, top: mh * 0.008),
+                                        child: Row(
+                                          children: [
+                                            Positioned(
+                                              child: topLeftText(
+                                                  snapshot.data![index].source!,
+                                                  snapshot.data![index].type!),
+                                              top: mh * 0.02,
+                                              left: mw * 0.05,
+                                            ),
+                                            Spacer(),
+                                            Positioned(
+                                              child: IconButton(
+                                                  iconSize: 15,
+                                                  icon: ImageIcon(
+                                                    AssetImage('icons/메뉴.png'),
+                                                  ),
+                                                  onPressed: () {
+                                                    saveDialog(context, mw, mh,
+                                                        snapshot.data![index]);
+                                                  }),
+                                              top: mh * 0.01,
+                                              right: mw * 0.005,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),),
-                                    SizedBox(height: mh*0.178),
+                                    ),
+                                    SizedBox(height: mh * 0.178),
                                     Container(
                                       decoration: BoxDecoration(
                                           gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              Colors.black12,
-                                              Colors.black54,
-                                            ],
-                                          )
-                                      ),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.black12,
+                                          Colors.black54,
+                                        ],
+                                      )),
                                       child: Padding(
-                                        padding: EdgeInsets.only(left:mw*0.02, right:mw*0.03),
+                                        padding: EdgeInsets.only(
+                                            left: mw * 0.02, right: mw * 0.03),
                                         child: Row(
                                           children: [
                                             Positioned(
                                               child: bottomLeftText(
-                                                  snapshot.data[index].tag,
-                                                  snapshot.data[index].title,
-                                                  snapshot.data[index].views,
-                                                  snapshot.data[index].challenges),
+                                                  snapshot.data![index].tag!,
+                                                  snapshot.data![index].title!,
+                                                  snapshot.data![index].views,
+                                                  snapshot
+                                                      .data![index].challenges),
                                               bottom: mh * 0.02,
                                               left: mw * 0.05,
                                             ),
                                             Spacer(),
                                             Positioned(
-                                              child: bottomRightText(
-                                                  snapshot.data[index].length),
+                                              child: bottomRightText(snapshot
+                                                  .data![index].length!),
                                               bottom: mh * 0.02,
                                               right: mw * 0.05,
                                             ),
@@ -256,7 +232,7 @@ class _PlayListPageState extends State<PlayListPage> {
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       PlayVideoPage(
-                                        videoToPlay: snapshot.data[index],
+                                        videoToPlay: snapshot.data![index],
                                       )));
                         },
                       );
@@ -276,7 +252,7 @@ class _PlayListPageState extends State<PlayListPage> {
         Text(source,
             style: Theme.of(context)
                 .textTheme
-                .subtitle2
+                .subtitle2!
                 .copyWith(fontWeight: FontWeight.bold)),
         Text(
           type,
@@ -287,43 +263,43 @@ class _PlayListPageState extends State<PlayListPage> {
   }
 
   Widget bottomLeftText(
-      List<String> tag, String title, int views, int challenges) {
+      List<String> tag, String title, int? views, int? challenges) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              for (int i = 0; i < tag.length; i++)
-                Text(
-                  tag[i] + ' ',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-            ],
-          ),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          Text(
-            '',
-            style: TextStyle(fontSize: 5),
-          ),
-          Row(
-            children: [
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            for (int i = 0; i < tag.length; i++)
               Text(
-                '조회 ' + views.toString(),
-                style: Theme.of(context).textTheme.subtitle2,
+                tag[i] + ' ',
+                style: Theme.of(context).textTheme.caption,
               ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                '도전 ' + challenges.toString(),
-                style: Theme.of(context).textTheme.subtitle2,
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        Text(
+          '',
+          style: TextStyle(fontSize: 5),
+        ),
+        Row(
+          children: [
+            Text(
+              '조회 ' + views.toString(),
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              '도전 ' + challenges.toString(),
+              style: Theme.of(context).textTheme.subtitle2,
+            )
+          ],
+        ),
+      ],
     );
   }
 

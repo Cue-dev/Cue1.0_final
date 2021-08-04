@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:video_player/video_player.dart';
 
 class FeedTest {
-  String description;
-  String source;
-  String uploader;
-  List<String> tag;
-  int length;
-  int views;
-  int likes;
-  int comments;
-  bool public;
-  bool join;
-  String profileURL;
-  String thumbnailURL;
-  String videoURL;
+  String? description;
+  String? source;
+  String? uploader;
+  List<String>? tag;
+  int? length;
+  int? views;
+  int? likes;
+  int? comments;
+  bool? public;
+  bool? join;
+  String? profileURL;
+  String? thumbnailURL;
+  String? videoURL;
 
-  VideoPlayerController controller;
+  VideoPlayerController? controller;
 
   FeedTest(
       {this.source,

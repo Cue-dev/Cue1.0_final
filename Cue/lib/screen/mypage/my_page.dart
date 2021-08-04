@@ -13,7 +13,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   //TODO: 이거 리스트 갯수 50개로 제한함. 이걸 고치거나 리스트 개수를 제한하는 코드를 추가하거나.
-  final List<bool> _isExpanded = List<bool>(50);
+  final List<bool?> _isExpanded = List<bool?>.filled(50, null, growable: false);
   @override
   void initState() {
     super.initState();
@@ -69,7 +69,7 @@ class _MyPageState extends State<MyPage> {
                 children: [
                   Text(
                     snapshot.data['name'],
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           fontSize: 30,
                         ),
                   ),
@@ -77,7 +77,7 @@ class _MyPageState extends State<MyPage> {
                     '연기 취미생',
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1
+                        .subtitle1!
                         .copyWith(color: Colors.grey, fontSize: 16),
                   ),
                 ],
@@ -92,14 +92,14 @@ class _MyPageState extends State<MyPage> {
             '팔로워 ' + snapshot.data['follower'].toString() + '명',
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Text(
             '팔로잉 ' + snapshot.data['following'].toString() + '명',
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           SizedBox(
@@ -107,7 +107,8 @@ class _MyPageState extends State<MyPage> {
           ),
           Text(
             snapshot.data['description'],
-            style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 14),
+            style:
+                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
           ),
           SizedBox(
             height: mh * 0.01,
@@ -129,7 +130,7 @@ class _MyPageState extends State<MyPage> {
               child: TabBar(
                 labelStyle: Theme.of(context)
                     .textTheme
-                    .subtitle1
+                    .subtitle1!
                     .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
                 indicatorColor: Colors.transparent,
                 unselectedLabelColor: Colors.grey,
@@ -167,12 +168,12 @@ class _MyPageState extends State<MyPage> {
               child: GridView.builder(
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
-                  itemCount: snapshot.data.docs.length,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (BuildContext context, int index) {
                     return AspectRatio(
                       aspectRatio: 16 / 9,
                       child: Image.network(
-                        snapshot.data.docs[index].data()['thumbnailURL'],
+                        snapshot.data!.docs[index]['thumbnailURL'],
                         fit: BoxFit.fitHeight,
                       ),
                     );
@@ -204,7 +205,7 @@ class _MyPageState extends State<MyPage> {
                     labelColor: Theme.of(context).primaryColor,
                     labelStyle: Theme.of(context)
                         .textTheme
-                        .subtitle1
+                        .subtitle1!
                         .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
                     indicatorColor: Colors.transparent,
                     unselectedLabelColor: Colors.grey,
@@ -251,7 +252,7 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget savedVideoTab(double mh, double mw, DatabaseService db) {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream: db.userCollection
           .doc(db.uid)
           .collection('savedVideoList')
@@ -271,7 +272,7 @@ class _MyPageState extends State<MyPage> {
                 Container(
                   height: mh * 0.3,
                   child: ListView.builder(
-                    itemCount: snapshot.data.docs.length,
+                    itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ExpansionPanelList(
                         children: [
@@ -285,10 +286,10 @@ class _MyPageState extends State<MyPage> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    snapshot.data.docs[index].id,
+                                    snapshot.data!.docs[index].id,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline2
+                                        .headline2!
                                         .copyWith(fontSize: 18),
                                   ),
                                 ),
@@ -296,13 +297,13 @@ class _MyPageState extends State<MyPage> {
                             },
                             isExpanded: _isExpanded[index] == null
                                 ? false
-                                : _isExpanded[index],
-                            body: StreamBuilder(
+                                : _isExpanded[index]!,
+                            body: StreamBuilder<QuerySnapshot>(
                               stream: db.userCollection
                                   .doc(db.uid)
                                   .collection('savedVideoList')
-                                  .doc(snapshot.data.docs[index].id)
-                                  .collection(snapshot.data.docs[index].id)
+                                  .doc(snapshot.data!.docs[index].id)
+                                  .collection(snapshot.data!.docs[index].id)
                                   .snapshots(),
                               builder: (context, listSnap) {
                                 if (!listSnap.hasData) {
@@ -313,16 +314,16 @@ class _MyPageState extends State<MyPage> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: mw * 0.05),
                                     child: ListView.builder(
-                                      itemCount: listSnap.data.docs.length,
+                                      itemCount: listSnap.data!.docs.length,
                                       itemBuilder:
                                           (BuildContext context, int idx) {
-                                        return listSnap.data.docs[idx].id
+                                        return listSnap.data!.docs[idx].id
                                                     .trim() !=
                                                 "getListName"
                                             ? Container(
                                                 height: mh * 0.05,
-                                                child: Text(
-                                                    listSnap.data.docs[idx].id))
+                                                child: Text(listSnap
+                                                    .data!.docs[idx].id))
                                             : Container();
                                       },
                                     ),
@@ -336,7 +337,7 @@ class _MyPageState extends State<MyPage> {
                           setState(() {
                             _isExpanded[index] == null
                                 ? _isExpanded[index] = true
-                                : _isExpanded[index] = !_isExpanded[index];
+                                : _isExpanded[index] = !_isExpanded[index]!;
                           });
                         },
                       );

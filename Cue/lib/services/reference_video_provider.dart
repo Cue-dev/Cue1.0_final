@@ -9,7 +9,7 @@ class ReferenceVideoModel extends ChangeNotifier {
 
   Future<List<ReferenceVideo>> loadReferenceVideos() async {
     // ignore: await_only_futures
-    await _referenceVideos.clear();
+    // await _referenceVideos.clear();
 
     await FirebaseFirestore.instance
         .collection('ReferenceVideos')
@@ -17,19 +17,20 @@ class ReferenceVideoModel extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         ReferenceVideo referenceVideo = ReferenceVideo(
-            title: doc.data()['title'],
-            source: doc.data()['source'],
-            type: doc.data()['type'],
-            tag: List.from(doc.data()['tag']),
-            script: doc.data()['script'],
-            length: int.tryParse(doc.data()['length'].toString()),
-            views: int.tryParse(doc.data()['views'].toString()),
-            challenges: int.tryParse(doc.data()['challenges'].toString()),
-            thumbnailURL: doc.data()['thumbnailURL'],
-            videoURL: doc.data()['videoURL']);
+            title: doc['title'],
+            source: doc['source'],
+            type: doc['type'],
+            tag: List.from(doc['tag']),
+            script: doc['script'],
+            length: int.tryParse(doc['length'].toString()),
+            views: int.tryParse(doc['views'].toString()),
+            challenges: int.tryParse(doc['challenges'].toString()),
+            thumbnailURL: doc['thumbnailURL'],
+            videoURL: doc['videoURL']);
         add(referenceVideo);
       });
     });
+    print(_referenceVideos.length);
     return _referenceVideos;
   }
 

@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:video_player/video_player.dart';
 
 class ReferenceVideo {
-  String title;
-  String source;
-  String type;
-  List<String> tag;
-  Map script;
-  int length;
-  int views;
-  int challenges;
-  String thumbnailURL;
-  String videoURL;
+  String? title;
+  String? source;
+  String? type;
+  List<String>? tag;
+  Map? script;
+  int? length;
+  int? views;
+  int? challenges;
+  String? thumbnailURL;
+  String? videoURL;
 
-  VideoPlayerController controller;
+  VideoPlayerController? controller;
 
   ReferenceVideo(
       {this.title,

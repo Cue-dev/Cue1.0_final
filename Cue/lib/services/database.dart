@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({@required this.uid});
+  DatabaseService({required this.uid});
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
@@ -14,10 +14,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('videos');
   final CollectionReference userVideoCollection =
       FirebaseFirestore.instance.collection('UserVideos');
-  // final DocumentReference videoListDocument =
-  //     FirebaseFirestore.instance.collection('users').doc(uid).collection('saved').doc('savedVideoList')
 
-  Future createUserData(String nickName, String description) async {
+  Future createUserData(String? nickName, String? description) async {
     return await userCollection.doc(uid).set({
       'name': nickName,
       'description': description,
@@ -80,7 +78,7 @@ class DatabaseService {
   }
 
   Future saveScript(
-      String listName, String source, String title, Map script) async {
+      String listName, String? source, String? title, Map? script) async {
     await userCollection
         .doc(uid)
         .collection('savedScriptList')

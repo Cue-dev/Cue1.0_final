@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _loading = false;
 
   bool _success = true;
-  String _userEmail;
+  String? _userEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(height: mh * 0.03),
                     FlatButton(
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           setState(() {
                             _loading = true;
                           });
@@ -212,7 +212,7 @@ class _RegisterPageState extends State<RegisterPage> {
 //   }
 
   void showSnackBar(BuildContext context) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(
       content: Text('다시 진행해주세요', textAlign: TextAlign.center),
       duration: Duration(seconds: 2),
       backgroundColor: Colors.redAccent,

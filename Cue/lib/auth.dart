@@ -64,7 +64,7 @@ class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Instance to know the authentication state.
-    final firebaseUser = context.watch<User>();
+    final firebaseUser = context.watch<User?>();
 
     if (firebaseUser != null) {
       print(firebaseUser.uid);

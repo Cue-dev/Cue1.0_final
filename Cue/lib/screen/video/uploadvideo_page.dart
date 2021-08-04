@@ -6,14 +6,14 @@ import 'package:Cue/services/database.dart';
 import 'package:Cue/services/reference_video.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:neeko/neeko.dart';
+// import 'package:neeko/neeko.dart';
 import 'package:provider/provider.dart';
 
 class UploadVideoPage extends StatefulWidget {
   final ReferenceVideo originalVideo;
   final String uploadedURL;
   UploadVideoPage(
-      {Key key, @required this.originalVideo, @required this.uploadedURL})
+      {Key? key, required this.originalVideo, required this.uploadedURL})
       : super(key: key);
   @override
   UploadVideoPageState createState() {
@@ -22,11 +22,11 @@ class UploadVideoPage extends StatefulWidget {
 }
 
 class UploadVideoPageState extends State<UploadVideoPage> {
-  VideoControllerWrapper videoControllerWrapper;
+  // VideoControllerWrapper videoControllerWrapper;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
-  File _image;
+  File? _image;
   String title = '';
   bool _public = true;
   bool _join = true;
@@ -34,8 +34,8 @@ class UploadVideoPageState extends State<UploadVideoPage> {
 
   @override
   void initState() {
-    videoControllerWrapper = VideoControllerWrapper(
-        DataSource.network(widget.uploadedURL, displayName: '새로운 연기'));
+    // videoControllerWrapper = VideoControllerWrapper(
+    //     DataSource.network(widget.uploadedURL, displayName: '새로운 연기'));
     super.initState();
   }
 
@@ -89,27 +89,30 @@ class UploadVideoPageState extends State<UploadVideoPage> {
                   ),
                 ],
               )),
-              Container(
-                height: mh * 0.35,
-                width: mw,
-                child: NeekoPlayerWidget(
-                  videoControllerWrapper: videoControllerWrapper,
-                  progressBarHandleColor: Theme.of(context).accentColor,
-                  progressBarPlayedColor: Theme.of(context).accentColor,
-                  onPortraitBackTap: () {
-                    Navigator.pop(context);
-                  },
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(
-                          Icons.share,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          print("share");
-                        })
-                  ],
-                ), // video insert
+              Center(
+                child: Container(
+                  height: mh * 0.4,
+                  width: mw * 0.5,
+                  // child: NeekoPlayerWidget(
+                  //   aspectRatio: 9 / 16,
+                  //   videoControllerWrapper: videoControllerWrapper,
+                  //   progressBarHandleColor: Theme.of(context).accentColor,
+                  //   progressBarPlayedColor: Theme.of(context).accentColor,
+                  //   onPortraitBackTap: () {
+                  //     Navigator.pop(context);
+                  //   },
+                  //   actions: <Widget>[
+                  //     IconButton(
+                  //         icon: Icon(
+                  //           Icons.share,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: () {
+                  //           print("share");
+                  //         })
+                  //   ],
+                  // ), // video insert
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: mw * 0.03, top: mh * 0.025),
