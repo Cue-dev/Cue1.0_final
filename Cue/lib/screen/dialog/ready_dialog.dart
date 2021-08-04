@@ -98,7 +98,9 @@ class ReadyDialog extends StatelessWidget {
                 future: Future.delayed(Duration(milliseconds: 1500)),
                 builder: (context, cueSnap) {
                   if (cueSnap.connectionState == ConnectionState.done)
-                    Navigator.pop(context);
+                    //TODO: 이거 왜 안되냐
+                    // Navigator.pop(context);
+                    return Container();
                   else
                     return Dialog(
                       insetPadding: EdgeInsets.all(0),
@@ -108,7 +110,7 @@ class ReadyDialog extends StatelessWidget {
                           'Cue!',
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1
+                              .subtitle1!
                               .copyWith(fontSize: 25),
                         ),
                       ),
@@ -123,7 +125,7 @@ class ReadyDialog extends StatelessWidget {
                   'Ready,',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
+                      .subtitle1!
                       .copyWith(fontSize: 25),
                 ),
               ),

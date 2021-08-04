@@ -20,6 +20,7 @@ void main() async {
     ),
     StreamProvider(
       create: (context) => context.read<AuthProvider>().authState,
+      initialData: null,
     )
     // ChangeNotifierProvider<FirebaseAuthService>(
     //     create: (context) => FirebaseAuthService())

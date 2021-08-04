@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class CreateSavedListDialog extends StatefulWidget {
   final bool isVideo;
-  CreateSavedListDialog({Key key, @required this.isVideo}) : super(key: key);
+  CreateSavedListDialog({Key? key, required this.isVideo}) : super(key: key);
   @override
   _CreateSavedListDialogState createState() => _CreateSavedListDialogState();
 }
@@ -32,7 +32,7 @@ class _CreateSavedListDialogState extends State<CreateSavedListDialog> {
             '취소',
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .copyWith(color: Colors.grey),
           ),
           onPressed: () {

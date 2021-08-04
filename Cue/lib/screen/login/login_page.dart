@@ -16,7 +16,7 @@ class _LogInPageState extends State<LogInPage> {
   TextEditingController _passwordController = TextEditingController();
   // bool _success;
   // bool _loading = false;
-  String _userEmail;
+  String? _userEmail;
   // String _email = '';
   // String _pw = '';
   // SharedPreferences _prefs;
@@ -129,7 +129,7 @@ class _LogInPageState extends State<LogInPage> {
                                     size: mw * 0.073,
                                   ),
                                   onPressed: () async {
-                                    if (_formKey.currentState.validate()) {
+                                    if (_formKey.currentState!.validate()) {
                                       // setState(() {
                                       //   _loading = true;
                                       // });

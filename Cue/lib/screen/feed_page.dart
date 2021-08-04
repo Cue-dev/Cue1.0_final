@@ -8,15 +8,15 @@ import 'package:Cue/services/loading.dart';
 import 'package:provider/provider.dart';
 
 class FeedPage extends StatefulWidget {
-  FeedPage({Key key}) : super(key: key);
+  FeedPage({Key? key}) : super(key: key);
 
   @override
   _FeedPageState createState() => _FeedPageState();
 }
 
 class _FeedPageState extends State<FeedPage> {
-  Stream<List<FeedTest>> listVideos;
-  List<String> videoURLs = List();
+  Stream<List<FeedTest>>? listVideos;
+  List<String> videoURLs = [];
 
   void clearHistory() {
     videoURLs.clear();
@@ -28,57 +28,55 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     final double mh = MediaQuery.of(context).size.height;
     final double mw = MediaQuery.of(context).size.width;
-    final feedTestModel =
-    Provider.of<FeedTestModel>(context, listen: false);
+    final feedTestModel = Provider.of<FeedTestModel>(context, listen: false);
 
     return _loading
         ? Loading()
         : Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        elevation: 0.0,
-        title: Text(
-          "Cue!",
-          style: Theme.of(context).textTheme.headline2,
-        ),
-        shape: RoundedRectangleBorder(
-            borderRadius:
-            BorderRadius.only(bottomRight: Radius.circular(30))),
-        actions: [
-          IconButton(
-              icon: ImageIcon(
-                AssetImage('icons/검색.png'),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+              elevation: 0.0,
+              title: Text(
+                "Cue!",
+                style: Theme.of(context).textTheme.headline2,
               ),
-              onPressed: () {}),
-          IconButton(
-              icon: ImageIcon(
-                AssetImage('icons/알림_유.png'),
-              ),
-              onPressed: () {}),
-        ],
-      ),
-      body: FutureBuilder(
-          future: feedTestModel.loadFeedTests(),
-          builder:
-              (context, AsyncSnapshot<List<FeedTest>> snapshot) {
-            return snapshot.hasData
-                ? ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(),
-              padding: EdgeInsets.fromLTRB(
-                  mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
-              scrollDirection: Axis.vertical,
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, int index) {
-                print(snapshot.data.length);
-                return InkWell(
-                  child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              InkWell(
-                                onTap: () {
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(30))),
+              actions: [
+                IconButton(
+                    icon: ImageIcon(
+                      AssetImage('icons/검색.png'),
+                    ),
+                    onPressed: () {}),
+                IconButton(
+                    icon: ImageIcon(
+                      AssetImage('icons/알림_유.png'),
+                    ),
+                    onPressed: () {}),
+              ],
+            ),
+            body: FutureBuilder(
+                future: feedTestModel.loadFeedTests(),
+                builder: (context, AsyncSnapshot<List<FeedTest>> snapshot) {
+                  return snapshot.hasData
+                      ? ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(),
+                          padding: EdgeInsets.fromLTRB(
+                              mw * 0.02, mh * 0.01, mw * 0.02, mh * 0.01),
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, int index) {
+                            print(snapshot.data!.length);
+                            return InkWell(
+                              child: Container(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
 //                                  showDialog(
 //                                      context: context,
 //                                      builder: (_) {
@@ -86,83 +84,94 @@ class _FeedPageState extends State<FeedPage> {
 //                                          videoToPlay: snapshot.data[index],
 //                                        );
 //                                      });
-                                },
-                                child: Container(
-                                  height: mh * 0.24,
-                                  width: mw,
-                                  child: snapshot
-                                      .data[index].thumbnailURL !=
-                                      null
-                                      ? Container(
-                                    child: Image.network(
-                                      snapshot
-                                          .data[index].thumbnailURL,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                      : Container(color: Colors.black),
-                                ),
-                              ),
-                              Positioned(
-                                child: topLeftText(
-                                    snapshot.data[index].profileURL,
-                                    snapshot.data[index].uploader
-                                ),
-                                top: mh * 0.01,
-                                left: mw * 0.03,
-                              ),
-                              Positioned(
-                                child: bottomLeftText(
-                                  snapshot.data[index].views,
-                                ),
-                                bottom: mh * 0.02,
-                                left: mw * 0.03,
-                              ),
-                              Positioned(
-                                child: IconButton(
-                                    iconSize: 15,
-                                    icon: ImageIcon(
-                                      AssetImage('icons/메뉴.png'),
-                                    ),
-                                    onPressed: () {
-                                      menuDialog(context, mw, mh,
-                                          snapshot.data[index]);
-                                    }),
-                                top: mh * 0.001,
-                                right: mw * 0.001,
-                              ),
-                              Positioned(
-                                child: bottomRightText(
-                                    snapshot.data[index].length),
-                                bottom: mh * 0.02,
-                                right: mw * 0.05,
-                              ),
-                            ],
-                          ),
-                          Container(
-                              child: Column(
-                                children: [
-                                  Row(
-                                      children:[
+                                        },
+                                        child: Container(
+                                          height: mh * 0.24,
+                                          width: mw,
+                                          child: snapshot.data![index]
+                                                      .thumbnailURL !=
+                                                  null
+                                              ? Container(
+                                                  child: Image.network(
+                                                    snapshot.data![index]
+                                                        .thumbnailURL!,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )
+                                              : Container(color: Colors.black),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        child: topLeftText(
+                                            snapshot.data![index].profileURL!,
+                                            snapshot.data![index].uploader!),
+                                        top: mh * 0.01,
+                                        left: mw * 0.03,
+                                      ),
+                                      Positioned(
+                                        child: bottomLeftText(
+                                          snapshot.data![index].views,
+                                        ),
+                                        bottom: mh * 0.02,
+                                        left: mw * 0.03,
+                                      ),
+                                      Positioned(
+                                        child: IconButton(
+                                            iconSize: 15,
+                                            icon: ImageIcon(
+                                              AssetImage('icons/메뉴.png'),
+                                            ),
+                                            onPressed: () {
+                                              menuDialog(context, mw, mh,
+                                                  snapshot.data![index]);
+                                            }),
+                                        top: mh * 0.001,
+                                        right: mw * 0.001,
+                                      ),
+                                      Positioned(
+                                        child: bottomRightText(
+                                            snapshot.data![index].length!),
+                                        bottom: mh * 0.02,
+                                        right: mw * 0.05,
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                      child: Column(
+                                    children: [
+                                      Row(children: [
                                         IconButton(
                                             iconSize: 20,
                                             icon: ImageIcon(
                                               AssetImage('icons/하트.png'),
                                             ),
-                                            onPressed: () {
-
-                                            }),
-                                        Text('${snapshot.data[index].likes == null ? 0 : snapshot.data[index].likes}명이 좋아합니다.', style: TextStyle(fontSize: mw*0.03),),
+                                            onPressed: () {}),
+                                        Text(
+                                          '${snapshot.data![index].likes == null ? 0 : snapshot.data![index].likes}명이 좋아합니다.',
+                                          style: TextStyle(fontSize: mw * 0.03),
+                                        ),
                                         Spacer(),
-                                        snapshot.data[index].join == true?
-                                        InkWell(
-                                          onTap: () {},
-                                          child: Container(
-                                              width: mw*0.19, height: mh*0.03,
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
-                                              child:Center( child:Text('같이하기',style: TextStyle(color: Colors.black),),)
-                                          ),
-                                        ) : Container(),
+                                        snapshot.data![index].join == true
+                                            ? InkWell(
+                                                onTap: () {},
+                                                child: Container(
+                                                    width: mw * 0.19,
+                                                    height: mh * 0.03,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                        color: Colors.white),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '같이하기',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    )),
+                                              )
+                                            : Container(),
                                         InkWell(
                                           onTap: () {
                                             // Navigator.push(
@@ -174,48 +183,67 @@ class _FeedPageState extends State<FeedPage> {
                                             //            ))); //TODO : DB 고민
                                           },
                                           child: Container(
-                                              width: mw*0.19, height: mh*0.03,
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Colors.white),
-                                              child:Center( child:Text('원본보기',style: TextStyle(color: Colors.black),),)
-                                          ),
+                                              width: mw * 0.19,
+                                              height: mh * 0.03,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  color: Colors.white),
+                                              child: Center(
+                                                child: Text(
+                                                  '원본보기',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              )),
                                         )
-                                      ]
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:[
-                                          Text(snapshot.data[index].description.replaceAll("\\n","\n"),),
-                                          SizedBox(height: mh*0.01),
-                                          Text('댓글 ${snapshot.data[index].comments}개 모두 보기',style: TextStyle(color: Colors.grey)),
-                                          SizedBox(height: mh*0.01),
-                                          Row(
+                                      ]),
+                                      Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                width:mw*0.05, height:mh*0.05,
-                                                decoration: BoxDecoration(shape: BoxShape.circle, color:Colors.white),
+                                              Text(
+                                                snapshot
+                                                    .data![index].description!
+                                                    .replaceAll("\\n", "\n"),
                                               ),
-                                              SizedBox(width: mw*0.02),
-                                              Text('댓글달기',style: TextStyle(color: Colors.grey))
+                                              SizedBox(height: mh * 0.01),
+                                              Text(
+                                                  '댓글 ${snapshot.data![index].comments}개 모두 보기',
+                                                  style: TextStyle(
+                                                      color: Colors.grey)),
+                                              SizedBox(height: mh * 0.01),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: mw * 0.05,
+                                                    height: mh * 0.05,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.white),
+                                                  ),
+                                                  SizedBox(width: mw * 0.02),
+                                                  Text('댓글달기',
+                                                      style: TextStyle(
+                                                          color: Colors.grey))
+                                                ],
+                                              )
                                             ],
-                                          )
-                                        ],
-                                      )
-                                  ),
+                                          )),
+                                    ],
+                                  )),
                                 ],
-                              )
-                          ),
-                        ],
-                      )),
-                );
-              },
-            )
-                : Center(
-              child: CircularProgressIndicator(),
-            );
-          }),
-    );
+                              )),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        );
+                }),
+          );
   }
 
   Widget topLeftText(String profileURL, String uploader) {
@@ -224,11 +252,11 @@ class _FeedPageState extends State<FeedPage> {
       children: [
         ClipOval(
           child: Container(
-            width: MediaQuery.of(context).size.width*0.07,
+            width: MediaQuery.of(context).size.width * 0.07,
             child: Image.network(profileURL),
           ),
         ),
-        SizedBox(width: MediaQuery.of(context).size.width*0.02),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.02),
         Padding(
           padding: const EdgeInsets.only(top: 5),
           child: Text(
@@ -240,7 +268,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Widget bottomLeftText(int views) {
+  Widget bottomLeftText(int? views) {
     return Row(
       children: [
         Text(
@@ -275,7 +303,8 @@ class _FeedPageState extends State<FeedPage> {
               child: Column(
                 children: [
                   InkWell(
-                    child: _buildDialogButtons(mw, mh, 'icons/대본저장.png', '신고하기'), // 신고하기 png 요구할 것!
+                    child: _buildDialogButtons(
+                        mw, mh, 'icons/대본저장.png', '신고하기'), // 신고하기 png 요구할 것!
                     onTap: () {},
                   ),
                   InkWell(

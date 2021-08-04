@@ -9,7 +9,7 @@ class UserVideoModel extends ChangeNotifier {
 
   Future<List<UserVideo>> loadUserVideos() async {
     // ignore: await_only_futures
-    await _userVideos.clear();
+    // await _userVideos.clear();
 
     await FirebaseFirestore.instance
         .collection('UserVideos')
@@ -18,23 +18,23 @@ class UserVideoModel extends ChangeNotifier {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         UserVideo userVideo = UserVideo(
-            description: doc.data()['description'],
-            source: doc.data()['source'],
-            uploader: doc.data()['uploader'],
-            nickname: doc.data()['nickname'],
-            title: doc.data()['title'],
-            type: doc.data()['type'],
-            tag: doc.data()['tag'],
-            length: int.tryParse(doc.data()['length'].toString()),
-            views: int.tryParse(doc.data()['views'].toString()),
-            likes: int.tryParse(doc.data()['likes'].toString()),
-            comments: int.tryParse(doc.data()['comments'].toString()),
-            public: bool.hasEnvironment(doc.data()['public'].toString()),
-            join: bool.hasEnvironment(doc.data()['join'].toString()),
-            profileURL: doc.data()['profileURL'],
-            thumbnailURL: doc.data()['thumbnailURL'],
-            videoURL: doc.data()['videoURL'],
-           );
+          description: doc['description'],
+          source: doc['source'],
+          uploader: doc['uploader'],
+          nickname: doc['nickname'],
+          title: doc['title'],
+          type: doc['type'],
+          tag: doc['tag'],
+          length: int.tryParse(doc['length'].toString()),
+          views: int.tryParse(doc['views'].toString()),
+          likes: int.tryParse(doc['likes'].toString()),
+          comments: int.tryParse(doc['comments'].toString()),
+          public: bool.hasEnvironment(doc['public'].toString()),
+          join: bool.hasEnvironment(doc['join'].toString()),
+          profileURL: doc['profileURL'],
+          thumbnailURL: doc['thumbnailURL'],
+          videoURL: doc['videoURL'],
+        );
         add(userVideo);
       });
     });

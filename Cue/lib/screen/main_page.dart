@@ -15,7 +15,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  PageController _pageController;
+  PageController? _pageController;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController!.dispose();
     super.dispose();
   }
 
@@ -47,11 +47,9 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               PlayListPage(),
               PopularPage(),
-              // MyHomePage(),
               Container(
                 color: Colors.black,
               ),
-              //CloudStorageDemo(),
               FeedPage(),
               MyPage(),
             ],
@@ -103,7 +101,7 @@ class _MainPageState extends State<MainPage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _pageController.animateToPage(index,
+      _pageController!.animateToPage(index,
           duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
     });
   }

@@ -8,19 +8,19 @@ class AuthProvider {
   //Constuctor to initalize the FirebaseAuth instance
 
   //Using Stream to listen to Authentication State
-  Stream<User> get authState => firebaseAuth.idTokenChanges();
-  String get getUID => firebaseAuth.currentUser.uid;
+  Stream<User?> get authState => firebaseAuth.idTokenChanges();
+  String get getUID => firebaseAuth.currentUser!.uid;
 
   //............RUDIMENTARY METHODS FOR AUTHENTICATION................
 
   //SIGN UP METHOD
-  Future<String> signUp(
-      {String email,
-      String password,
-      String nickName,
-      String description}) async {
+  Future<String?> signUp(
+      {required String email,
+      required String password,
+      String? nickName,
+      String? description}) async {
     try {
-      final User user = (await firebaseAuth.createUserWithEmailAndPassword(
+      final User? user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
       if (user != null) {
@@ -35,7 +35,7 @@ class AuthProvider {
   }
 
   //SIGN IN METHOD
-  Future<String> signIn({String email, String password}) async {
+  Future<String?> signIn({required String email, required String password}) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
