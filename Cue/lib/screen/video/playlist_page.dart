@@ -326,7 +326,7 @@ class _PlayListPageState extends State<PlayListPage> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
-            insetPadding: EdgeInsets.only(top: mh * 0.63),
+            insetPadding: EdgeInsets.only(top: mh * 0.72),
             child: Padding(
               padding: EdgeInsets.all(mh * 0.015),
               child: Column(
@@ -345,11 +345,11 @@ class _PlayListPageState extends State<PlayListPage> {
                       saveVideoDialog(context, video);
                     },
                   ),
-                  InkWell(
-                    child: _buildDialogButtons(mw, mh, 'icons/공유.png', '공유하기'),
-                    onTap: () {},
-                  ),
-                  Divider(),
+                  // InkWell(
+                  //   child: _buildDialogButtons(mw, mh, 'icons/공유.png', '공유하기'),
+                  //   onTap: () {},
+                  // ),
+                  // Divider(),
                   InkWell(
                     child: _buildDialogButtons(mw, mh, 'icons/취소.png', '취소'),
                     onTap: () {
