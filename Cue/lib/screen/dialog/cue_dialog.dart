@@ -70,13 +70,13 @@ class _CueDialogState extends State<CueDialog> {
               child: Text('Cue! 를 하려면 여기를 탭 해주세요!'),
               onTap: () {
                 // // TODO: 배역정한거 넘겨야함
-                // if (_selectedIndex == 0)
-                //   Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (BuildContext context) => VideoRecordingPage(
-                //                 originalVideo: widget.videoToPlay,
-                //               )));
+                if (_selectedIndex == 0)
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => VideoRecordingPage(
+                                originalVideo: widget.videoToPlay,
+                              )));
                 // else if (_selectedIndex == 1)
                 //   Navigator.push(
                 //       context,

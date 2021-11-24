@@ -186,26 +186,26 @@ class _PlayVideoPageState extends State<PlayVideoPage> {
                   _isExpanded ? Container() : Text('영상+대본 저장'),
                 ],
               ),
-              Column(
-                children: [
-                  IconButton(
-                      icon: ImageIcon(
-                        AssetImage('icons/섀도잉.png'),
-                      ),
-                      onPressed: () {}),
-                  _isExpanded ? Container() : Text('섀도잉'),
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                      icon: ImageIcon(
-                        AssetImage('icons/공유.png'),
-                      ),
-                      onPressed: () {}),
-                  _isExpanded ? Container() : Text('공유'),
-                ],
-              ),
+              // Column(
+              //   children: [
+              //     IconButton(
+              //         icon: ImageIcon(
+              //           AssetImage('icons/섀도잉.png'),
+              //         ),
+              //         onPressed: () {}),
+              //     _isExpanded ? Container() : Text('섀도잉'),
+              //   ],
+              // ),
+              // Column(
+              //   children: [
+              //     IconButton(
+              //         icon: ImageIcon(
+              //           AssetImage('icons/공유.png'),
+              //         ),
+              //         onPressed: () {}),
+              //     _isExpanded ? Container() : Text('공유'),
+              //   ],
+              // ),
             ],
           ),
           Divider(),
