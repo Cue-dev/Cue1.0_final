@@ -35,28 +35,37 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Stack(children: [
-        SizedBox.expand(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            children: <Widget>[
-              PlayListPage(),
-              PopularPage(),
-              Container(
-                color: Colors.black,
-              ),
-              FeedPage(),
-              MyPage(),
-            ],
-          ),
-        ),
-        Positioned(left: 0, right: 0, bottom: 0, child: bottomNavigationBar),
-      ]),
+      body: PlayListPage(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: IconButton(
+        icon: ImageIcon(AssetImage('icons/큐.png')),
+        iconSize: 50,
+        onPressed: () {
+          _onCueButtonTapped();
+        },
+      ),
+      // body: Stack(children: [
+      //   SizedBox.expand(
+      //     child: PageView(
+      //       controller: _pageController,
+      //       onPageChanged: (index) {
+      //         setState(() {
+      //           _selectedIndex = index;
+      //         });
+      //       },
+      //       children: <Widget>[
+      //         PlayListPage(),
+      //         PopularPage(),
+      //         Container(
+      //           color: Colors.black,
+      //         ),
+      //         FeedPage(),
+      //         MyPage(),
+      //       ],
+      //     ),
+      //   ),
+      //   Positioned(left: 0, right: 0, bottom: 0, child: bottomNavigationBar),
+      // ]),
     );
   }
 
@@ -115,7 +124,7 @@ class _MainPageState extends State<MainPage> {
         final double mw = MediaQuery.of(context).size.width;
 
         return Dialog(
-            insetPadding: EdgeInsets.only(top: mh * 0.63),
+            insetPadding: EdgeInsets.only(top: mh * 0.7),
             child: Padding(
               padding: EdgeInsets.all(mh * 0.015),
               child: Column(

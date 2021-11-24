@@ -44,7 +44,24 @@ class _SplashPageState extends State<SplashPage> {
           Row(
             children: [
               SizedBox(width: mw * 0.1),
-              Image.asset('images/cueLogo1.png'),
+              // Image.asset('images/cueLogo1.png'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Cue!',
+                    style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Theme.of(context).secondaryHeaderColor),
+                  ),
+                  Text(
+                    'the acting\npractice app',
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1!
+                        .copyWith(fontSize: 16),
+                  ),
+                ],
+              )
             ],
           ),
           SizedBox(
