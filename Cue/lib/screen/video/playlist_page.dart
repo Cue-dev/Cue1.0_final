@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Cue/screen/dialog/save_script_dialog.dart';
 import 'package:Cue/screen/dialog/save_video_dialog.dart';
+import 'package:Cue/screen/mypage/my_page.dart';
 import 'package:Cue/screen/search/search_result_page.dart';
 import 'package:Cue/screen/video/playvideo_page.dart';
 import 'package:Cue/services/reference_video_provider.dart';
@@ -38,18 +39,22 @@ class _PlayListPageState extends State<PlayListPage> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(30))),
       actions: [
+        // IconButton(
+        //     icon: ImageIcon(
+        //       AssetImage('icons/검색.png'),
+        //     ),
+        //     onPressed: () {
+        //       searchBar.beginSearch(context);
+        //     }),
         IconButton(
             icon: ImageIcon(
-              AssetImage('icons/검색.png'),
+              // AssetImage('icons/알림_유.png'),
+              AssetImage('icons/마이.png'),
             ),
             onPressed: () {
-              searchBar.beginSearch(context);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyPage()));
             }),
-        IconButton(
-            icon: ImageIcon(
-              AssetImage('icons/알림_유.png'),
-            ),
-            onPressed: () {}),
       ],
     );
   }
@@ -271,34 +276,34 @@ class _PlayListPageState extends State<PlayListPage> {
           children: [
             for (int i = 0; i < tag.length; i++)
               Text(
-                tag[i] + ' ',
+                ' ' + tag[i] + ' ',
                 style: Theme.of(context).textTheme.caption,
               ),
           ],
         ),
         Text(
-          title,
+          ' ' + title,
           style: Theme.of(context).textTheme.subtitle1,
         ),
         Text(
           '',
           style: TextStyle(fontSize: 5),
         ),
-        Row(
-          children: [
-            Text(
-              '조회 ' + views.toString(),
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              '도전 ' + challenges.toString(),
-              style: Theme.of(context).textTheme.subtitle2,
-            )
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Text(
+        //       '조회 ' + views.toString(),
+        //       style: Theme.of(context).textTheme.subtitle2,
+        //     ),
+        //     SizedBox(
+        //       width: 5,
+        //     ),
+        //     Text(
+        //       '도전 ' + challenges.toString(),
+        //       style: Theme.of(context).textTheme.subtitle2,
+        //     )
+        //   ],
+        // ),
       ],
     );
   }

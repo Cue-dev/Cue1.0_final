@@ -28,6 +28,18 @@ class _MyPageState extends State<MyPage> {
     final double mw = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+        ],
+      ),
       body: FutureBuilder(
           future: db.userCollection.doc(uid).get(),
           builder: (context, snapshot) {
@@ -52,7 +64,8 @@ class _MyPageState extends State<MyPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: mh * 0.06,
+            // height: mh * 0.06,
+            height: mh * 0.08,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,23 +101,23 @@ class _MyPageState extends State<MyPage> {
             height: mh * 0.02,
           ),
           //TODO: 디비에서 팔로워랑 팔로잉 단숫 숫자로 해도 대냐? 사람들 리스트로 하는건?
-          Text(
-            '팔로워 ' + snapshot.data['follower'].toString() + '명',
-            style: Theme.of(context)
-                .textTheme
-                .subtitle1!
-                .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Text(
-            '팔로잉 ' + snapshot.data['following'].toString() + '명',
-            style: Theme.of(context)
-                .textTheme
-                .subtitle1!
-                .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          SizedBox(
-            height: mh * 0.02,
-          ),
+          // Text(
+          //   '팔로워 ' + snapshot.data['follower'].toString() + '명',
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .subtitle1!
+          //       .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          // ),
+          // Text(
+          //   '팔로잉 ' + snapshot.data['following'].toString() + '명',
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .subtitle1!
+          //       .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          // ),
+          // SizedBox(
+          //   height: mh * 0.02,
+          // ),
           Text(
             snapshot.data['description'],
             style:
@@ -142,7 +155,8 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           Container(
-            height: mh * 0.48,
+            // height: mh * 0.48,
+            height: mh * 0.64,
             child: TabBarView(
               children: <Widget>[feedTab(mh, mw, db), storageTab(mh, mw, db)],
             ),
