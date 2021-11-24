@@ -37,13 +37,13 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: PlayListPage(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: IconButton(
-        icon: ImageIcon(AssetImage('icons/큐.png')),
-        iconSize: 50,
-        onPressed: () {
-          _onCueButtonTapped();
-        },
-      ),
+      // floatingActionButton: IconButton(
+      //   icon: ImageIcon(AssetImage('icons/큐.png')),
+      //   iconSize: 50,
+      //   onPressed: () {
+      //     _onCueButtonTapped();
+      //   },
+      // ),
       // body: Stack(children: [
       //   SizedBox.expand(
       //     child: PageView(
