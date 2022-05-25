@@ -1,7 +1,7 @@
-# Cue! : Flutter Project
+# Cue! (2020.06 ~ 2021.07)
 
 ## Project Description
-#### Goal: 연기 연습 기능을 제공하는 모바일 숏비디오 플랫폼 서비스
+#### Project Goal: 연기 연습 기능을 제공하는 모바일 숏비디오 플랫폼 서비스
 #### Stack: Flutter(Dart), Google Firebase(Firestore)
 #### Result
 - 공공기술기반 시장연계 창업탐색 지원사업(한국형 I-Corps 사업) 최종 선정
